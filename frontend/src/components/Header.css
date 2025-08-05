@@ -1,0 +1,87 @@
+nav {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 20px;
+      position: relative;
+    }
+
+        .logo {
+          height: 50px;
+          width: auto;
+          object-fit: contain;
+        }
+
+        .nav-links {
+            margin-left: 39rem;
+            display: flex;
+            gap: 90px;
+            justify-content: center;
+            
+        }
+
+        .nav-links a {
+            color: #A598D1;
+            text-decoration: none;
+            font-family: "Poppins", sans-serif;
+            font-size: 1.4rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .profile-circle {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            
+        }
+        .user-initial {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            color: purple;
+            position: relative;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+
+        .dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        padding-top: 10px;
+        display: none;
+        z-index: 10;
+        }
+
+        .user-initial:hover .dropdown {
+        display: block;
+        }
+
+        .dropdown ul {
+        background-color: #f3f4f6;
+        padding: 0.5rem;
+        margin: 0;
+        list-style: none;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+        }
+
+        .dropdown li {
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        }
+
+        .dropdown li:hover {
+        background-color: #e5e7eb;
+        }
+
+   

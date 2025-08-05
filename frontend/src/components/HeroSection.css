@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap');
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 90px;
+    width: 70%;
+    text-align: center; 
+    
+
+}
+
+ .hero h1 {
+     z-index: 1; 
+    color: white; 
+    text-align: center;
+    font-size: 70px;
+    font-weight: 300;
+    font-family: "Poltawski Nowy", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    padding-bottom: 33px;
+}
+
+.highlight {
+    color: #A598D1;
+    font-size: 70px;
+    font-weight: 300;
+    font-family: "Poltawski Nowy", serif;
+    font-optical-sizing: auto;
+}
+.hero p {
+    z-index: 1; 
+    color: #78718D;
+    font-size: 23px;
+    font-family: "Poppins", sans-serif;
+
+}
+
