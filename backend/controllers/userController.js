@@ -35,10 +35,13 @@ export async function searchUsers(req, res) {
             //$regex: querysearch for documents where username matches the regular expression query
             $or: [
                 { firstName: { $regex: query, $options: "i" } },
-                { lastName: { $regex: query, $options: "i" } }
+                { lastName: { $regex: query, $options: "i" } },
+                { profession: { $regex: query, $options: "i" } },
+                { location: { $regex: query, $options: "i" } },
+                { languages: { $regex: query, $options: "i" } }
             ]
             //$options: "i" makes the regex search case-insensitive
-        }).select("firstName lastName email _id"); //to exclude id and only show username
+        }).select("firstName lastName email _id profession location languages experienceYears"); 
 
         res.json(users);
     } catch (err) {

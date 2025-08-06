@@ -95,11 +95,11 @@
 }
 
 .skill-tag {
-  background-color: #e0e0e0;
-  border-radius: 20px;
+  background-color: white;
+  border-radius: 6px;
   padding: 0.5rem 1.25rem;
   font-size: 0.95rem;
-  color: #333;
+  color: #7326b0;
 }
 
 .social-links {

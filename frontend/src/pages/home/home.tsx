@@ -13,6 +13,10 @@ interface IUser {
     firstName: string;
     lastName: string;
     email: string;
+    experienceYears: number;
+    profession: string;
+    location: string;
+    languages: string[];
 }
 
 const Home = () => {
@@ -97,7 +101,15 @@ const Home = () => {
                             userList.map((user: IUser) => (
                                 <div onClick={ () => navigate(`/profile/${user._id}`)} key={user.email} className="result-card">
                                     <p>{user.firstName} {user.lastName}</p>
-                                    <p>Email: {user.email }</p>
+                                    <p>{user.email }</p>
+                                    <p>{user.location }</p>
+                                    <p>Profession: {user.profession }</p>
+                                    <p>Years of Experience: {user.experienceYears }</p>
+                                    <div className="languages-wrapper">
+                                        {user.languages.slice(0, 3).map((lang, index) => (
+                                        <span key={index} className="language-tag">{lang}</span>
+                                        ))}
+                                    </div>
                                 </div>
                             ))
                         ) : (

@@ -32,7 +32,7 @@ const Header = () => {
         <nav>
             <img src={assets.logo1} alt='Logo' className='logo'/>
             <div className="nav-links">
-                <Link to=''>Home</Link>
+                <Link to='/home'>Home</Link>
                 <Link to=''>About Us</Link>
                 <Link to=''>Register as Professional</Link>
             </div>
