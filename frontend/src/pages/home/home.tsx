@@ -13,6 +13,7 @@ interface IUser {
     firstName: string;
     lastName: string;
     email: string;
+    bio: string;
     experienceYears: number;
     profession: string;
     location: string;
@@ -100,15 +101,22 @@ const Home = () => {
                         {userList.length > 0 ? (
                             userList.map((user: IUser) => (
                                 <div onClick={ () => navigate(`/profile/${user._id}`)} key={user.email} className="result-card">
-                                    <p>{user.firstName} {user.lastName}</p>
-                                    <p>{user.email }</p>
-                                    <p>{user.location }</p>
-                                    <p>Profession: {user.profession }</p>
-                                    <p>Years of Experience: {user.experienceYears }</p>
-                                    <div className="languages-wrapper">
-                                        {user.languages.slice(0, 3).map((lang, index) => (
-                                        <span key={index} className="language-tag">{lang}</span>
-                                        ))}
+                                    <div className='card-header'>
+                                        <div className="card-picture card-initial">{user?.firstName?.[0]?.toUpperCase()}</div>
+                                        <div className='card-details'>
+                                            <p>{user.firstName} {user.lastName}</p>
+                                            <p>{user.email }</p>
+                                            <p>{user.location }</p>
+                                            <p>{user.profession }</p>
+                                        </div>
+                                    </div>
+                                    <div className='extra-details'>
+                                        <p>{user.bio }</p>
+                                        <div className="languages-wrapper">
+                                            {user.languages.slice(0, 4).map((lang, index) => (
+                                            <span key={index} className="language-tag">{lang}</span>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             ))

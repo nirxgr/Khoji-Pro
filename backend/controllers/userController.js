@@ -41,7 +41,7 @@ export async function searchUsers(req, res) {
                 { languages: { $regex: query, $options: "i" } }
             ]
             //$options: "i" makes the regex search case-insensitive
-        }).select("firstName lastName email _id profession location languages experienceYears"); 
+        }).select("firstName lastName email _id bio profession location languages"); 
 
         res.json(users);
     } catch (err) {
