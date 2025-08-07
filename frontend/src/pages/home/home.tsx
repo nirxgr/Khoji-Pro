@@ -26,6 +26,18 @@ const Home = () => {
     const [userList, setUserList] = useState<IUser[]>([]);
     const navigate = useNavigate();
 
+    const [filterBy, setFilterBy] = useState<string>('');
+    const [isOpen, setIsOpen] = useState(false);
+
+    const filterOptions = ["People", "Profession", "Location", "Languages"];
+
+    const toggleDropdown = () => setIsOpen(prev => !prev);
+
+    const handleSelect = (option: string) => {
+        setIsOpen(false);
+        setFilterBy(option); 
+    };
+
 
     useEffect(() => {
         if (!search.trim()) {
@@ -34,19 +46,24 @@ const Home = () => {
         }
 
         const delayDebounce = setTimeout(() => {
-            axios.get(`${backendUrl}/api/user/search?query=${search}`)
-                .then(res => {
-                    setUserList(res.data);
-                    console.log(userList);
-                })
-                .catch(err => {
-                    console.error('Search failed:', err);
-                    setUserList([]);
-                });
-        }, 100); 
+            const params = new URLSearchParams();
+            params.append("query", search);
+            if (filterBy.toLowerCase() !== "") {              
+                    params.append("filterBy", filterBy.toLowerCase());
+            }
 
-        return () => clearTimeout(delayDebounce);
-    }, [search, backendUrl]);
+        axios.get(`${backendUrl}/api/user/search?${params.toString()}`)
+            .then(res => {
+                setUserList(res.data);
+            })
+            .catch(err => {
+                console.error('Search failed:', err);
+                setUserList([]);
+            });
+    }, 100);
+
+    return () => clearTimeout(delayDebounce);
+}, [search, filterBy, backendUrl]);
 
     
       return (
@@ -92,38 +109,59 @@ const Home = () => {
                 </>
             ) : ( 
                 <>
-                    <div className="record-count">
-                        <p>{userList.length} users found.</p>
+                    <div className='result-filter'>
+                        <div className="record-count">
+                            <p>{userList.length} users found.</p>
+                        </div>
+                        
+                        <div className="filter-dropdown">
+                            <button className="filter-button" onClick={toggleDropdown}>
+                                <img src={assets.filter}className='filter-icon'/>
+                                <span>{filterBy || "Filters"}</span>
+                            </button>
+
+                            {isOpen && (
+                                <ul className="dropdown-menu">
+                                {filterOptions.map(option => (
+                                    <li key={option}>
+                                    <button className="dropdown-item" onClick={() => handleSelect(option)}>
+                                        {option}
+                                    </button>
+                                    </li>
+                                ))}
+                                </ul>
+                            )}
+                        </div>
                     </div>
-            
-            
-                    <div className="search-results">
-                        {userList.length > 0 ? (
-                            userList.map((user: IUser) => (
-                                <div onClick={ () => navigate(`/profile/${user._id}`)} key={user.email} className="result-card">
-                                    <div className='card-header'>
-                                        <div className="card-picture card-initial">{user?.firstName?.[0]?.toUpperCase()}</div>
-                                        <div className='card-details'>
-                                            <p>{user.firstName} {user.lastName}</p>
-                                            <p>{user.email }</p>
-                                            <p>{user.location }</p>
-                                            <p>{user.profession }</p>
+                
+                
+                        <div className="search-results">
+                            {userList.length > 0 ? (
+                                userList.map((user: IUser) => (
+                                    <div onClick={ () => navigate(`/profile/${user._id}`)} key={user.email} className="result-card">
+                                        <div className='card-header'>
+                                            <div className="card-picture card-initial">{user?.firstName?.[0]?.toUpperCase()}</div>
+                                            <div className='card-details'>
+                                                <p>{user.firstName} {user.lastName}</p>
+                                                <p>{user.email }</p>
+                                                <p>{user.location }</p>
+                                                <p>{user.profession }</p>
+                                            </div>
+                                        </div>
+                                        <div className='extra-details'>
+                                            <p>{user.bio }</p>
+                                            <div className="languages-wrapper">
+                                                {user.languages.slice(0, 4).map((lang, index) => (
+                                                <span key={index} className="language-tag">{lang}</span>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='extra-details'>
-                                        <p>{user.bio }</p>
-                                        <div className="languages-wrapper">
-                                            {user.languages.slice(0, 4).map((lang, index) => (
-                                            <span key={index} className="language-tag">{lang}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            search && <p>No users found.</p>
-                        )}
-                    </div>
+                                ))
+                            ) : (
+                                search && <p>No users found.</p>
+                            )}
+                        </div>
                 
                 </>
             )}

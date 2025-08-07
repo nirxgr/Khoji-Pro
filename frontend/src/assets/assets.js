@@ -5,6 +5,7 @@ import person_icon from './person_icon.svg'
 import logo1 from './logo1.png'
 import search from './search.png'
 import logo2 from './logo2.png'
+import filter from './filter.png'
 
 export const assets = {
     arrow_icon,
@@ -13,5 +14,6 @@ export const assets = {
     mail_icon,
     person_icon,
     search,
-    logo2
+    logo2,
+    filter
 }

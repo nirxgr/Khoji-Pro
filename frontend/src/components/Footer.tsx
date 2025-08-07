@@ -9,7 +9,6 @@ const Footer = () => {
                 <h2>Khoji Pro</h2>
                 <p>The premier platform for discovering and connecting with top professionals worldwide. Build meaningful networks and find the expertise you need.</p>
                 <div className='icon-container'>
-
                 </div>
             </div>
         </div>
