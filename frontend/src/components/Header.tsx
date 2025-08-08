@@ -40,7 +40,7 @@ const Header = () => {
               {userData?.firstName?.[0]?.toUpperCase()}
               <div className='dropdown'>
                 <ul>
-                  <li>Profile</li>
+                  <li onClick={ () => navigate(`/profile/${userData._id}`)}> Profile</li>
                   <li onClick={logout}>Logout</li>
                 </ul>
               </div>

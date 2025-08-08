@@ -14,7 +14,8 @@ export const getUserData = async (req,res) => {
             success:true,
             userData: {
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                _id: user._id
             }
         });
 
