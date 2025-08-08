@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     role: {type: String, default:'Searcher'},
     profilePictureUrl: {type: String, default:''},
+    coverPictureUrl: {type: String, default:''},
     experienceYears: {type: Number,  default:0},
     profession: {type: String, default:''},
     skills: {type: [String], default:[]},

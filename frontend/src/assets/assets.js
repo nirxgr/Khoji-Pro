@@ -6,6 +6,7 @@ import logo1 from './logo1.png'
 import search from './search.png'
 import logo2 from './logo2.png'
 import filter from './filter.png'
+import location from './location.png'
 
 export const assets = {
     arrow_icon,
@@ -15,5 +16,6 @@ export const assets = {
     person_icon,
     search,
     logo2,
-    filter
+    filter,
+    location
 }

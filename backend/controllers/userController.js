@@ -63,7 +63,7 @@ export async function searchUsers(req, res) {
             };
 
         }
-        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location languages"); 
+        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location languages coverPictureUrl"); 
 
         res.json(users);
     } catch (err) {

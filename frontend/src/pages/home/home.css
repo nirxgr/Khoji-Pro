@@ -15,22 +15,17 @@
         min-height: 100vh;
         background: #000; 
         position: relative;
+        
     }
 
     /* Purple glow background */
     body::before {
       content: "";
       position: fixed;
-      /* top: -30%;
-      left: -30%;
-      width: 160%;
-      height: 160%; */
       top: 0; 
       left: 0;
       width: 100vw;
       height: 100vh;
-      
-
       background: radial-gradient(
         ellipse at 90% 80%,
         rgba(136, 0, 255, 0.3),
@@ -40,6 +35,8 @@
       opacity: 1;
       z-index: 0;
     }
+
+ 
 
 
   .search-bar {

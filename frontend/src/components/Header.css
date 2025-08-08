@@ -4,9 +4,12 @@ nav {
       justify-content: space-between;
       align-items: center;
       padding: 25px 20px;
-      position: relative;
+      position: fixed;
+      width: 100%;
+      z-index: 100;
+      top: 0;
+      background-color: black;
     }
-
         .logo {
           height: 50px;
           width: auto;

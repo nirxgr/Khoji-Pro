@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AppContext } from '../../context/AppContext.jsx';
 import './Profile.css'
 import Header from '../../components/Header';
+import { assets } from '../../assets/assets.js';
 
 
 interface IUser {
@@ -18,6 +19,7 @@ interface IUser {
     linkedid: string;
     github: string;
     languages: string[];
+    coverPictureUrl: string;
 }
 
 
@@ -39,18 +41,29 @@ const SearchedProfilePage = () => {
         <div className="main">
             <Header />
             <div className="profile-container">
-                <div className='profile-header'>
-                    <div className="profile-picture initial">{user?.firstName?.[0]?.toUpperCase()}</div>
-                    <div className="profile-name">
-                        <h2>{user.firstName || '---'} {user.lastName || '---'}</h2>
-                        <p className="email">{user.email || '---'}</p>
-                        <p className="location">📍 {user.location || '---'}</p>
+                <div className="profile-header">
+                    <div className='cover-container'>
+                        <img src={user.coverPictureUrl} alt="cover-photo" />
                     </div>
-                </div>
-                <div className="profile-section">
-                    <h3 className="profile-section-title">Bio</h3>
-                    <div className="profile-bio">
-                        {user.bio || '---'}
+
+                    
+                    <div className="profile-picture initial">
+                        {user?.firstName?.[0]?.toUpperCase()}
+                    </div>
+                    
+                    <div className="profile-section-first">
+                        <div className="profile-name">
+                            <h2>{user.firstName || '---'} {user.lastName || '---'}</h2>
+                            <p className="email">{user.email || '---'}</p>
+                            <p className="location">
+                                <img src={assets.location} alt="location icon" className="location-icon" />
+                                {user.location || '---'}
+                            </p>
+                           
+                        </div>
+                        <div className="profile-bio">
+                            {user.bio || '---'}
+                        </div>
                     </div>
                 </div>
 
