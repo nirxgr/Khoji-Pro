@@ -17,18 +17,43 @@
 
 }
 .cover-container {
+  position: relative;  
   height: 250px;
   overflow: hidden;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
-.cover-container img {
+.cover-photo {
   height: 250px;
   width: 100%;
   object-fit: cover;
   display: block;
+}
+
+
+.edit-icon-btn {
+  position: absolute;
+  top: 14px;                
+  right: 14px;                
+  width: 40px;                
+  height: 40px;
+  border: none;
+  border-radius: 50%;  
+  background-color: #1C1423;
+ 
+  cursor: pointer;
+
+
   
 }
+
+
+.edit-icon {
+  width: 20px; 
+  height: 20px;
+}
+
+
 .profile-header {
   border: 1px solid white;
   border-radius: 15px;

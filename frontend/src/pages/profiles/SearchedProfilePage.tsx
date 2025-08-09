@@ -27,6 +27,7 @@ const SearchedProfilePage = () => {
     const { id } = useParams();
     const [user, setUser] = useState<IUser | null>(null);
     const { backendUrl } = useContext(AppContext);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
         axios.get(`${backendUrl}/api/user/${id}`)
@@ -43,7 +44,15 @@ const SearchedProfilePage = () => {
             <div className="profile-container">
                 <div className="profile-header">
                     <div className='cover-container'>
-                        <img src={user.coverPictureUrl} alt="cover-photo" />
+                        <img src={user.coverPictureUrl} alt="cover-photo"className='cover-photo' />
+
+                        <button className="edit-icon-btn">
+                            <img
+                                src={assets.pencil} alt="edit-icon" className="edit-icon"
+                            />
+                        </button>
+                            
+                        
                     </div>
 
                     
@@ -54,6 +63,7 @@ const SearchedProfilePage = () => {
                     <div className="profile-section-first">
                         <div className="profile-name">
                             <h2>{user.firstName || '---'} {user.lastName || '---'}</h2>
+                            <p className="email">{user.profession || '---'}</p>
                             <p className="email">{user.email || '---'}</p>
                             <p className="location">
                                 <img src={assets.location} alt="location icon" className="location-icon" />
