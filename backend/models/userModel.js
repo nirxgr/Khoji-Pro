@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     role: {type: String, default:'Searcher'},
-    profilePictureUrl: {type: String, default:''},
+    profilePictureUrl: {type: String, default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'},
     coverPictureUrl: {type: String, default:''},
     experienceYears: {type: Number,  default:0},
     profession: {type: String, default:''},

@@ -11,7 +11,7 @@ export async function updateCoverPicture(req, res) {
         user.coverPictureUrl = req.body.imageUrl;
         await user.save();
 
-        return res.json({success: true, message: "Cover picture successfully updated."})
+        return res.json({success: true, message: "Cover picture updated successfully."})
     } catch (error) {
         return res.json({success: false, message: error.message});
     }
@@ -29,7 +29,7 @@ export async function updateProfilePicture(req, res) {
         user.profilePictureUrl = req.body.imageUrl;
         await user.save();
 
-        return res.json({success: true, message: "Profile picture successfully updated."})
+        return res.json({success: true, message: "Profile picture updated successfully."})
     } catch (error) {
         return res.json({success: false, message: error.message});
     }

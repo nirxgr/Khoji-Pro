@@ -21,6 +21,7 @@ interface IUser {
     github: string;
     languages: string[];
     coverPictureUrl: string;
+    profilePictureUrl: string;
 }
 
 
@@ -35,8 +36,6 @@ const SearchedProfilePage = () => {
     const coverInputRef = useRef<HTMLInputElement>(null);
 
     const [loading, setLoading] = useState(false);
-    const [profileImageURL, setProfileImageURL] = useState("");
-    const [coverImageURL, setCoverImageURL] = useState("");
 
     useEffect(() => {
         axios.get(`${backendUrl}/api/user/${id}`)
@@ -91,16 +90,9 @@ const SearchedProfilePage = () => {
             });
 
             const uploadedImage = await res.json();
-            if (type === "profile") {
-                setProfileImageURL(uploadedImage.url);
-                console.log("Profile image URL:", uploadedImage.url);
-            } else {
-                setCoverImageURL(uploadedImage.url);
-                console.log("Cover image URL:", uploadedImage.url);
-            }
             try {
                 const endpoint =
-                    type === "profile" ? "/api/updateProfilePic" : "/api/update/updateCoverPic";
+                    type === "profile" ? "/api/update/updateProfilePic" : "/api/update/updateCoverPic";
 
                 const { data } = await axios.post(backendUrl + endpoint, {
                     imageUrl: uploadedImage.url,
@@ -162,9 +154,13 @@ const SearchedProfilePage = () => {
                         )}
                     </div>
 
+                    {loading && (
+                        <div className="loading-spinner"></div>
+                    )}
+
                     
-                    <div className="profile-picture initial">
-                        {user?.firstName?.[0]?.toUpperCase()}
+                    <div className="profile-picture">
+                        <img src={user.profilePictureUrl} alt="profile-photo" />
                     </div>
                     
                     <div className="profile-section-first">
