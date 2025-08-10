@@ -92,6 +92,11 @@
   height: 36px;
   animation: spin 1s linear infinite;
   margin: auto;
+  z-index: 9999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  
 }
 
 @keyframes spin {
@@ -139,9 +144,98 @@
   display: block;          
 }
 
+.edit-btn {
+  position: absolute;
+  top: 280px;                
+  right: 14px;                
+  width: 40px;                
+  height: 40px; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;  
+  border: none;
+  background: transparent;
+}
+
+.edit-btn:hover {
+  background: rgb(255, 255, 255);
+  border-radius: 50%; 
+
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  padding: 45px;
+  border-radius: 8px;
+  width: 600px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: purple;
+}
+.modal-content h2{
+  text-align: center;
+}
+.modal-content p{
+  font-weight: 500;
+}
 
 
+.modal-content input,
+.modal-content textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: purple;
+  font-weight: 400;
+  font-family: "Outfit", sans-serif;
 
+}
+
+.modal-content textarea {
+  width: 100%;      
+  min-height: 120px; 
+  resize: vertical;  
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.save-btn {
+  background-color: #3cbf40;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #cf1104;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
 .profile-name h2 {
   font-size: 3rem;

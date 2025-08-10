@@ -35,6 +35,10 @@ const SearchedProfilePage = () => {
     const profileInputRef = useRef<HTMLInputElement>(null);
     const coverInputRef = useRef<HTMLInputElement>(null);
 
+
+    const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState<IUser | null>(null);
+
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -100,6 +104,7 @@ const SearchedProfilePage = () => {
 
                 if (data.success) {
                     setReloadUser(true);
+                    setOpen(false);
                     toast.success(data.message);
                 } else {
                     toast.error(data.message);
@@ -113,6 +118,35 @@ const SearchedProfilePage = () => {
             setLoading(false);
         }
   };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (!formData) return;
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+    
+    const handleSave = async () => {
+        if (!formData) return;
+
+        try {
+            const { data } = await axios.post(backendUrl + "/api/update/updateProfileDetails", formData);
+
+            if (data.success) {
+                setReloadUser(true);
+                setShowForm(false);
+                toast.success(data.message || "Profile updated successfully");
+            } else {
+                toast.error(data.message || "Failed to update profile");
+            }
+        } catch (error) {
+            toast.error("Error updating profile");
+        }
+    };
+
+    const handleCancel = () => {
+        setShowForm(false);
+        setFormData(null);
+    };
 
     return (
         
@@ -165,7 +199,47 @@ const SearchedProfilePage = () => {
                     
                     <div className="profile-section-first">
                         <div className="profile-name">
-                            <h2>{user.firstName || '---'} {user.lastName || '---'}</h2>
+                            <h2>{user?.firstName || '---'} {user.lastName || '---'}</h2>
+                            <button className="edit-btn" onClick={() => {
+                                if (user) setFormData(user);
+                                setShowForm(true);
+                            }}>
+                            <img src={assets.pencil} alt="edit-icon" className="edit-icon"/>
+                            </button>
+                            {showForm && (
+                                <div className="modal-overlay">
+                                    <div className="modal-content">
+                                        <h2>Edit Profile</h2>
+                                        <p>First Name</p>
+                                        <input
+                                        type="text" name="firstName" 
+                                        value={formData?.firstName || ""} onChange={handleChange}
+                                        />
+                                        <p>Last Name</p>
+                                        <input type="text" name="lastName" 
+                                        value={formData?.lastName}onChange={handleChange}
+                                        />
+                                        <p>Profession</p>
+                                        <input type="text" name="profession"
+                                        value={formData?.profession} onChange={handleChange}
+                                        />
+                                        <p>Location</p>
+                                        <input type="text" name="location" 
+                                        value={formData?.location}onChange={handleChange}
+                                        />
+                                        <p>Bio</p>
+                                        <textarea name="bio" 
+                                        value={formData?.bio}onChange={handleChange}
+                                        />
+
+                                        <div className="modal-buttons">
+                                        <button onClick={handleSave} className="save-btn">Save</button>
+                                        <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             <p className="email">{user.profession || '---'}</p>
                             <p className="email">{user.email || '---'}</p>
                             <p className="location">
