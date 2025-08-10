@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js'
+import updateRouter from './routes/updateRoutes.js'
 
 
 dotenv.config();
@@ -21,7 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
-
+app.use('/api/update',updateRouter)
 
 
 //Routes

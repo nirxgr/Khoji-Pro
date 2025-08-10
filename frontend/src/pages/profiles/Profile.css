@@ -18,10 +18,12 @@
 }
 .cover-container {
   position: relative;  
+  width: 100%;
   height: 250px;
   overflow: hidden;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+   display: inline-block;
 }
 .cover-photo {
   height: 250px;
@@ -30,27 +32,57 @@
   display: block;
 }
 
+.edit-dropdown-wrapper {
+  position: relative;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
 
 .edit-icon-btn {
   position: absolute;
   top: 14px;                
   right: 14px;                
-  width: 40px;                
-  height: 40px;
+  width: 38px;                
+  height: 38px;
   border: none;
-  border-radius: 50%;  
-  background-color: #1C1423;
- 
+  border-radius: 50%;   
   cursor: pointer;
-
-
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
+.edit-icon-btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
 
 .edit-icon {
   width: 20px; 
   height: 20px;
+}
+.photo-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color: purple;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.photo-element{
+  padding: 15px 15px;
+}
+.photo-element:hover{
+  background-color: rgb(234, 231, 231);
 }
 
 
