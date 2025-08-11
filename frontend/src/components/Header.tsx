@@ -1,14 +1,15 @@
 import './Header.css'
 import { assets } from '../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext.jsx'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const Header = () => {
   const navigate = useNavigate()
-  const { userData,backendUrl, setUserData, setIsLoggedin, isLoggedin} = useContext (AppContext)
+  const { userData,backendUrl, setUserData, setIsLoggedin} = useContext (AppContext)
+  const [open,setOpen] = useState(true);
   
   
   const logout = async ()=>{
@@ -36,8 +37,9 @@ const Header = () => {
                 <Link to=''>About Us</Link>
                 <Link to=''>Register as Professional</Link>
             </div>
-            <div className='profile-circle user-initial'>
-              {userData?.firstName?.[0]?.toUpperCase()}
+            <div className='profile-circle'>
+              <img src={userData.profilePictureUrl} alt="profile-photo" />
+              
               <div className='dropdown'>
                 <ul>
                   <li onClick={ () => navigate(`/profile/${userData._id}`)}> Profile</li>

@@ -15,7 +15,8 @@ export const getUserData = async (req,res) => {
             userData: {
                 firstName: user.firstName,
                 lastName: user.lastName,
-                _id: user._id
+                _id: user._id,
+                profilePictureUrl: user.profilePictureUrl,
             }
         });
 
@@ -63,7 +64,7 @@ export async function searchUsers(req, res) {
             };
 
         }
-        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location languages coverPictureUrl"); 
+        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location languages  profilePictureUrl"); 
 
         res.json(users);
     } catch (err) {

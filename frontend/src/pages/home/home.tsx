@@ -18,6 +18,7 @@ interface IUser {
     profession: string;
     location: string;
     languages: string[];
+    profilePictureUrl:string;
 }
 
 const Home = () => {
@@ -140,7 +141,9 @@ const Home = () => {
                                 userList.map((user: IUser) => (
                                     <div onClick={ () => navigate(`/profile/${user._id}`)} key={user.email} className="result-card">
                                         <div className='card-header'>
-                                            <div className="card-picture card-initial">{user?.firstName?.[0]?.toUpperCase()}</div>
+                                            <div className="card-picture">
+                                                <img src={user.profilePictureUrl} alt="profile-photo" />
+                                            </div>
                                             <div className='card-details'>
                                                 <p>{user.firstName} {user.lastName}</p>
                                                 <p>{user.email }</p>
