@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
 
 const userSchema = new mongoose.Schema({
     firstName: {type: String, required: true},
@@ -9,6 +10,12 @@ const userSchema = new mongoose.Schema({
     profilePictureUrl: {type: String, default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'},
     coverPictureUrl: {type: String, default:''},
     experienceYears: {type: Number,  default:0},
+    experiences: [
+    {
+      type: Types.ObjectId,
+      ref: 'Experience', 
+    }
+    ],
     profession: {type: String, default:''},
     skills: {type: [String], default:[]},
     location: {type: String, default:''},

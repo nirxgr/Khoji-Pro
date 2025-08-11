@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js'
 import updateRouter from './routes/updateRoutes.js'
+import experienceRouter from './routes/experienceRoutes.js';
 
 
 dotenv.config();
@@ -23,6 +24,9 @@ app.use(express.json());
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 app.use('/api/update',updateRouter)
+app.use('/api/exp',experienceRouter)
+
+
 
 
 //Routes
