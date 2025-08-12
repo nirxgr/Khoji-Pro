@@ -159,6 +159,8 @@
   background: transparent;
 }
 
+
+
 .edit-btn:hover {
   background: rgb(255, 255, 255);
   border-radius: 50%; 
@@ -180,7 +182,7 @@
 .modal-content {
   background: white;
   padding: 45px;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 600px;
   height: 700px;
   display: flex;
@@ -188,8 +190,9 @@
   gap: 10px;
   color: purple;
 }
-.modal-content h2{
+.modal-content h1{
   text-align: center;
+  font-weight: 500;
 }
 .modal-content p{
   font-weight: 500;
@@ -236,11 +239,68 @@
   border-radius: 4px;
   cursor: pointer;
 }
+.exp-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
 
-.profile-name h2 {
+.exp-content {
+  background: white;
+  padding: 45px;
+  border-radius: 12px;
+  width: 600px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: purple;
+}
+.exp-content h1{
+  text-align: center;
+  font-weight: 500;
+}
+.exp-content p{
+  font-weight: 500;
+}
+
+
+.exp-content input,
+.exp-content textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: purple;
+  font-weight: 400;
+  font-family: "Outfit", sans-serif;
+
+}
+
+.exp-content textarea {
+  width: 100%;      
+  min-height: 120px; 
+  resize: vertical;  
+}
+
+.exp-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+
+.profile-name h1 {
   font-size: 3rem;
   margin-bottom: 0.6rem;
+  font-weight: 500;
 }
+
 
 .email  {
   font-size: 1rem;
@@ -276,11 +336,42 @@
   padding: 25px 35px;
 }
 
+.profile-section {
+  border: 1px solid white;
+  border-radius: 15px;
+  padding: 25px 35px;
+  margin: 8px 0;
+}
+
+
 
 .profile-section-title {
   font-weight: bold;
   font-size: 2rem;
   margin-bottom: 1rem;
+}
+
+
+
+.add-btn {
+  position: absolute;
+  top: 630px;                
+  right: 190px;                
+  width: 40px;                
+  height: 40px; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;  
+  border: none;
+  background: transparent;
+  
+}
+
+.add-btn:hover {
+  background: rgb(255, 255, 255);
+  border-radius: 50%; 
 }
 
 .profile-info-grid {
@@ -327,3 +418,5 @@
 .social-links a:hover {
   opacity: 0.8;
 }
+
+

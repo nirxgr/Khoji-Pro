@@ -38,6 +38,7 @@ const SearchedProfilePage = () => {
 
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState<IUser | null>(null);
+    const [showExpForm, setShowExpForm] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -130,7 +131,6 @@ const SearchedProfilePage = () => {
 
         try {
             const { data } = await axios.post(backendUrl + "/api/update/updateProfileDetails", formData);
-
             if (data.success) {
                 setReloadUser(true);
                 setShowForm(false);
@@ -199,7 +199,7 @@ const SearchedProfilePage = () => {
                     
                     <div className="profile-section-first">
                         <div className="profile-name">
-                            <h2>{user?.firstName || '---'} {user.lastName || '---'}</h2>
+                            <h1>{user?.firstName || '---'} {user.lastName || '---'}</h1>
                             <button className="edit-btn" onClick={() => {
                                 if (user) setFormData(user);
                                 setShowForm(true);
@@ -209,8 +209,9 @@ const SearchedProfilePage = () => {
                             {showForm && (
                                 <div className="modal-overlay">
                                     <div className="modal-content">
-                                        <h2>Edit Profile</h2>
+                                        <h1>Edit Profile</h1>
                                         <p>First Name</p>
+                                        
                                         <input
                                         type="text" name="firstName" 
                                         value={formData?.firstName || ""} onChange={handleChange}
@@ -253,6 +254,60 @@ const SearchedProfilePage = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className="profile-section">
+                    <h3 className="profile-section-title">Experience</h3>
+                    <button className="add-btn"onClick={() => {
+                                
+                                setShowExpForm(true);
+                            }}>
+                            <img src={assets.add} alt="edit-icon" className="edit-icon"/>
+                            </button>
+                            {showExpForm && (
+                                <div className="exp-overlay">
+                                    <div className="exp-content">
+                                        <h2>Edit Profile</h2>
+                                        <p>Company</p>
+                                        <input
+                                        type="text" name="firstName" 
+                                        value={formData?.firstName || ""} onChange={handleChange}
+                                        />
+                                        <p>Position</p>
+                                        <input type="text" name="lastName" 
+                                        value={formData?.lastName}onChange={handleChange}
+                                        />
+                                        <p>Location</p>
+                                        <input type="text" name="profession"
+                                        value={formData?.profession} onChange={handleChange}
+                                        />
+                                        <p>Start Date</p>
+                                        <input type="text" name="location" 
+                                        value={formData?.location}onChange={handleChange}
+                                        />
+                                        <p>End Date</p>
+                                        <input type="text" name="location" 
+                                        value={formData?.bio}onChange={handleChange}
+                                        />
+                                        <p>Description</p>
+                                        <textarea name="bio" 
+                                        value={formData?.bio}onChange={handleChange}
+                                        />
+                                        
+                                        <p>Employment Type</p>
+                                        <input type="text" name="location" 
+                                        value={formData?.bio}onChange={handleChange}
+                                        />
+
+                                        <div className="exp-buttons">
+                                        <button onClick={handleSave} className="save-btn">Save</button>
+                                        <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                    
+                </div>
+
 
                 <div className="profile-section">
                     <h3 className="profile-section-title">Professional Info</h3>

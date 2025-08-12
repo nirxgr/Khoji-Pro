@@ -31,15 +31,18 @@ const Header = () => {
   return (
     <div className="container">
         <nav>
-            <img src={assets.logo1} alt='Logo' className='logo'/>
+            <div>
+              <img src={assets.logo1} alt='Logo' className='logo'/>
+            </div>
             <div className="nav-links">
                 <Link to='/home'>Home</Link>
                 <Link to=''>About Us</Link>
-                <Link to=''>Register as Professional</Link>
             </div>
             <div className='profile-circle'>
-              <img src={userData.profilePictureUrl} alt="profile-photo" />
-              
+              <div className="profile-img-wrapper">
+                <img src={userData.profilePictureUrl} alt="profile-photo" />
+              </div>
+                          
               <div className='dropdown'>
                 <ul>
                   <li onClick={ () => navigate(`/profile/${userData._id}`)}> Profile</li>

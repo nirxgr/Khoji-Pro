@@ -10,6 +10,7 @@ import LoginGuard from './shared/guards/loginGuard.tsx'
 import AuthGuard from './shared/guards/authGuard.tsx'
 import ResetPassword from './pages/auth/ResetPassword.jsx'
 import SearchedProfilePage from './pages/profiles/SearchedProfilePage.tsx'
+import NotFoundPage from './pages/NotFoundPage.tsx'
 
 
 function App() {
@@ -57,6 +58,12 @@ function App() {
             <SearchedProfilePage /> 
           </AuthGuard>  
         } />
+
+        <Route path="/*" element={
+            <NotFoundPage />  
+        } />
+
+
         
       </Routes>
       

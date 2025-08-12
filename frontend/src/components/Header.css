@@ -1,7 +1,7 @@
 nav {
       display: flex;
       flex-wrap: nowrap;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       padding: 25px 20px;
       position: fixed;
@@ -17,17 +17,16 @@ nav {
         }
 
         .nav-links {
-            margin-left: 39rem;
             display: flex;
-            gap: 90px;
+            gap: 120px;
             justify-content: center;
+            align-items: center;
             
         }
 
         .nav-links a {
             color: #A598D1;
             text-decoration: none;
-            font-family: "Poppins", sans-serif;
             font-size: 1.4rem;
             transition: color 0.3s ease;
         }
@@ -48,11 +47,17 @@ nav {
        .profile-circle {
             width: 40px;
             height: 40px;
-            background: white;
-            border-radius: 50%;
             cursor: pointer;
-            overflow: hidden;
+            position: absolute;
+            right: 20px;
             
+        }
+        .profile-img-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;  
+            background: white;
         }
 
         .dropdown {
