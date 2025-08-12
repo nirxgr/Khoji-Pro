@@ -120,23 +120,25 @@ const SearchedProfilePage = () => {
         }
   };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         if (!formData) return;
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
     
-    const handleSave = async () => {
+    const handleSave = async (e) => {
+        e.preventDefault();
         if (!formData) return;
 
         try {
             const { data } = await axios.post(backendUrl + "/api/update/updateProfileDetails", formData);
             if (data.success) {
                 setReloadUser(true);
+                setFormData(null);
                 setShowForm(false);
-                toast.success(data.message || "Profile updated successfully");
+                toast.success(data.message);
             } else {
-                toast.error(data.message || "Failed to update profile");
+                toast.error(data.message);
             }
         } catch (error) {
             toast.error("Error updating profile");
@@ -207,36 +209,43 @@ const SearchedProfilePage = () => {
                             <img src={assets.pencil} alt="edit-icon" className="edit-icon"/>
                             </button>
                             {showForm && (
-                                <div className="modal-overlay">
-                                    <div className="modal-content">
-                                        <h1>Edit Profile</h1>
-                                        <p>First Name</p>
-                                        
-                                        <input
-                                        type="text" name="firstName" 
-                                        value={formData?.firstName || ""} onChange={handleChange}
-                                        />
-                                        <p>Last Name</p>
-                                        <input type="text" name="lastName" 
-                                        value={formData?.lastName}onChange={handleChange}
-                                        />
-                                        <p>Profession</p>
-                                        <input type="text" name="profession"
-                                        value={formData?.profession} onChange={handleChange}
-                                        />
-                                        <p>Location</p>
-                                        <input type="text" name="location" 
-                                        value={formData?.location}onChange={handleChange}
-                                        />
-                                        <p>Bio</p>
-                                        <textarea name="bio" 
-                                        value={formData?.bio}onChange={handleChange}
-                                        />
-
-                                        <div className="modal-buttons">
-                                        <button onClick={handleSave} className="save-btn">Save</button>
-                                        <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+                                 <div className="profile-form-overlay">
+                                    <div className='profile-form'>
+                                        <h2 className='profile-form-title'>Edit Profile</h2>
+                                        <p className='profile-form-subtitle'>Edit your profile details</p>
+                                        <form onSubmit={handleSave}>
+                                            <div className='input'>
+                                                <h3>First Name</h3>
+                                                <input type='text' className='edit-input-field' name="firstName" 
+                                                value={formData?.firstName || ""} onChange={handleChange}/>
+                                            </div>
+                                            <div className='input'>
+                                                <h3>Last Name</h3>
+                                                <input type='text' className='edit-input-field'
+                                                name="lastName" 
+                                                value={formData?.lastName}onChange={handleChange}/>
+                                            </div>
+                                            <div className='input'>
+                                                <h3>Designation</h3>
+                                                <input type='text' className='edit-input-field'
+                                                name="profession"
+                                                value={formData?.profession} onChange={handleChange}/>
+                                            </div>
+                                            <div className='input'>
+                                                <h3>Location</h3>
+                                                <input type='text' className='edit-input-field'name="location" 
+                                                value={formData?.location}onChange={handleChange}/>
+                                            </div>
+                                            <div className='input'>
+                                                <h3>Bio</h3>
+                                                <textarea name="bio" 
+                                                value={formData?.bio}onChange={handleChange}/>
+                                            </div>
+                                            <div className="form-buttons">
+                                            <button type="submit" className="btn-save">Save</button>
+                                            <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             )}
@@ -259,53 +268,73 @@ const SearchedProfilePage = () => {
                     <h3 className="profile-section-title">Experience</h3>
                     <button className="add-btn"onClick={() => {
                                 
-                                setShowExpForm(true);
-                            }}>
-                            <img src={assets.add} alt="edit-icon" className="edit-icon"/>
-                            </button>
-                            {showExpForm && (
-                                <div className="exp-overlay">
-                                    <div className="exp-content">
-                                        <h2>Edit Profile</h2>
-                                        <p>Company</p>
-                                        <input
-                                        type="text" name="firstName" 
-                                        value={formData?.firstName || ""} onChange={handleChange}
-                                        />
-                                        <p>Position</p>
-                                        <input type="text" name="lastName" 
-                                        value={formData?.lastName}onChange={handleChange}
-                                        />
-                                        <p>Location</p>
-                                        <input type="text" name="profession"
-                                        value={formData?.profession} onChange={handleChange}
-                                        />
-                                        <p>Start Date</p>
-                                        <input type="text" name="location" 
-                                        value={formData?.location}onChange={handleChange}
-                                        />
-                                        <p>End Date</p>
-                                        <input type="text" name="location" 
-                                        value={formData?.bio}onChange={handleChange}
-                                        />
-                                        <p>Description</p>
-                                        <textarea name="bio" 
-                                        value={formData?.bio}onChange={handleChange}
-                                        />
-                                        
-                                        <p>Employment Type</p>
-                                        <input type="text" name="location" 
-                                        value={formData?.bio}onChange={handleChange}
-                                        />
-
-                                        <div className="exp-buttons">
-                                        <button onClick={handleSave} className="save-btn">Save</button>
-                                        <button onClick={handleCancel} className="cancel-btn">Cancel</button>
-                                        </div>
+                        setShowExpForm(true);
+                    }}>
+                    <img src={assets.add} alt="edit-icon" className="edit-icon"/>
+                    </button>
+                    {showExpForm && (
+                        <div className="profile-form-overlay">
+                            <div className='profile-form'>
+                                <h2 className='profile-form-title'>Add Experience</h2>
+                                <form onSubmit={handleSave}>
+                                    <div className='input'>
+                                        <h3>Company</h3>
+                                        <input type='text' className='edit-input-field' name="company" 
+                                        onChange={handleChange}/>
                                     </div>
+                                    <div className='input'>
+                                        <h3>Position</h3>
+                                        <input type='text' className='edit-input-field'
+                                        name="position" 
+                                        onChange={handleChange}/>
+                                    </div>
+                                    <div className='input'>
+                                        <h3>Location</h3>
+                                        <input type='text' className='edit-input-field'
+                                        name="location"
+                                        onChange={handleChange}/>
+                                    </div>
+                                    <div className='input'>
+                                        <h3>Start Date</h3>
+                                        <input type='date' className='edit-input-field'name="startDate" 
+                                        onChange={handleChange}/>
+                                    </div>
+                                    <div className='input'>
+                                        <h3>End Date</h3>
+                                        <input type='date' className='edit-input-field'name="endDate" 
+                                        onChange={handleChange}/>
+                                    </div>
+                                    <div className='input'>
+                                        <h3>Employment Type</h3>
+                                        <select 
+                                            className='edit-input-field' 
+                                            name="employmentType" 
+                                            onChange={handleChange}
+                                            defaultValue=""
+                                            >
+                                            <option value="" disabled>Select type</option>
+                                            <option value="Full-time">Full-time</option>
+                                            <option value="Part-time">Part-time</option>
+                                            <option value="Freelance">Part-time</option>
+                                            <option value="Contract">Contract</option>
+                                            <option value="Internship">Internship</option>
+                                            <option value="Seasonal">Freelance</option>
+                                        </select>
+
+                                    </div>    
+                                    <div className='input'>
+                                        <h3>Description</h3>
+                                        <textarea name="description" 
+                                        onChange={handleChange}/>
+                                    </div>
+                                    <div className="form-buttons">
+                                    <button type="submit" className="btn-save">Save</button>
+                                    <button type="button" className="btn-cancel" onClick={() => {setShowExpForm(false);setFormData(null);}}>Cancel</button>
                                 </div>
-                            )}
-                    
+                                </form>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
 

@@ -167,133 +167,6 @@
 
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-content {
-  background: white;
-  padding: 45px;
-  border-radius: 12px;
-  width: 600px;
-  height: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  color: purple;
-}
-.modal-content h1{
-  text-align: center;
-  font-weight: 500;
-}
-.modal-content p{
-  font-weight: 500;
-}
-
-
-.modal-content input,
-.modal-content textarea {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  color: purple;
-  font-weight: 400;
-  font-family: "Outfit", sans-serif;
-
-}
-
-.modal-content textarea {
-  width: 100%;      
-  min-height: 120px; 
-  resize: vertical;  
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.save-btn {
-  background-color: #3cbf40;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.cancel-btn {
-  background-color: #cf1104;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.exp-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.exp-content {
-  background: white;
-  padding: 45px;
-  border-radius: 12px;
-  width: 600px;
-  height: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  color: purple;
-}
-.exp-content h1{
-  text-align: center;
-  font-weight: 500;
-}
-.exp-content p{
-  font-weight: 500;
-}
-
-
-.exp-content input,
-.exp-content textarea {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  color: purple;
-  font-weight: 400;
-  font-family: "Outfit", sans-serif;
-
-}
-
-.exp-content textarea {
-  width: 100%;      
-  min-height: 120px; 
-  resize: vertical;  
-}
-
-.exp-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
 
 .profile-name h1 {
   font-size: 3rem;
@@ -419,4 +292,140 @@
   opacity: 0.8;
 }
 
+.profile-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 9998;
+  backdrop-filter: blur(2px);
+}
 
+.profile-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(145deg, #1e0025, #120012);
+  color: #fff;
+  padding: 3rem 4rem ;
+  border-radius: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  width: 600px;
+  height: auto;
+  max-width: 90%;
+}
+
+.profile-form-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+  color: #d2a6ff;
+  text-align: center;
+}
+
+.profile-form-subtitle {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  color: #bbb;
+  text-align: center;
+}
+
+.input {
+  margin-bottom: 1.2rem;
+}
+
+.input h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: #d9b8ff;
+}
+
+.edit-input-field {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 0.95rem;
+  transition: background 0.3s ease;
+}
+
+.edit-input-field:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.input textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  transition: background 0.3s ease;
+  text-align: justify;
+}
+
+.input textarea:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-save {
+  background-color: #7a2be2;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #9b4dff;
+}
+
+.btn-cancel {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.edit-input-field select,
+select.edit-input-field {
+  appearance: none; 
+  background-color: rgba(255, 255, 255, 0.08);
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' viewBox='0 0 24 24' width='18'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+input[type="date"].edit-input-field {
+  color-scheme: dark; 
+}
