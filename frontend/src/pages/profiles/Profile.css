@@ -173,7 +173,11 @@
   margin-bottom: 0.6rem;
   font-weight: 500;
 }
+.profession {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
 
+}
 
 .email  {
   font-size: 1rem;
@@ -419,8 +423,6 @@
 select.edit-input-field {
   appearance: none; 
   background-color: rgba(255, 255, 255, 0.08);
-  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' viewBox='0 0 24 24' width='18'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
   background-position: right 0.8rem center;
   background-size: 1rem;
   cursor: pointer;

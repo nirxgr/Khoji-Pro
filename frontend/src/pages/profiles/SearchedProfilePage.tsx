@@ -24,6 +24,18 @@ interface IUser {
     profilePictureUrl: string;
 }
 
+interface IExperience {
+  company: string;
+  position: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  employmentType: string;
+  _id?: string;
+}
+
+
 
 const SearchedProfilePage = () => {
     const { id } = useParams();
@@ -38,6 +50,20 @@ const SearchedProfilePage = () => {
 
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState<IUser | null>(null);
+
+    const emptyExperience = {
+        company: "",
+        position: "",
+        location: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+        employmentType: ""
+    };
+
+
+    const [expFormData, setExpFormData] = useState(emptyExperience);
+    const [experiences, setExperiences] = useState<IExperience[]>([]);
     const [showExpForm, setShowExpForm] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -120,13 +146,13 @@ const SearchedProfilePage = () => {
         }
   };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         if (!formData) return;
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
     
-    const handleSave = async (e) => {
+    const handleProfileSave = async (e) => {
         e.preventDefault();
         if (!formData) return;
 
@@ -145,9 +171,41 @@ const SearchedProfilePage = () => {
         }
     };
 
-    const handleCancel = () => {
+    const handleProfileCancel = () => {
         setShowForm(false);
         setFormData(null);
+    };
+    
+    const handleExpChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = e.target;
+        setExpFormData({ ...expFormData, [name]: value });
+    };
+
+
+    const handleExpAdd = async (e) => {
+        e.preventDefault();
+        if (!expFormData) return;
+
+        try {
+            const { data } = await axios.post(backendUrl + "/api/exp/add-experience", expFormData);
+            if (data.success) {
+                setReloadUser(true);
+                setShowExpForm(false);
+                setExpFormData(emptyExperience);
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Error adding experience");
+        }
+    };
+
+    const handleExpCancel = () => {
+        setShowExpForm(false);
+        setExpFormData(emptyExperience);
     };
 
     return (
@@ -213,44 +271,44 @@ const SearchedProfilePage = () => {
                                     <div className='profile-form'>
                                         <h2 className='profile-form-title'>Edit Profile</h2>
                                         <p className='profile-form-subtitle'>Edit your profile details</p>
-                                        <form onSubmit={handleSave}>
+                                        <form onSubmit={handleProfileSave}>
                                             <div className='input'>
                                                 <h3>First Name</h3>
                                                 <input type='text' className='edit-input-field' name="firstName" 
-                                                value={formData?.firstName || ""} onChange={handleChange}/>
+                                                value={formData?.firstName || ""} onChange={handleProfileChange}/>
                                             </div>
                                             <div className='input'>
                                                 <h3>Last Name</h3>
                                                 <input type='text' className='edit-input-field'
                                                 name="lastName" 
-                                                value={formData?.lastName}onChange={handleChange}/>
+                                                value={formData?.lastName}onChange={handleProfileChange}/>
                                             </div>
                                             <div className='input'>
                                                 <h3>Designation</h3>
                                                 <input type='text' className='edit-input-field'
                                                 name="profession"
-                                                value={formData?.profession} onChange={handleChange}/>
+                                                value={formData?.profession} onChange={handleProfileChange}/>
                                             </div>
                                             <div className='input'>
                                                 <h3>Location</h3>
                                                 <input type='text' className='edit-input-field'name="location" 
-                                                value={formData?.location}onChange={handleChange}/>
+                                                value={formData?.location}onChange={handleProfileChange}/>
                                             </div>
                                             <div className='input'>
                                                 <h3>Bio</h3>
                                                 <textarea name="bio" 
-                                                value={formData?.bio}onChange={handleChange}/>
+                                                value={formData?.bio}onChange={handleProfileChange}/>
                                             </div>
                                             <div className="form-buttons">
                                             <button type="submit" className="btn-save">Save</button>
-                                            <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
+                                            <button type="button" className="btn-cancel" onClick={handleProfileCancel}>Cancel</button>
                                         </div>
                                         </form>
                                     </div>
                                 </div>
                             )}
 
-                            <p className="email">{user.profession || '---'}</p>
+                            <p className="profession">{user.profession || '---'}</p>
                             <p className="email">{user.email || '---'}</p>
                             <p className="location">
                                 <img src={assets.location} alt="location icon" className="location-icon" />
@@ -267,7 +325,7 @@ const SearchedProfilePage = () => {
                 <div className="profile-section">
                     <h3 className="profile-section-title">Experience</h3>
                     <button className="add-btn"onClick={() => {
-                                
+                        
                         setShowExpForm(true);
                     }}>
                     <img src={assets.add} alt="edit-icon" className="edit-icon"/>
@@ -276,40 +334,40 @@ const SearchedProfilePage = () => {
                         <div className="profile-form-overlay">
                             <div className='profile-form'>
                                 <h2 className='profile-form-title'>Add Experience</h2>
-                                <form onSubmit={handleSave}>
+                                <form onSubmit={handleExpAdd}>
                                     <div className='input'>
                                         <h3>Company</h3>
                                         <input type='text' className='edit-input-field' name="company" 
-                                        onChange={handleChange}/>
+                                        onChange={handleExpChange}/>
                                     </div>
                                     <div className='input'>
                                         <h3>Position</h3>
                                         <input type='text' className='edit-input-field'
                                         name="position" 
-                                        onChange={handleChange}/>
+                                        onChange={handleExpChange}/>
                                     </div>
                                     <div className='input'>
                                         <h3>Location</h3>
                                         <input type='text' className='edit-input-field'
                                         name="location"
-                                        onChange={handleChange}/>
+                                        onChange={handleExpChange}/>
                                     </div>
                                     <div className='input'>
                                         <h3>Start Date</h3>
                                         <input type='date' className='edit-input-field'name="startDate" 
-                                        onChange={handleChange}/>
+                                        onChange={handleExpChange}/>
                                     </div>
                                     <div className='input'>
                                         <h3>End Date</h3>
                                         <input type='date' className='edit-input-field'name="endDate" 
-                                        onChange={handleChange}/>
+                                        onChange={handleExpChange}/>
                                     </div>
                                     <div className='input'>
                                         <h3>Employment Type</h3>
                                         <select 
                                             className='edit-input-field' 
                                             name="employmentType" 
-                                            onChange={handleChange}
+                                            onChange={handleExpChange}
                                             defaultValue=""
                                             >
                                             <option value="" disabled>Select type</option>
@@ -325,11 +383,11 @@ const SearchedProfilePage = () => {
                                     <div className='input'>
                                         <h3>Description</h3>
                                         <textarea name="description" 
-                                        onChange={handleChange}/>
+                                        onChange={handleExpChange}/>
                                     </div>
                                     <div className="form-buttons">
                                     <button type="submit" className="btn-save">Save</button>
-                                    <button type="button" className="btn-cancel" onClick={() => {setShowExpForm(false);setFormData(null);}}>Cancel</button>
+                                    <button type="button" className="btn-cancel" onClick= {handleExpCancel}>Cancel</button>
                                 </div>
                                 </form>
                             </div>

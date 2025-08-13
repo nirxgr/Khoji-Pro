@@ -44,7 +44,6 @@ const experienceSchema = new Schema(
         'Freelance',
         'Contract',
         'Internship',
-        'Apprenticeship',
         'Seasonal',
       ],
     },

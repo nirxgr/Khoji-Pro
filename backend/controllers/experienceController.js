@@ -33,12 +33,13 @@ export const addExperience = async (req,res) => {
         });
 
         return res.status(201).json({
+            success: true,
             message: 'New Experience Added!',
             experience: newExperience,
         });
 
     } catch(error) {
-        return res.status(400).json({message: error.message});
+        return res.status(400).json({success: false,message: error.message});
     }
 }
 export const updateExperience = async (req,res) => {
@@ -57,12 +58,13 @@ export const updateExperience = async (req,res) => {
     }
 
     return res.status(200).json({
+      success: true,
       message: 'Experience Updated!',
       experience: updated,
     });
         
     } catch(error) {
-        return res.status(400).json({message: error.message});
+        return res.status(400).json({success: false,message: error.message});
     }
 }
 
@@ -75,7 +77,7 @@ export const deleteExperience = async (req,res) => {
         
         const exp = await experience.findOne({ _id: id, user: userId });
         if (!exp) {
-            return res.status(404).json({ message: 'Experience Not Found!' });
+            return res.status(404).json({message: 'Experience Not Found!' });
         }
 
         await experience.findByIdAndDelete(id);
@@ -83,9 +85,9 @@ export const deleteExperience = async (req,res) => {
             $pull: { experiences: id },
         });
 
-        return res.status(200).json({ message: 'Experience Deleted Successfully!' });
+        return res.status(200).json({ success: true, message: 'Experience Deleted Successfully!' });
         
     } catch(error) {
-        return res.status(400).json({message: error.message});
+        return res.status(400).json({ success: false, message: error.message});
     }
 }
