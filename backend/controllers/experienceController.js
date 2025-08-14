@@ -1,5 +1,24 @@
-import experience from '../models/experienceModel.js';
-import user from '../models/userModel.js'
+import experienceModel from '../models/experienceModel.js';
+import userModel from '../models/userModel.js'
+
+
+export const getExperience = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const experiences = await experienceModel
+      .find({ user: id })
+      .sort({ startDate: -1 });
+
+    res.status(200).json(experiences);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
 
 export const addExperience = async (req,res) => {
 
@@ -16,7 +35,7 @@ export const addExperience = async (req,res) => {
             employmentType
         } = req.body;
 
-        const newExperience = await experience.create({
+        const newExperience = await experienceModel.create({
             user: userId,
             company,
             position,
@@ -48,9 +67,9 @@ export const updateExperience = async (req,res) => {
 
         const { id } = req.params;
         const updates = req.body;
-        const updated = await experience.findByIdAndUpdate(id, updates, {
-      new: true, 
-      runValidators: true, 
+        const updated = await experienceModel.findByIdAndUpdate(id, updates, {
+        new: true, 
+        runValidators: true, 
     });
 
     if (!updated) {
@@ -75,13 +94,13 @@ export const deleteExperience = async (req,res) => {
         const { id } = req.params;
         const userId = req.user.id;
         
-        const exp = await experience.findOne({ _id: id, user: userId });
+        const exp = await experienceModel.findOne({ _id: id, user: userId });
         if (!exp) {
             return res.status(404).json({message: 'Experience Not Found!' });
         }
 
-        await experience.findByIdAndDelete(id);
-         await user.findByIdAndUpdate(userId, {
+        await experienceModel.findByIdAndDelete(id);
+         await userModel.findByIdAndUpdate(userId, {
             $pull: { experiences: id },
         });
 

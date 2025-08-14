@@ -9,6 +9,7 @@ import filter from './filter.png'
 import location from './location.png'
 import pencil from './pencil.png'
 import add from './add.png'
+import deleteicon from './delete.png'
 
 export const assets = {
     arrow_icon,
@@ -21,5 +22,6 @@ export const assets = {
     filter,
     location,
     pencil,
-    add
+    add,
+    deleteicon
 }

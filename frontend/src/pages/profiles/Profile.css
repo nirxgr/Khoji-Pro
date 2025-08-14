@@ -63,6 +63,12 @@
   width: 20px; 
   height: 20px;
 }
+
+.add-icon {
+  width: 20px; 
+  height: 20px;
+}
+
 .photo-dropdown {
   position: absolute;
   top: 60px;
@@ -218,6 +224,7 @@
   border-radius: 15px;
   padding: 25px 35px;
   margin: 8px 0;
+  
 }
 
 
@@ -225,30 +232,74 @@
 .profile-section-title {
   font-weight: bold;
   font-size: 2rem;
+}
+
+.exp-section{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-
-
 .add-btn {
-  position: absolute;
-  top: 630px;                
-  right: 190px;                
-  width: 40px;                
-  height: 40px; 
   cursor: pointer;
+  padding: 0;  
+  border: none;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;  
-  border: none;
-  background: transparent;
-  
+  width: 40px;                
+  height: 40px; 
 }
 
 .add-btn:hover {
   background: rgb(255, 255, 255);
   border-radius: 50%; 
+}
+
+.pencil-btn{
+  cursor: pointer;
+  padding: 0;  
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;  
+  width: 40px;                
+  height: 40px; 
+}
+
+.pencil-btn:hover {
+  background: rgb(255, 255, 255);
+  border-radius: 50%; 
+
+}
+
+.delete-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.delete-btn{
+  cursor: pointer;
+  padding: 0;  
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;  
+  width: 40px;                
+  height: 40px; 
+}
+
+.delete-btn:hover {
+  background: rgb(255, 255, 255);
+  border-radius: 50%; 
+
 }
 
 .profile-info-grid {
@@ -430,4 +481,85 @@ select.edit-input-field {
 
 input[type="date"].edit-input-field {
   color-scheme: dark; 
+}
+
+.experience-list {
+  max-width: auto;
+  margin: 0 auto;
+}
+
+.experience-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: justify;
+  line-height: 1.8rem;
+}
+
+.experience-details h3 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.experience-actions {
+  display: flex;
+  padding-top: 15px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 350px;
+  height: 200px;
+  text-align: center;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+}
+.popup h3 {
+  border-bottom: 1px solid black;
+}
+.popup p{
+  border-bottom: 1px solid black;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.cancel-btn-popup, .delete-btn-popup {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius:200px;
+}
+
+.delete-btn-popup {
+  background-color: #ab1201;
+  color: white;
+  border: none;
+}
+
+.cancel-btn-popup {
+  background-color: #ddd;
+  border: none;
 }

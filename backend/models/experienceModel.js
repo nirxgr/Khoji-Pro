@@ -43,8 +43,7 @@ const experienceSchema = new Schema(
         'Self-employed',
         'Freelance',
         'Contract',
-        'Internship',
-        'Seasonal',
+        'Internship'
       ],
     },
   },
