@@ -34,6 +34,17 @@ interface IExperience {
   _id: string;
 }
 
+interface IEducation {
+  school: string;
+  degree: string;
+  fieldOfStudy: string;
+  startDate: string;
+  endDate: string;
+  grade: string;
+  activities: string;
+  _id: string;
+}
+
 const SearchedProfilePage = () => {
   const { id } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
@@ -64,6 +75,23 @@ const SearchedProfilePage = () => {
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedExp, setSelectedExp] = useState<IExperience | null>(null);
 
+  const emptyEducation = {
+    school: "",
+    degree: "",
+    fieldOfStudy: "",
+    startDate: "",
+    endDate: "",
+    grade: "",
+    activities: "",
+  };
+
+  const [eduFormData, setEduFormData] = useState(emptyEducation);
+  const [educations, setEducations] = useState<IEducation[]>([]);
+  const [showEduForm, setShowEduForm] = useState(false);
+  const [selectedEdu, setSelectedEdu] = useState<IEducation | null>(null);
+  const [showDeleteEdu, setShowDeleteEdu] = useState(false);
+  const [showEditEdu, setShowEditEdu] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -78,6 +106,12 @@ const SearchedProfilePage = () => {
           `${backendUrl}/api/exp/get-experience/${id}`
         );
         setExperiences(expRes.data || []);
+
+        // Fetch user educations
+        const eduRes = await axios.get(
+          `${backendUrl}/api/edu/get-education/${id}`
+        );
+        setEducations(eduRes.data || []);
 
         setReloadUser(false);
       } catch (err) {
@@ -154,6 +188,7 @@ const SearchedProfilePage = () => {
         if (data.success) {
           setReloadUser(true);
           setOpen(false);
+          console.log(uploadedImage.url);
           toast.success(data.message);
         } else {
           toast.error(data.message);
@@ -232,7 +267,7 @@ const SearchedProfilePage = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Error adding experience");
+      toast.error("Error adding experience!");
     }
   };
 
@@ -254,6 +289,61 @@ const SearchedProfilePage = () => {
       if (response.data.success) {
         setReloadUser(true);
         setShowEditPopup(false);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
+  };
+
+  const handleEduChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setEduFormData({ ...eduFormData, [name]: value });
+  };
+
+  const handleEduAdd = async (e) => {
+    e.preventDefault();
+    if (!eduFormData) return;
+
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/edu/add-education",
+        eduFormData
+      );
+      if (data.success) {
+        setReloadUser(true);
+        setShowEduForm(false);
+        setEduFormData(emptyEducation);
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Error adding education!");
+    }
+  };
+
+  const handleEduCancel = () => {
+    setShowEduForm(false);
+    setEduFormData(emptyEducation);
+  };
+
+  const handleUpdateEducation = async (id: string, updatedData: IEducation) => {
+    try {
+      const response = await axios.put(
+        `${backendUrl}/api/edu/update-education/${id}`,
+        updatedData
+      );
+
+      if (response.data.success) {
+        setReloadUser(true);
+        setShowEditEdu(false);
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
@@ -788,6 +878,364 @@ const SearchedProfilePage = () => {
                           }
                         } catch (err) {
                           console.error("Failed to delete experience:", err);
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="profile-section">
+          <div className="exp-section">
+            <h3 className="profile-section-title">Education</h3>
+            <button
+              className="add-btn"
+              onClick={() => {
+                setShowEduForm(true);
+              }}
+            >
+              <img src={assets.add} alt="add-icon" className="add-icon" />
+            </button>
+          </div>
+
+          {showEduForm && (
+            <div className="profile-form-overlay">
+              <div className="profile-form">
+                <h2 className="profile-form-title">Add Education</h2>
+                <form onSubmit={handleEduAdd}>
+                  <div className="input">
+                    <label htmlFor="school">School</label>
+                    <input
+                      type="text"
+                      className="edit-input-field"
+                      name="school"
+                      id="school"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="degree">Degree</label>
+                    <input
+                      type="text"
+                      className="edit-input-field"
+                      name="degree"
+                      id="degree"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="fieldOfStudy">Field of Study</label>
+                    <input
+                      type="text"
+                      className="edit-input-field"
+                      name="fieldOfStudy"
+                      id="fieldOfStudy"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="startDate">Start Date</label>
+                    <input
+                      type="date"
+                      className="edit-input-field"
+                      name="startDate"
+                      id="startDate"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+                  <div className="input">
+                    <label htmlFor="endDate">End Date</label>
+                    <input
+                      type="date"
+                      className="edit-input-field"
+                      name="endDate"
+                      id="endDate"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+
+                  <div className="input">
+                    <label htmlFor="grade">Grade</label>
+                    <input
+                      type="text"
+                      className="edit-input-field"
+                      name="grade"
+                      id="grade"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+
+                  <div className="input">
+                    <label htmlFor="activities">Activities</label>
+                    <textarea
+                      name="activities"
+                      id="activities"
+                      onChange={handleEduChange}
+                    />
+                  </div>
+                  <div className="form-buttons">
+                    <button type="submit" className="btn-save">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-cancel"
+                      onClick={handleEduCancel}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+          <div className="experience-list">
+            {educations.length === 0 ? (
+              <p>No education added yet.</p>
+            ) : (
+              <ul>
+                {educations.map((edu) => (
+                  <li key={edu._id} className="experience-item">
+                    <div className="experience-details">
+                      <h3>{edu.school}</h3>
+                      <p>
+                        {edu.degree} - {edu.fieldOfStudy}
+                      </p>
+                      <p>
+                        {new Date(edu.startDate).toLocaleDateString("en-US", {
+                          month: "short",
+                          year: "numeric",
+                        })}
+                        {" - "}
+                        {edu.endDate
+                          ? new Date(edu.endDate).toLocaleDateString("en-US", {
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "Present"}
+                      </p>
+                      {edu.grade && <p>Grade: {edu.grade}</p>}
+                      {edu.activities && <p>{edu.activities}</p>}
+                    </div>
+
+                    <div className="experience-actions">
+                      <button className="pencil-btn">
+                        <img
+                          src={assets.pencil}
+                          alt="Edit button"
+                          className="edit-icon"
+                          onClick={() => {
+                            setSelectedEdu(edu);
+                            setShowEditEdu(true);
+                          }}
+                        />
+                      </button>
+
+                      <button className="delete-btn">
+                        <img
+                          src={assets.deleteicon}
+                          alt="Delete"
+                          className="delete-icon"
+                          onClick={() => {
+                            setSelectedEdu(edu);
+                            setShowDeleteEdu(true);
+                          }}
+                        />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {showEditEdu && selectedEdu && (
+              <div className="profile-form-overlay">
+                <div className="profile-form">
+                  <h2 className="profile-form-title">Update Education</h2>
+
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      await handleUpdateEducation(selectedEdu._id, selectedEdu);
+                    }}
+                  >
+                    <div className="input">
+                      <label htmlFor="school">School</label>
+                      <input
+                        type="text"
+                        id="school"
+                        name="school"
+                        value={selectedEdu.school}
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            school: e.target.value,
+                          })
+                        }
+                        placeholder="School"
+                        className="edit-input-field"
+                        required
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="degree">Degree</label>
+                      <input
+                        type="text"
+                        id="degree"
+                        name="degree"
+                        value={selectedEdu.degree}
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            degree: e.target.value,
+                          })
+                        }
+                        placeholder="Degree"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="fieldOfStudy">Field of Study</label>
+                      <input
+                        type="text"
+                        id="fieldOfStudy"
+                        name="fieldOfStudy"
+                        value={selectedEdu.fieldOfStudy}
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            fieldOfStudy: e.target.value,
+                          })
+                        }
+                        placeholder="Field of Study"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="startDate">Start Date</label>
+                      <input
+                        type="date"
+                        value={selectedEdu.startDate?.split("T")[0]}
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            startDate: e.target.value,
+                          })
+                        }
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="endDate">End Date</label>
+                      <input
+                        type="date"
+                        value={
+                          selectedEdu.endDate
+                            ? selectedEdu.endDate.split("T")[0]
+                            : ""
+                        }
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            endDate: e.target.value,
+                          })
+                        }
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="grade">Grade</label>
+                      <input
+                        type="text"
+                        id="grade"
+                        name="grade"
+                        value={selectedEdu.grade}
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            grade: e.target.value,
+                          })
+                        }
+                        placeholder="Grade"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="activities">Activities</label>
+                      <textarea
+                        value={selectedEdu.activities || ""}
+                        id="activities"
+                        name="activities"
+                        onChange={(e) =>
+                          setSelectedEdu({
+                            ...selectedEdu,
+                            activities: e.target.value,
+                          })
+                        }
+                        placeholder="Activities"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="form-buttons">
+                      <button type="submit" className="btn-save">
+                        Update
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={() => setShowEditEdu(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {showDeleteEdu && selectedEdu && (
+              <div className="popup-overlay">
+                <div className="popup">
+                  <h3>Delete education</h3>
+                  <p>
+                    Are you sure you want to delete your "{selectedEdu.school}"
+                    education?
+                  </p>
+                  <div className="popup-actions">
+                    <button
+                      className="cancel-btn-popup"
+                      onClick={() => setShowDeleteEdu(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="delete-btn-popup"
+                      onClick={async () => {
+                        try {
+                          const { data } = await axios.delete(
+                            `${backendUrl}/api/edu/delete-education/${selectedEdu._id}`
+                          );
+                          if (data.success) {
+                            setReloadUser(true);
+                            setShowDeleteEdu(false);
+                            toast.success(data.message);
+                          } else {
+                            toast.error(data.message);
+                          }
+                        } catch (err) {
+                          console.error("Failed to delete education:", err);
                         }
                       }}
                     >

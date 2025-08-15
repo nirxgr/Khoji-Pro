@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     role: {type: String, default:'Searcher'},
     profilePictureUrl: {type: String, default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'},
-    coverPictureUrl: {type: String, default:''},
+    coverPictureUrl: {type: String, default:'https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png'},
     experienceYears: {type: Number,  default:0},
     experiences: [
     {

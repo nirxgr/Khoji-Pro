@@ -11,10 +11,7 @@
 .profile-container {
   min-height: auto;
   margin: 0px 170px;
-  background-color: #1C1423;
   color: #DBD2F9;
-
-
 }
 .cover-container {
   position: relative;  
@@ -23,7 +20,7 @@
   overflow: hidden;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-   display: inline-block;
+  display: inline-block;
 }
 .cover-photo {
   height: 250px;
@@ -223,11 +220,10 @@
   border: 1px solid white;
   border-radius: 15px;
   padding: 25px 35px;
-  margin: 8px 0;
+  margin: 15px 0;
+  background-color: #1C1423;
   
 }
-
-
 
 .profile-section-title {
   font-weight: bold;
@@ -238,7 +234,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
 }
 
 .add-btn {
@@ -497,6 +492,10 @@ input[type="date"].edit-input-field {
   border-bottom: 1px solid #ddd;
   text-align: justify;
   line-height: 1.8rem;
+}
+
+.experience-item:last-child {
+  border-bottom: none;
 }
 
 .experience-details h3 {
