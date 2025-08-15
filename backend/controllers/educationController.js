@@ -1,8 +1,8 @@
-import experienceModel from '../models/experienceModel.js';
+import educationModel from '../models/educationModel.js';
 import userModel from '../models/userModel.js'
 
 
-export const getExperience = async (req, res) => {
+export const getEducation = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -10,76 +10,76 @@ export const getExperience = async (req, res) => {
       return res.status(400).json({ message: 'User ID is required' });
     }
 
-    const experiences = await experienceModel
+    const educations = await educationModel
       .find({ user: id })
       .sort({ startDate: -1 });
 
-    res.status(200).json(experiences);
+    res.status(200).json(educations);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-export const addExperience = async (req,res) => {
+export const addEducation = async (req,res) => {
 
     try{
 
         const userId = req.user.id;
         const {
-            company,
-            position,
-            location,
+            school,
+            degree,
+            fieldOfStudy,
             startDate,
             endDate,
-            description,
-            employmentType
+            grade,
+            activities
         } = req.body;
 
-        const newExperience = await experienceModel.create({
+        const newEducation = await educationModel.create({
             user: userId,
-            company,
-            position,
-            location,
+            school,
+            degree,
+            fieldOfStudy,
             startDate,
             endDate,
-            description,
-            employmentType
+            grade,
+            activities
         });
 
 
         await userModel.findByIdAndUpdate(userId, {
-            $push: { experiences: newExperience._id },
+            $push: { educations: newEducation._id },
         });
 
         return res.status(201).json({
             success: true,
-            message: 'New Experience Added!',
-            experience: newExperience,
+            message: 'New Education Added!',
+            education: newEducation,
         });
 
     } catch(error) {
         return res.status(400).json({success: false,message: error.message});
     }
 }
-export const updateExperience = async (req,res) => {
+export const updateEducation = async (req,res) => {
 
     try{
 
         const { id } = req.params;
         const updates = req.body;
-        const updated = await experienceModel.findByIdAndUpdate(id, updates, {
+        const updated = await educationModel.findByIdAndUpdate(id, updates, {
         new: true, 
         runValidators: true, 
     });
 
     if (!updated) {
-      return res.status(404).json({ message: 'Experience Not Found!' });
+      return res.status(404).json({ message: 'Education Not Found!' });
     }
 
     return res.status(200).json({
       success: true,
-      message: 'Experience Updated!',
-      experience: updated,
+      message: 'Education Updated!',
+      education: updated,
     });
         
     } catch(error) {
@@ -87,24 +87,24 @@ export const updateExperience = async (req,res) => {
     }
 }
 
-export const deleteExperience = async (req,res) => {
+export const deleteEducation = async (req,res) => {
 
     try{
 
         const { id } = req.params;
         const userId = req.user.id;
         
-        const exp = await experienceModel.findOne({ _id: id, user: userId });
+        const exp = await educationModel.findOne({ _id: id, user: userId });
         if (!exp) {
             return res.status(404).json({message: 'Experience Not Found!' });
         }
 
-        await experienceModel.findByIdAndDelete(id);
-         await userModel.findByIdAndUpdate(userId, {
-            $pull: { experiences: id },
+        await educationModel.findByIdAndDelete(id);
+        await userModel.findByIdAndUpdate(userId, {
+            $pull: { educations: id },
         });
 
-        return res.status(200).json({ success: true, message: 'Experience Deleted Successfully!' });
+        return res.status(200).json({ success: true, message: 'Education Deleted Successfully!' });
         
     } catch(error) {
         return res.status(400).json({ success: false, message: error.message});

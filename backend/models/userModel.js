@@ -15,6 +15,11 @@ const userSchema = new mongoose.Schema({
       type: Types.ObjectId,
       ref: 'Experience', 
     }
+    ],educations: [
+    {
+      type: Types.ObjectId,
+      ref: 'Education', 
+    }
     ],
     profession: {type: String, default:''},
     skills: {type: [String], default:[]},

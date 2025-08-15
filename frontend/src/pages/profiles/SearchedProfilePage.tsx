@@ -554,10 +554,16 @@ const SearchedProfilePage = () => {
                         {exp.company} - {exp.location} - {exp.employmentType}
                       </p>
                       <p>
-                        {new Date(exp.startDate).toLocaleDateString()}
+                        {new Date(exp.startDate).toLocaleDateString("en-US", {
+                          month: "short",
+                          year: "numeric",
+                        })}
                         {" - "}
                         {exp.endDate
-                          ? new Date(exp.endDate).toLocaleDateString()
+                          ? new Date(exp.endDate).toLocaleDateString("en-US", {
+                              month: "short",
+                              year: "numeric",
+                            })
                           : "Present"}
                       </p>
                       {exp.description && <p>{exp.description}</p>}
