@@ -109,7 +109,7 @@ body {
 }
 
 .input-group img {
-  width: 20px;
+  width: 15px;
   margin-right: 0.75rem;
   opacity: 0.7;
 }
@@ -124,7 +124,7 @@ body {
 .input-components {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 .otp-container {
   display: flex;
@@ -159,6 +159,26 @@ body {
     color: rgb(73, 33, 108);
 }
 
+.text-field {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: rgb(73, 33, 108);
+  width: 100%;
+  min-height: 100px;
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  border: none;
+  resize: vertical;
+  line-height: 1.4;
+  text-align: justify;
+}
+
+.text-field::placeholder {
+    color: rgb(73, 33, 108);
+}
+
 .forgot-pass {
   color: rgb(73, 33, 108);
   text-align:left ;
@@ -180,7 +200,7 @@ body {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 2rem;
   transition: background-color 0.3s;
 }
 
@@ -193,6 +213,7 @@ body {
   margin-top: 1.5rem;
   color: #555;
   font-size: 0.95rem;
+  text-align: center;
 }
 
 .toggle-link {
@@ -211,7 +232,8 @@ body {
   color: red;
   font-size: 12px;
   position: absolute;
-  bottom: -15px;
+  bottom: -17px;
+  padding-left: 13px;
   
   
 }

@@ -11,6 +11,7 @@ import AuthGuard from './shared/guards/authGuard.tsx'
 import ResetPassword from './pages/auth/ResetPassword.jsx'
 import SearchedProfilePage from './pages/profiles/SearchedProfilePage.tsx'
 import NotFoundPage from './pages/NotFoundPage.tsx'
+import ProfileCompletion from './pages/auth/ProfileCompletion.tsx'
 
 
 function App() {
@@ -30,6 +31,10 @@ function App() {
           <LoginGuard>
             <Register />
           </LoginGuard>  
+        } />
+
+        <Route path="/complete-profile" element={
+            <ProfileCompletion />
         } />
         
         <Route path="/login" element={

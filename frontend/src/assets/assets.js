@@ -10,6 +10,9 @@ import location from './location.png'
 import pencil from './pencil.png'
 import add from './add.png'
 import deleteicon from './delete.png'
+import location2 from './location2.png'
+import phone from './phone.png'
+import profession from './profession.png'
 
 export const assets = {
     arrow_icon,
@@ -23,5 +26,8 @@ export const assets = {
     location,
     pencil,
     add,
-    deleteicon
+    deleteicon,
+    location2,
+    phone,
+    profession
 }

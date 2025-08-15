@@ -1248,21 +1248,14 @@ const SearchedProfilePage = () => {
           </div>
         </div>
 
-        <div className="profile-section">
+        {/* <div className="profile-section">
           <h3 className="profile-section-title">Professional Info</h3>
           <div className="profile-info-grid">
             <p>
               <strong>Profession:</strong> {user.profession || "---"}{" "}
             </p>
-            <p>
-              <strong>Experience:</strong> {user.experienceYears || "---"} years
-            </p>
-            <p>
-              <strong>Languages:</strong>{" "}
-              {user.languages?.length ? user.languages.join(", ") : "---"}{" "}
-            </p>
           </div>
-        </div>
+        </div> */}
 
         <div className="profile-section">
           <h3 className="profile-section-title">Skills</h3>

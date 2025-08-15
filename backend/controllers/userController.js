@@ -17,6 +17,7 @@ export const getUserData = async (req,res) => {
                 lastName: user.lastName,
                 _id: user._id,
                 profilePictureUrl: user.profilePictureUrl,
+                profileStatus: user.profileStatus
             }
         });
 
