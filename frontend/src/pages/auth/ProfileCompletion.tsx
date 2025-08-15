@@ -29,12 +29,24 @@ const ProfileCompletion = () => {
 
   const {
     register,
+    trigger,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ProfileFormValues>({ mode: "onBlur" });
 
   const navigate = useNavigate();
 
+  const handleNext = async () => {
+    const isStepValid = await trigger([
+      "location",
+      "profession",
+      "phoneNumber",
+      "bio",
+    ]);
+    if (isStepValid) {
+      setState("Profile2");
+    }
+  };
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
@@ -202,9 +214,7 @@ const ProfileCompletion = () => {
             <button
               className="submit-button"
               type="button"
-              onClick={() => {
-                setState("Profile2");
-              }}
+              onClick={handleNext}
             >
               Next
             </button>

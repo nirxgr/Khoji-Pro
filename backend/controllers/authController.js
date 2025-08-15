@@ -161,7 +161,6 @@ export const verifyEmail = async (req,res) => {
                 <p>Your account has been successfully created using this email: <strong>${email}</strong>.</p>
                 <p>We're glad to have you on board!</p>`
         });
-        console.log('Email sent:', info.messageId);
 
 
         return res.json({success: true, message: "User registered successfully"});

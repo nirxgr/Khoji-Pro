@@ -7,9 +7,19 @@ const userSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     phoneNumber: {type: String, default: ''},
-    profileStatus: {type: String, default:'Not Completed'},
+    profileStatus: {
+      type: String,
+      enum: ["Incomplete", "Completed"],
+      default: "Incomplete",
+    },
     profilePictureUrl: {type: String, default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'},
     coverPictureUrl: {type: String, default:'https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png'},
+    profession: {type: String, default:''},
+    skills: {type: [String], default:[]},
+    location: {type: String, default:''},
+    linkedid: {type: String, default:''},
+    github: {type: String, default:''},
+    bio: {type: String, default:''},
     experiences: [
     {
       type: Types.ObjectId,
@@ -21,14 +31,8 @@ const userSchema = new mongoose.Schema({
       ref: 'Education', 
     }
     ],
-    profession: {type: String, default:''},
-    skills: {type: [String], default:[]},
-    location: {type: String, default:''},
-    linkedid: {type: String, default:''},
-    github: {type: String, default:''},
-    bio: {type: String, default:''},
 
-});
+}, { timestamps: true });
 
 //IF USER MODEL EXISTS IT USES THIS OR CREATES NEW ONE
 const userModel = mongoose.models.user || mongoose.model('user', userSchema);
