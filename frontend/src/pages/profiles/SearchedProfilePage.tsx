@@ -31,7 +31,7 @@ interface IExperience {
   endDate: string;
   description: string;
   employmentType: string;
-  _id?: string;
+  _id: string;
 }
 
 const SearchedProfilePage = () => {
@@ -61,6 +61,7 @@ const SearchedProfilePage = () => {
   const [experiences, setExperiences] = useState<IExperience[]>([]);
   const [showExpForm, setShowExpForm] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedExp, setSelectedExp] = useState<IExperience | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -240,6 +241,28 @@ const SearchedProfilePage = () => {
     setExpFormData(emptyExperience);
   };
 
+  const handleUpdateExperience = async (
+    id: string,
+    updatedData: IExperience
+  ) => {
+    try {
+      const response = await axios.put(
+        `${backendUrl}/api/exp/update-experience/${id}`,
+        updatedData
+      );
+
+      if (response.data.success) {
+        setReloadUser(true);
+        setShowEditPopup(false);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
+  };
+
   return (
     <div className="main">
       <Header />
@@ -319,48 +342,53 @@ const SearchedProfilePage = () => {
                     </p>
                     <form onSubmit={handleProfileSave}>
                       <div className="input">
-                        <h3>First Name</h3>
+                        <label htmlFor="firstName">First Name</label>
                         <input
                           type="text"
                           className="edit-input-field"
+                          id="firstName"
                           name="firstName"
                           value={formData?.firstName || ""}
                           onChange={handleProfileChange}
                         />
                       </div>
                       <div className="input">
-                        <h3>Last Name</h3>
+                        <label htmlFor="lastName">Last Name</label>
                         <input
                           type="text"
                           className="edit-input-field"
+                          id="lastName"
                           name="lastName"
                           value={formData?.lastName}
                           onChange={handleProfileChange}
                         />
                       </div>
                       <div className="input">
-                        <h3>Designation</h3>
+                        <label htmlFor="profession">Designation</label>
                         <input
                           type="text"
                           className="edit-input-field"
+                          id="profession"
                           name="profession"
                           value={formData?.profession}
                           onChange={handleProfileChange}
                         />
                       </div>
                       <div className="input">
-                        <h3>Location</h3>
+                        <label htmlFor="location">Location</label>
                         <input
                           type="text"
                           className="edit-input-field"
+                          id="location"
                           name="location"
                           value={formData?.location}
                           onChange={handleProfileChange}
                         />
                       </div>
                       <div className="input">
-                        <h3>Bio</h3>
+                        <label htmlFor="bio">Bio</label>
                         <textarea
+                          id="bio"
                           name="bio"
                           value={formData?.bio}
                           onChange={handleProfileChange}
@@ -417,55 +445,63 @@ const SearchedProfilePage = () => {
                 <h2 className="profile-form-title">Add Experience</h2>
                 <form onSubmit={handleExpAdd}>
                   <div className="input">
-                    <h3>Company</h3>
+                    <label htmlFor="company">Company</label>
                     <input
                       type="text"
                       className="edit-input-field"
                       name="company"
+                      id="company"
                       onChange={handleExpChange}
                     />
                   </div>
                   <div className="input">
-                    <h3>Position</h3>
+                    <label htmlFor="position">Position</label>
                     <input
                       type="text"
                       className="edit-input-field"
                       name="position"
+                      id="position"
                       onChange={handleExpChange}
                     />
                   </div>
                   <div className="input">
-                    <h3>Location</h3>
+                    <label htmlFor="location">Location</label>
                     <input
                       type="text"
                       className="edit-input-field"
                       name="location"
+                      id="location"
                       onChange={handleExpChange}
                     />
                   </div>
                   <div className="input">
-                    <h3>Start Date</h3>
+                    <label htmlFor="startDate">Start Date</label>
                     <input
                       type="date"
                       className="edit-input-field"
                       name="startDate"
+                      id="startDate"
                       onChange={handleExpChange}
                     />
                   </div>
                   <div className="input">
-                    <h3>End Date</h3>
+                    <label htmlFor="endDate">End Date</label>
+
                     <input
                       type="date"
                       className="edit-input-field"
                       name="endDate"
+                      id="endDate"
                       onChange={handleExpChange}
                     />
                   </div>
                   <div className="input">
-                    <h3>Employment Type</h3>
+                    <label htmlFor="employmentType">Employment Type</label>
+
                     <select
                       className="edit-input-field"
                       name="employmentType"
+                      id="employmentType"
                       onChange={handleExpChange}
                       defaultValue=""
                     >
@@ -480,9 +516,14 @@ const SearchedProfilePage = () => {
                       <option value="Internship">Internship</option>
                     </select>
                   </div>
+
                   <div className="input">
-                    <h3>Description</h3>
-                    <textarea name="description" onChange={handleExpChange} />
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                      name="description"
+                      id="description"
+                      onChange={handleExpChange}
+                    />
                   </div>
                   <div className="form-buttons">
                     <button type="submit" className="btn-save">
@@ -528,6 +569,10 @@ const SearchedProfilePage = () => {
                           src={assets.pencil}
                           alt="Edit button"
                           className="edit-icon"
+                          onClick={() => {
+                            setSelectedExp(exp);
+                            setShowEditPopup(true);
+                          }}
                         />
                       </button>
 
@@ -547,6 +592,165 @@ const SearchedProfilePage = () => {
                 ))}
               </ul>
             )}
+            {showEditPopup && selectedExp && (
+              <div className="profile-form-overlay">
+                <div className="profile-form">
+                  <h2 className="profile-form-title">Update Experience</h2>
+
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      await handleUpdateExperience(
+                        selectedExp._id,
+                        selectedExp
+                      );
+                    }}
+                  >
+                    <div className="input">
+                      <label htmlFor="company">Company</label>
+                      <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        value={selectedExp.company}
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            company: e.target.value,
+                          })
+                        }
+                        placeholder="Company"
+                        className="edit-input-field"
+                        required
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="position">Position</label>
+                      <input
+                        type="text"
+                        id="position"
+                        name="position"
+                        value={selectedExp.position}
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            position: e.target.value,
+                          })
+                        }
+                        placeholder="Position"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="location">Location</label>
+                      <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={selectedExp.location}
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            location: e.target.value,
+                          })
+                        }
+                        placeholder="Location"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="startDate">Start Date</label>
+                      <input
+                        type="date"
+                        value={selectedExp.startDate?.split("T")[0]}
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            startDate: e.target.value,
+                          })
+                        }
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="endDate">End Date</label>
+                      <input
+                        type="date"
+                        value={
+                          selectedExp.endDate
+                            ? selectedExp.endDate.split("T")[0]
+                            : ""
+                        }
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            endDate: e.target.value,
+                          })
+                        }
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="employmentType">Employment Type</label>
+                      <select
+                        value={selectedExp.employmentType}
+                        id="employmentType"
+                        name="employmentType"
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            employmentType: e.target.value,
+                          })
+                        }
+                        className="edit-input-field"
+                      >
+                        <option value="">Select Employment Type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                      </select>
+                    </div>
+
+                    <div className="input">
+                      <label htmlFor="description">Description</label>
+                      <textarea
+                        value={selectedExp.description || ""}
+                        id="description"
+                        name="description"
+                        onChange={(e) =>
+                          setSelectedExp({
+                            ...selectedExp,
+                            description: e.target.value,
+                          })
+                        }
+                        placeholder="Description"
+                        className="edit-input-field"
+                      />
+                    </div>
+
+                    <div className="form-buttons">
+                      <button type="submit" className="btn-save">
+                        Update
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={() => setShowEditPopup(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
             {showDeletePopup && selectedExp && (
               <div className="popup-overlay">
                 <div className="popup">
