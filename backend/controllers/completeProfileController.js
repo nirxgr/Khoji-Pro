@@ -3,7 +3,7 @@ import userModel from '../models/userModel.js'
 export const completeProfile = async (req,res) => {
   
     try {
-    const { location, profession, phoneNumber, bio, linkedin, github } = req.body;
+    const { location, profession, phoneNumber, bio, linkedinId, githubId } = req.body;
 
     const user = await userModel.findById(req.user.id);
     if (!user) {
@@ -14,11 +14,11 @@ export const completeProfile = async (req,res) => {
     user.profession = profession;
     user.phoneNumber = phoneNumber;
     user.bio = bio;
-    if (linkedin && linkedin.trim() !== "") {
-        user.linkedin = linkedin;
+    if (linkedinId && linkedinId.trim() !== "") {
+        user.linkedinId = linkedinId;
     }
-    if (github && github.trim() !== "") {
-        user.github = github;
+    if (githubId && githubId.trim() !== "") {
+        user.githubId = githubId;
     }
     user.profileStatus = "Completed";
 

@@ -18,13 +18,6 @@ type ProfileFormValues = {
 
 const ProfileCompletion = () => {
   const { backendUrl } = useContext(AppContext);
-
-  const [location, setLocation] = useState("");
-  const [profession, setProfession] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [bio, setBio] = useState("");
-  const [linkedinId, setLinkedinId] = useState("");
-  const [githubId, setGithubId] = useState("");
   const [state, setState] = useState("Profile1");
 
   const {
@@ -47,17 +40,19 @@ const ProfileCompletion = () => {
       setState("Profile2");
     }
   };
-  const onSubmitHandler = async (e) => {
+
+  const onSubmitHandler = async (formData: ProfileFormValues) => {
     try {
       axios.defaults.withCredentials = true;
-      const { data } = await axios.post(
-        backendUrl + "/api/update/completeProfile"
+      const response = await axios.post(
+        `${backendUrl}/api/update/completeProfile`,
+        formData
       );
-      if (data.success) {
-        toast.success(data.message);
+      if (response.data.success) {
+        toast.success(response.data.message);
         navigate("/home");
       } else {
-        toast.error(data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -97,7 +92,6 @@ const ProfileCompletion = () => {
                           value: true,
                           message: "Location is required.",
                         },
-                        onChange: (e) => setLocation(e.target.value),
                       })}
                     />
                   </div>
@@ -118,7 +112,6 @@ const ProfileCompletion = () => {
                           value: true,
                           message: "Designation is required.",
                         },
-                        onChange: (e) => setProfession(e.target.value), // merged version
                       })}
                     />
                   </div>
@@ -139,7 +132,6 @@ const ProfileCompletion = () => {
                           value: true,
                           message: "Phone Number is required.",
                         },
-                        onChange: (e) => setPhoneNumber(e.target.value),
                       })}
                     />
                   </div>
@@ -158,7 +150,6 @@ const ProfileCompletion = () => {
                           value: true,
                           message: "Bio is required.",
                         },
-                        onChange: (e) => setBio(e.target.value),
                       })}
                     />
                   </div>
@@ -178,9 +169,7 @@ const ProfileCompletion = () => {
                       className="input-field"
                       type="text"
                       placeholder="Github Id"
-                      {...register("githubId", {
-                        onChange: (e) => setGithubId(e.target.value),
-                      })}
+                      {...register("githubId", {})}
                     />
                   </div>
                   {errors.githubId?.message && (
@@ -195,9 +184,7 @@ const ProfileCompletion = () => {
                       className="input-field"
                       type="text"
                       placeholder="Linkedin Id"
-                      {...register("linkedinId", {
-                        onChange: (e) => setLinkedinId(e.target.value),
-                      })}
+                      {...register("linkedinId", {})}
                     />
                   </div>
                   {errors.linkedinId?.message && (
@@ -220,9 +207,9 @@ const ProfileCompletion = () => {
 
           {state === "Profile2" && (
             <button
+              type="submit"
               className="submit-button"
               disabled={isSubmitting}
-              type="submit"
             >
               Submit
             </button>

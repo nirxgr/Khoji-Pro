@@ -161,6 +161,16 @@ export const verifyEmail = async (req,res) => {
                 <p>Your account has been successfully created using this email: <strong>${email}</strong>.</p>
                 <p>We're glad to have you on board!</p>`
         });
+        
+         //token
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: "7d"});
+        //cookie functionality
+        res.cookie('token', token,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? "none" : 'strict',
+            maxAge: 7 * 24 * 60 * 1000
+        })
 
 
         return res.json({success: true, message: "User registered successfully"});
@@ -171,16 +181,7 @@ export const verifyEmail = async (req,res) => {
 }
 
 
-//check if user is authenticated
-// export const isAuthenticated = async (req,res) => {
-    
-//     try{
-//         return res.json({success: true});
-//     } catch (error) {
-//         res.json({ success: false, message: error.message});
-//     }
 
-// }
 
 //send password reset otp
 export const sendPasswordResetOtp = async (req,res) => {

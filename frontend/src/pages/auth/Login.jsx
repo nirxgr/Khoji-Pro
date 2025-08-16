@@ -23,7 +23,7 @@ const Login = () => {
 
             if (data.success){
               await getUserData();
-              navigate('/home')
+              navigate("/complete-profile");
               toast.success(data.message)
             } else{
               toast.error(data.message)
