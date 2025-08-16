@@ -1,17 +1,14 @@
 import React, { useContext, useState, useRef } from "react";
-import { assets } from "../../assets/assets.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AppContext } from "../../context/AppContext.jsx";
-import "./Auth.css";
 import { toast } from "react-toastify";
+import { AppContext } from "../../context/AppContext";
+import { assets } from "../../assets/assets";
+import "./Auth.css";
 import { useForm } from "react-hook-form";
 
-interface SignUpFormData {
-  firstName: string;
-  lastName: string;
+interface EmailFormData {
   email: string;
-  password: string;
 }
 
 interface OtpFormData {
@@ -23,12 +20,20 @@ interface OtpFormData {
   otp5: string;
 }
 
-const Register = () => {
-  axios.defaults.withCredentials = true;
-  const { backendUrl } = useContext(AppContext);
+interface NewPassFormData {
+  newPassword: string;
+}
 
-  const [signupData, setSignupData] = useState({});
-  const [state, setState] = useState("Sign Up");
+const ResetPassword = () => {
+  const { backendUrl } = useContext(AppContext);
+  axios.defaults.withCredentials = true;
+
+  const navigate = useNavigate();
+
+  const [userEmail, setUserEmail] = useState("");
+  const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
+  const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
+
   const [otpError, setOtpError] = useState("");
 
   const {
@@ -36,14 +41,20 @@ const Register = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({ mode: "onBlur" });
+  } = useForm<EmailFormData>({ mode: "onBlur" });
 
   const {
-    register: registerOtp,
+    register: resetOtp,
     handleSubmit: handleOtpSubmit,
     setValue: setOtpValue,
     formState: { isSubmitting: isSubmittingOtp },
   } = useForm<OtpFormData>({ mode: "onBlur" });
+
+  const {
+    register: newPass,
+    handleSubmit: handlePassSubmit,
+    formState: { errors: passErrors, isSubmitting: isSubmittingPass },
+  } = useForm<NewPassFormData>({ mode: "onBlur" });
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -93,26 +104,18 @@ const Register = () => {
     inputRefs.current[lastIndex]?.focus();
   };
 
-  const navigate = useNavigate();
-
-  const onSignUpSubmit = async (data: SignUpFormData) => {
+  const onSubmitEmail = async (data: EmailFormData) => {
     try {
-      axios.defaults.withCredentials = true;
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const { email } = data;
 
-      const { firstName, lastName, email, password } = data;
-
-      const response = await axios.post(backendUrl + "/api/auth/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-
+      const response = await axios.post(
+        backendUrl + "/api/auth/send-reset-otp",
+        { email }
+      );
       if (response.data.success) {
-        setSignupData(data);
-        setState("Otp");
         toast.success(response.data.message);
+        setUserEmail(email);
+        response.data.success && setIsEmailSent(true);
       } else {
         toast.error(response.data.message);
       }
@@ -123,30 +126,45 @@ const Register = () => {
     }
   };
 
-  const onOtpSubmit = async (data: OtpFormData) => {
+  const onSubmitOTP = async (data: OtpFormData) => {
     const otpValues = Object.values(data);
     const isEmpty = otpValues.some((v) => v.trim() === "");
     if (isEmpty) {
       setOtpError("Please enter all 6 digits");
       return;
     }
-
     setOtpError("");
     const otp = otpValues.join("");
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      const response = await axios.post(
-        `${backendUrl}/api/auth/verify-account`,
-        {
-          ...signupData,
-          otp,
-        }
-      );
+      const response = await axios.post(backendUrl + "/api/auth/check-otp", {
+        email: userEmail,
+        otp,
+      });
+      if (response.data.success) {
+        setIsOtpSubmitted(true);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
+  const onSubmitNewPassword = async (data: NewPassFormData) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const { newPassword } = data;
+
+      const response = await axios.post(
+        backendUrl + "/api/auth/reset-password",
+        { email: userEmail, newPassword }
+      );
       if (response.data.success) {
         toast.success(response.data.message);
-        navigate("/complete-profile");
+        navigate("/login");
       } else {
         toast.error(response.data.message);
       }
@@ -164,53 +182,13 @@ const Register = () => {
         className="logo"
       />
 
-      {state === "Sign Up" ? (
+      {/* for email id */}
+      {!isEmailSent && (
         <div className="form-container">
-          <h2 className="form-title">Sign Up</h2>
-          <p className="form-subtitle">Create your account</p>
-
-          <form onSubmit={handleSubmit(onSignUpSubmit)}>
+          <h2 className="form-title">Reset Password</h2>
+          <p className="form-subtitle">Enter your registered email address.</p>
+          <form onSubmit={handleSubmit(onSubmitEmail)}>
             <div className="input-components">
-              <div className="input-wrapper">
-                <div className="input-group">
-                  <img src={assets.person_icon} alt="" />
-                  <input
-                    className="input-field"
-                    type="text"
-                    placeholder="First Name"
-                    {...register("firstName", {
-                      required: {
-                        value: true,
-                        message: "First name is required.",
-                      },
-                    })}
-                  />
-                </div>
-                {errors.firstName && (
-                  <p className="form-error">{errors.firstName?.message}</p>
-                )}
-              </div>
-
-              <div className="input-wrapper">
-                <div className="input-group">
-                  <img src={assets.person_icon} alt="" />
-                  <input
-                    className="input-field"
-                    type="text"
-                    placeholder="Last Name"
-                    {...register("lastName", {
-                      required: {
-                        value: true,
-                        message: "Last name is required.",
-                      },
-                    })}
-                  />
-                </div>
-                {errors.lastName && (
-                  <p className="form-error">{errors.lastName?.message}</p>
-                )}
-              </div>
-
               <div className="input-wrapper">
                 <div className="input-group">
                   <img src={assets.mail_icon} alt="" />
@@ -233,36 +211,7 @@ const Register = () => {
                 {errors.email && (
                   <p className="form-error">{errors.email?.message}</p>
                 )}
-              </div>
-
-              <div className="input-wrapper">
-                <div className="input-group">
-                  <img src={assets.lock_icon} alt="" />
-                  <input
-                    className="input-field"
-                    type="password"
-                    placeholder="Password"
-                    {...register("password", {
-                      required: {
-                        value: true,
-                        message: "Password is required.",
-                      },
-                      minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters.",
-                      },
-                    })}
-                  />
-                </div>
-                {errors.password && (
-                  <p className="form-error">{errors.password?.message}</p>
-                )}
                 {isSubmitting && (
-                  <div className="loading-overlay">
-                    <div className="spinner"></div>
-                  </div>
-                )}
-                {isSubmittingOtp && (
                   <div className="loading-overlay">
                     <div className="spinner"></div>
                   </div>
@@ -270,30 +219,23 @@ const Register = () => {
               </div>
             </div>
 
-            <button
-              className="submit-button"
-              disabled={isSubmitting}
-              type="submit"
-            >
-              Sign Up
+            <button className="submit-button" disabled={isSubmitting}>
+              Submit
             </button>
           </form>
-
-          <p className="auth-toggle">
-            Already have an account?{" "}
-            <span className="toggle-link" onClick={() => navigate("/login")}>
-              Login here
-            </span>
-          </p>
         </div>
-      ) : (
+      )}
+
+      {/*otp input form*/}
+
+      {!isOtpSubmitted && isEmailSent && (
         <div className="form-container">
-          <h2 className="form-title">Email Verify OTP</h2>
+          <h2 className="form-title">Reset Password OTP</h2>
           <p className="form-subtitle">
             Enter the 6-digit code sent to your email id.
           </p>
 
-          <form onSubmit={handleOtpSubmit(onOtpSubmit)}>
+          <form onSubmit={handleOtpSubmit(onSubmitOTP)}>
             <div className="otp-container" onPaste={handlePaste}>
               {Array.from({ length: 6 }).map((_, index) => {
                 const fieldName = `otp${index}` as keyof OtpFormData;
@@ -303,9 +245,9 @@ const Register = () => {
                     type="text"
                     maxLength={1}
                     className="otp-input"
-                    {...registerOtp(fieldName)}
+                    {...resetOtp(fieldName)}
                     ref={(el) => {
-                      registerOtp(fieldName).ref(el);
+                      resetOtp(fieldName).ref(el);
                       inputRefs.current[index] = el;
                     }}
                     onInput={(e) => handleInput(e, index)}
@@ -314,7 +256,6 @@ const Register = () => {
                 );
               })}
             </div>
-
             {otpError && <p className="otp-error">{otpError}</p>}
 
             {isSubmittingOtp && (
@@ -323,8 +264,53 @@ const Register = () => {
               </div>
             )}
 
-            <button type="submit" className="submit-button">
-              Verify Email
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={isSubmitting}
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* enter new password */}
+      {isOtpSubmitted && isEmailSent && (
+        <div className="form-container">
+          <h2 className="form-title">New Password</h2>
+          <p className="form-subtitle">Enter the new password below.</p>
+          <form onSubmit={handlePassSubmit(onSubmitNewPassword)}>
+            <div className="input-components">
+              <div className="input-wrapper">
+                <div className="input-group">
+                  <img src={assets.lock_icon} alt="" />
+                  <input
+                    className="input-field"
+                    type="password"
+                    placeholder="New Password"
+                    {...newPass("newPassword", {
+                      required: {
+                        value: true,
+                        message: "Password is required.",
+                      },
+                    })}
+                  />
+                </div>
+                {passErrors.newPassword && (
+                  <p className="form-error">
+                    {passErrors.newPassword?.message}
+                  </p>
+                )}
+                {isSubmittingPass && (
+                  <div className="loading-overlay">
+                    <div className="spinner"></div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <button className="submit-button" disabled={isSubmitting}>
+              Submit
             </button>
           </form>
         </div>
@@ -333,4 +319,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ResetPassword;

@@ -14,8 +14,6 @@ interface LoginFormData {
 
 const Login = () => {
   const { backendUrl, getUserData } = useContext(AppContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -28,7 +26,7 @@ const Login = () => {
   const onSubmitHandler = async (data: LoginFormData) => {
     try {
       axios.defaults.withCredentials = true;
-
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const { email, password } = data;
 
       const response = await axios.post(backendUrl + "/api/auth/login", {
@@ -104,6 +102,12 @@ const Login = () => {
                 <p className="form-error">{errors.password?.message}</p>
               )}
             </div>
+
+            {isSubmitting && (
+              <div className="loading-overlay">
+                <div className="spinner"></div>
+              </div>
+            )}
 
             <p
               className="forgot-pass"

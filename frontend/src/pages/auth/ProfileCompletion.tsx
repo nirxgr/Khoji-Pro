@@ -43,6 +43,7 @@ const ProfileCompletion = () => {
 
   const onSubmitHandler = async (formData: ProfileFormValues) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${backendUrl}/api/update/completeProfile`,
@@ -194,6 +195,11 @@ const ProfileCompletion = () => {
                     <p className="form-error">{errors.linkedinId.message}</p>
                   )}
                 </div>
+                {isSubmitting && (
+                  <div className="loading-overlay">
+                    <div className="spinner"></div>
+                  </div>
+                )}
               </>
             )}
           </div>
