@@ -25,7 +25,7 @@ export const completeProfile = async (req,res) => {
     await user.save();
 
     return res.status(200).json({success: true,
-      message: "Profile completed"
+      message: "Profile completed!"
     });
 
   } catch (error) {
