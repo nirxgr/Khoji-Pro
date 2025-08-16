@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { AppContext } from "../../context/AppContext.jsx";
 
 interface AuthGuardProps {
@@ -8,15 +8,23 @@ interface AuthGuardProps {
 }
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
-  const { isLoggedin, authReady } = useContext(AppContext);
+  const { isLoggedin, authReady, userData } = useContext(AppContext);
+  const location = useLocation();
 
   if (!authReady) return null;
 
   if (!isLoggedin) {
     return <Navigate to="/login" replace />;
-  } else {
-    return children;
   }
+
+  if (
+    userData?.profileStatus === "Incomplete" &&
+    location.pathname !== "/complete-profile"
+  ) {
+    return <Navigate to="/complete-profile" replace />;
+  }
+
+  return children;
 };
 
 export default AuthGuard;

@@ -17,7 +17,7 @@ type ProfileFormValues = {
 };
 
 const ProfileCompletion = () => {
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, setUserData } = useContext(AppContext);
   const [state, setState] = useState("Profile1");
 
   const {
@@ -49,6 +49,9 @@ const ProfileCompletion = () => {
         formData
       );
       if (response.data.success) {
+        setUserData((prev) =>
+          prev ? { ...prev, profileStatus: "Completed" } : prev
+        );
         toast.success(response.data.message);
         navigate("/home");
       } else {

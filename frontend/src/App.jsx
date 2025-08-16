@@ -12,6 +12,7 @@ import ResetPassword from './pages/auth/ResetPassword.jsx'
 import SearchedProfilePage from './pages/profiles/SearchedProfilePage.tsx'
 import NotFoundPage from './pages/NotFoundPage.tsx'
 import ProfileCompletion from './pages/auth/ProfileCompletion.tsx'
+import CompleteProfileGuard from './shared/guards/completeProfileGuard.tsx'
 
 
 function App() {
@@ -34,7 +35,9 @@ function App() {
         } />
 
         <Route path="/complete-profile" element={
-            <ProfileCompletion />
+            <CompleteProfileGuard>
+              <ProfileCompletion />
+            </CompleteProfileGuard>
         } />
         
         <Route path="/login" element={
