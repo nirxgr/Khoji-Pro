@@ -238,3 +238,10 @@ body {
   
   
 }
+.otp-error {
+  color: red;
+  font-size: 17px;
+  position: absolute;
+  top: 13.8rem;
+  left: 8.5rem;
+}

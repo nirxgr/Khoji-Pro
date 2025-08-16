@@ -49,17 +49,15 @@ const ProfileCompletion = () => {
   };
   const onSubmitHandler = async (e) => {
     try {
-      e.preventDefault();
-
       axios.defaults.withCredentials = true;
-      if (state === "Sign Up") {
-        const { data } = await axios.post(backendUrl + "/api/auth/register");
-        if (data.success) {
-          setState("Otp");
-          toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
+      const { data } = await axios.post(
+        backendUrl + "/api/update/completeProfile"
+      );
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/home");
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
