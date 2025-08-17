@@ -1,21 +1,25 @@
-import React from 'react'
-import './Footer.css'
+import React from "react";
+import "./Footer.css";
+import { assets } from "../assets/assets";
 
 const Footer = () => {
   return (
-    <div className='footer-container'>
-        <div className='first-container'>
-            <div className='indv-container'>
-                <h2>Khoji Pro</h2>
-                <p>The premier platform for discovering and connecting with top professionals worldwide. Build meaningful networks and find the expertise you need.</p>
-                <div className='icon-container'>
-                </div>
-            </div>
+    <footer className="footer">
+      <div className="footer-container">
+        <div className="footer-top">
+          <div className="footer-logo">
+            <img src={assets.logo1} alt="Khoji Pro Logo" className="logo-img" />
+          </div>
         </div>
+        <div className="footer-bottom">
+          <p>
+            &copy; 2025 Khoji Pro. All rights reserved. Connecting professionals
+            worldwide.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
-
-    </div>
-  )
-}
-
-export default Footer
+export default Footer;
