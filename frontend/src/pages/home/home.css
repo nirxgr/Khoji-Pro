@@ -233,7 +233,7 @@
   gap: 8px;
 }
 
-.language-tag {
+.skill-tag {
   background-color: white;
   color: #7326b0;
   padding: 9px 12px;
@@ -277,6 +277,15 @@
   flex-direction: column;
   align-items: center;
   text-align: justify;
+}
+.bio-text {
+  display: -webkit-box;        
+  -webkit-line-clamp: 4;       
+  -webkit-box-orient: vertical;
+  line-clamp: 4;              
+  box-orient: vertical;      
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

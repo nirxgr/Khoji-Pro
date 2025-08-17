@@ -45,6 +45,19 @@ export async function searchUsers(req, res) {
                     ]
                 };
 
+            }else if(filterBy === "all"){
+
+                searchCondition = {
+                    $or: [
+                    { firstName: { $regex: query, $options: "i" } },
+                    { lastName: { $regex: query, $options: "i" } },
+                    { profession: { $regex: query, $options: "i" } },
+                    { location: { $regex: query, $options: "i" } },
+                    { skills: { $regex: query, $options: "i" } } 
+                    
+                ]
+                }
+
             } else {
                 searchCondition = {
                     [filterBy]: { $regex: query, $options: "i" }
@@ -59,13 +72,13 @@ export async function searchUsers(req, res) {
                     { lastName: { $regex: query, $options: "i" } },
                     { profession: { $regex: query, $options: "i" } },
                     { location: { $regex: query, $options: "i" } },
-                    { languages: { $regex: query, $options: "i" } } 
+                    { skills: { $regex: query, $options: "i" } } 
                     //$options: "i" makes the regex search case-insensitive
                 ]
             };
 
         }
-        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location languages  profilePictureUrl"); 
+        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location skills  profilePictureUrl"); 
 
         res.json(users);
     } catch (err) {
