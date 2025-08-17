@@ -1,6 +1,6 @@
 import arrow_icon from './arrow_icon.svg'
-import lock_icon from './lock_icon.png'
-import mail_icon from './mail_icon.png'
+import lock_icon from './lock_icon.svg'
+import mail_icon from './mail_icon.svg'
 import person_icon from './person_icon.png'
 import logo1 from './logo1.png'
 import search from './search.png'
@@ -10,9 +10,15 @@ import location from './location.png'
 import pencil from './pencil.png'
 import add from './add.png'
 import deleteicon from './delete.png'
-import location2 from './location2.png'
-import phone from './phone.png'
-import profession from './profession.png'
+import location2 from './location2.svg'
+import phone from './phone.svg'
+import profession from './profession.svg'
+import search2 from './search2.svg'
+import handshake from './handshake.svg'
+import network from './network.svg'
+import network2 from './network.svg'
+import userplus from './user-plus.svg'
+import shield from './shield.svg'
 
 export const assets = {
     arrow_icon,
@@ -29,5 +35,11 @@ export const assets = {
     deleteicon,
     location2,
     phone,
-    profession
+    profession,
+    search2,
+    handshake,
+    network,
+    shield,
+    userplus,
+    network2
 }
