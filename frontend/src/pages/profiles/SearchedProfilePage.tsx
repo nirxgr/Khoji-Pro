@@ -49,7 +49,7 @@ const SearchedProfilePage = () => {
   const { id } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
   const [reloadUser, setReloadUser] = useState(false);
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, userData } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const profileInputRef = useRef<HTMLInputElement>(null);
@@ -93,6 +93,8 @@ const SearchedProfilePage = () => {
   const [showEditEdu, setShowEditEdu] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const isOwner = userData?._id === id;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -364,13 +366,18 @@ const SearchedProfilePage = () => {
               alt="cover-photo"
               className="cover-photo"
             />
-
-            <button
-              className="edit-icon-btn"
-              onClick={() => setOpen((prev) => !prev)}
-            >
-              <img src={assets.pencil} alt="edit-icon" className="edit-icon" />
-            </button>
+            {isOwner && (
+              <button
+                className="edit-icon-btn"
+                onClick={() => setOpen((prev) => !prev)}
+              >
+                <img
+                  src={assets.pencil}
+                  alt="edit-icon"
+                  className="edit-icon"
+                />
+              </button>
+            )}
 
             {open && (
               <div className="photo-dropdown">
@@ -410,19 +417,22 @@ const SearchedProfilePage = () => {
               <h1>
                 {user?.firstName || "---"} {user.lastName || "---"}
               </h1>
-              <button
-                className="edit-btn"
-                onClick={() => {
-                  if (user) setFormData(user);
-                  setShowForm(true);
-                }}
-              >
-                <img
-                  src={assets.pencil}
-                  alt="edit-icon"
-                  className="edit-icon"
-                />
-              </button>
+              {isOwner && (
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    if (user) setFormData(user);
+                    setShowForm(true);
+                  }}
+                >
+                  <img
+                    src={assets.pencil}
+                    alt="edit-icon"
+                    className="edit-icon"
+                  />
+                </button>
+              )}
+
               {showForm && (
                 <div className="profile-form-overlay">
                   <div className="profile-form">
@@ -519,14 +529,16 @@ const SearchedProfilePage = () => {
         <div className="profile-section">
           <div className="exp-section">
             <h3 className="profile-section-title">Experience</h3>
-            <button
-              className="add-btn"
-              onClick={() => {
-                setShowExpForm(true);
-              }}
-            >
-              <img src={assets.add} alt="add-icon" className="add-icon" />
-            </button>
+            {isOwner && (
+              <button
+                className="add-btn"
+                onClick={() => {
+                  setShowExpForm(true);
+                }}
+              >
+                <img src={assets.add} alt="add-icon" className="add-icon" />
+              </button>
+            )}
           </div>
 
           {showExpForm && (
@@ -658,32 +670,33 @@ const SearchedProfilePage = () => {
                       </p>
                       {exp.description && <p>{exp.description}</p>}
                     </div>
+                    {isOwner && (
+                      <div className="experience-actions">
+                        <button className="pencil-btn">
+                          <img
+                            src={assets.pencil}
+                            alt="Edit button"
+                            className="edit-icon"
+                            onClick={() => {
+                              setSelectedExp(exp);
+                              setShowEditPopup(true);
+                            }}
+                          />
+                        </button>
 
-                    <div className="experience-actions">
-                      <button className="pencil-btn">
-                        <img
-                          src={assets.pencil}
-                          alt="Edit button"
-                          className="edit-icon"
-                          onClick={() => {
-                            setSelectedExp(exp);
-                            setShowEditPopup(true);
-                          }}
-                        />
-                      </button>
-
-                      <button className="delete-btn">
-                        <img
-                          src={assets.deleteicon}
-                          alt="Delete"
-                          className="delete-icon"
-                          onClick={() => {
-                            setSelectedExp(exp);
-                            setShowDeletePopup(true);
-                          }}
-                        />
-                      </button>
-                    </div>
+                        <button className="delete-btn">
+                          <img
+                            src={assets.deleteicon}
+                            alt="Delete"
+                            className="delete-icon"
+                            onClick={() => {
+                              setSelectedExp(exp);
+                              setShowDeletePopup(true);
+                            }}
+                          />
+                        </button>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -893,14 +906,16 @@ const SearchedProfilePage = () => {
         <div className="profile-section">
           <div className="exp-section">
             <h3 className="profile-section-title">Education</h3>
-            <button
-              className="add-btn"
-              onClick={() => {
-                setShowEduForm(true);
-              }}
-            >
-              <img src={assets.add} alt="add-icon" className="add-icon" />
-            </button>
+            {isOwner && (
+              <button
+                className="add-btn"
+                onClick={() => {
+                  setShowEduForm(true);
+                }}
+              >
+                <img src={assets.add} alt="add-icon" className="add-icon" />
+              </button>
+            )}
           </div>
 
           {showEduForm && (
@@ -1022,32 +1037,33 @@ const SearchedProfilePage = () => {
                       {edu.grade && <p>Grade: {edu.grade}</p>}
                       {edu.activities && <p>{edu.activities}</p>}
                     </div>
+                    {isOwner && (
+                      <div className="experience-actions">
+                        <button className="pencil-btn">
+                          <img
+                            src={assets.pencil}
+                            alt="Edit button"
+                            className="edit-icon"
+                            onClick={() => {
+                              setSelectedEdu(edu);
+                              setShowEditEdu(true);
+                            }}
+                          />
+                        </button>
 
-                    <div className="experience-actions">
-                      <button className="pencil-btn">
-                        <img
-                          src={assets.pencil}
-                          alt="Edit button"
-                          className="edit-icon"
-                          onClick={() => {
-                            setSelectedEdu(edu);
-                            setShowEditEdu(true);
-                          }}
-                        />
-                      </button>
-
-                      <button className="delete-btn">
-                        <img
-                          src={assets.deleteicon}
-                          alt="Delete"
-                          className="delete-icon"
-                          onClick={() => {
-                            setSelectedEdu(edu);
-                            setShowDeleteEdu(true);
-                          }}
-                        />
-                      </button>
-                    </div>
+                        <button className="delete-btn">
+                          <img
+                            src={assets.deleteicon}
+                            alt="Delete"
+                            className="delete-icon"
+                            onClick={() => {
+                              setSelectedEdu(edu);
+                              setShowDeleteEdu(true);
+                            }}
+                          />
+                        </button>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
