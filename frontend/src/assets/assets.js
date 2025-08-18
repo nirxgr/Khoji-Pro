@@ -19,6 +19,8 @@ import network from './network.svg'
 import network2 from './network.svg'
 import userplus from './user-plus.svg'
 import shield from './shield.svg'
+import mail2 from './mail2.svg'
+import phone2 from './phone2.svg'
 
 export const assets = {
     arrow_icon,
@@ -41,5 +43,7 @@ export const assets = {
     network,
     shield,
     userplus,
-    network2
+    network2,
+    mail2,
+    phone2
 }

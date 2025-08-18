@@ -13,6 +13,7 @@ interface IUser {
   lastName: string;
   email: string;
   bio: string;
+  phoneNumber: string;
   experienceYears: number;
   profession: string;
   skills: string[];
@@ -57,6 +58,7 @@ const SearchedProfilePage = () => {
   const coverInputRef = useRef<HTMLInputElement>(null);
 
   const [showForm, setShowForm] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
 
   const emptyExperience = {
     company: "",
@@ -243,13 +245,15 @@ const SearchedProfilePage = () => {
 
   const handleProfileSave = async (data: IUser) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const res = await axios.post(
         backendUrl + "/api/update/updateProfileDetails",
         data
       );
       if (res.data.success) {
         setReloadUser(true);
-        setShowForm(false);
+        if (showForm) setShowForm(false);
+        if (showContactForm) setShowContactForm(false);
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
@@ -261,6 +265,7 @@ const SearchedProfilePage = () => {
 
   const handleExpAdd = async (expFormData: IExperience) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const res = await axios.post(
         backendUrl + "/api/exp/add-experience",
         expFormData
@@ -288,6 +293,7 @@ const SearchedProfilePage = () => {
     updatedData: IExperience
   ) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const response = await axios.put(
         `${backendUrl}/api/exp/update-experience/${id}`,
         updatedData
@@ -307,6 +313,7 @@ const SearchedProfilePage = () => {
 
   const handleEduAdd = async (eduFormData: IEducation) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const res = await axios.post(
         backendUrl + "/api/edu/add-education",
         eduFormData
@@ -331,6 +338,7 @@ const SearchedProfilePage = () => {
 
   const handleUpdateEducation = async (id: string, updatedData: IEducation) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const response = await axios.put(
         `${backendUrl}/api/edu/update-education/${id}`,
         updatedData
@@ -399,7 +407,11 @@ const SearchedProfilePage = () => {
             )}
           </div>
 
-          {loading && <div className="loading-spinner"></div>}
+          {loading && (
+            <div className="loading-overlay">
+              <div className="spinner"></div>
+            </div>
+          )}
 
           <div className="profile-picture">
             <img src={user.profilePictureUrl} alt="profile-photo" />
@@ -540,12 +552,17 @@ const SearchedProfilePage = () => {
                         </button>
                       </div>
                     </form>
+                    {isSubmitting && (
+                      <div className="loading-overlay">
+                        {" "}
+                        <div className="spinner"></div>{" "}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
               <p className="profession">{user.profession || "---"}</p>
-              <p className="email">{user.email || "---"}</p>
               <p className="location">
                 <img
                   src={assets.location}
@@ -558,6 +575,93 @@ const SearchedProfilePage = () => {
             <div className="profile-bio">{user.bio || "---"}</div>
           </div>
         </div>
+        <div className="profile-section">
+          <div className="exp-section">
+            <h3 className="profile-section-title">Contact Information</h3>
+            {isOwner && (
+              <button
+                className="add-btn"
+                onClick={() => {
+                  setShowContactForm(true);
+                }}
+              >
+                <img src={assets.add} alt="add-icon" className="add-icon" />
+              </button>
+            )}
+          </div>
+          <div className="contact-details">
+            <p className="location">
+              <img
+                src={assets.mail2}
+                alt="mail icon"
+                className="location-icon"
+              />
+              {user.email || "---"}
+            </p>
+            <p className="location">
+              <img
+                src={assets.phone2}
+                alt="mail icon"
+                className="location-icon"
+              />
+              {user.phoneNumber || "---"}
+            </p>
+          </div>
+        </div>
+        {showContactForm && (
+          <div className="profile-form-overlay">
+            <div className="profile-form">
+              <h2 className="profile-form-title">Edit Contact</h2>
+              <p className="profile-form-subtitle">Edit your contact details</p>
+              <form
+                className="form-group"
+                onSubmit={handleSubmit(handleProfileSave)}
+              >
+                <div className="input">
+                  <label htmlFor="firstName">Phone Number</label>
+                  <input
+                    type="text"
+                    className="edit-input-field"
+                    id="phoneNumber"
+                    {...register("phoneNumber", {
+                      required: {
+                        value: true,
+                        message: "Phone number is required.",
+                      },
+                      pattern: {
+                        value: /^\d{10}$/,
+                        message: "Phone Number must be exactly 10 digits",
+                      },
+                    })}
+                  />
+                  {errors.phoneNumber?.message && (
+                    <p className="profile-error">
+                      {errors.phoneNumber.message}
+                    </p>
+                  )}
+                </div>
+                <div className="form-buttons">
+                  <button type="submit" className="btn-save">
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => setShowContactForm(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+              {isSubmitting && (
+                <div className="loading-overlay">
+                  {" "}
+                  <div className="spinner"></div>{" "}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="profile-section">
           <div className="exp-section">
@@ -730,6 +834,11 @@ const SearchedProfilePage = () => {
                     </button>
                   </div>
                 </form>
+                {isSubmittingAddExp && (
+                  <div className="loading-overlay">
+                    <div className="spinner"></div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -915,6 +1024,8 @@ const SearchedProfilePage = () => {
                         </option>
                         <option value="Full-time">Full-time</option>
                         <option value="Part-time">Part-time</option>
+                        <option value="Self-employed">Self-employed</option>
+                        <option value="Freelance">Freelance</option>
                         <option value="Contract">Contract</option>
                         <option value="Internship">Internship</option>
                       </select>
@@ -957,6 +1068,11 @@ const SearchedProfilePage = () => {
                       </button>
                     </div>
                   </form>
+                  {isSubmittingEditExp && (
+                    <div className="loading-overlay">
+                      <div className="spinner"></div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -1163,6 +1279,11 @@ const SearchedProfilePage = () => {
                     </button>
                   </div>
                 </form>
+                {isSubmittingAddEdu && (
+                  <div className="loading-overlay">
+                    <div className="spinner"></div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -1386,6 +1507,11 @@ const SearchedProfilePage = () => {
                       </button>
                     </div>
                   </form>
+                  {isSubmittingEditEdu && (
+                    <div className="loading-overlay">
+                      <div className="spinner"></div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

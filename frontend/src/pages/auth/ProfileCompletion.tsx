@@ -136,6 +136,10 @@ const ProfileCompletion = () => {
                           value: true,
                           message: "Phone Number is required.",
                         },
+                        pattern: {
+                          value: /^\d{10}$/,
+                          message: "Phone Number must be exactly 10 digits",
+                        },
                       })}
                     />
                   </div>
@@ -172,7 +176,7 @@ const ProfileCompletion = () => {
                     <input
                       className="input-field"
                       type="text"
-                      placeholder="Github Id"
+                      placeholder="Github Id Link"
                       {...register("githubId", {})}
                     />
                   </div>
@@ -187,7 +191,7 @@ const ProfileCompletion = () => {
                     <input
                       className="input-field"
                       type="text"
-                      placeholder="Linkedin Id"
+                      placeholder="Linkedin Id Link"
                       {...register("linkedinId", {})}
                     />
                   </div>

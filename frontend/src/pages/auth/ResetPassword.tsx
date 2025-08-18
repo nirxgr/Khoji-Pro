@@ -137,7 +137,6 @@ const ResetPassword = () => {
     const otp = otpValues.join("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const response = await axios.post(backendUrl + "/api/auth/check-otp", {
         email: userEmail,
         otp,

@@ -98,7 +98,6 @@ const Register = () => {
   const onSignUpSubmit = async (data: SignUpFormData) => {
     try {
       axios.defaults.withCredentials = true;
-      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const { firstName, lastName, email, password } = data;
 
@@ -135,7 +134,6 @@ const Register = () => {
     const otp = otpValues.join("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const response = await axios.post(
         `${backendUrl}/api/auth/verify-account`,
         {

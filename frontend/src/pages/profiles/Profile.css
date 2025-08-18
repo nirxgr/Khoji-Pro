@@ -191,7 +191,8 @@
   font-size: 1.05rem;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  text-align: center;
+  gap: 0.6rem;
 }
 
 .location-icon {
@@ -201,6 +202,13 @@
   display: inline-block;
 }
 
+.contact-details{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+  padding-left: 10px;
+}
 
 
 .profile-bio {
