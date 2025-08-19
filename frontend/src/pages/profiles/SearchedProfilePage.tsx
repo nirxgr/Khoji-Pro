@@ -121,6 +121,9 @@ const SearchedProfilePage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [captured, setCaptured] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,6 +140,66 @@ const SearchedProfilePage = () => {
   const handleExit = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
+  };
+  const openCamera = async () => {
+    try {
+      const s: MediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+      });
+      setStream(s);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = s;
+        videoRef.current.muted = true;
+        videoRef.current.playsInline = true;
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => console.error("Video play error:", err));
+        }
+      }
+    } catch (err) {
+      console.error("Camera error:", err);
+    }
+  };
+
+  const capturePhoto = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
+
+      setPreviewUrl(URL.createObjectURL(file));
+      setSelectedFile(file);
+
+      // stop camera after capture
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        setStream(null);
+      }
+    }, "image/jpeg");
+  };
+
+  const handleCancel = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+    setPreviewUrl(null);
+    setSelectedFile(null);
+    setOpenProfileEdit(false);
+    setOpenProfileEdit(false);
   };
 
   const handleSave = async () => {
@@ -230,6 +293,18 @@ const SearchedProfilePage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
+
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.muted = true;
+      videoRef.current.playsInline = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => console.error("Video play error:", err));
+      }
+    }
+  }, [stream]);
 
   if (!user) return <p>No user found</p>;
 
@@ -460,54 +535,75 @@ const SearchedProfilePage = () => {
                     src={assets.cancel}
                     alt="Cancel Icon"
                     className="cancel-icon"
-                    onClick={() => setOpenProfileEdit((prev) => !prev)}
+                    onClick={handleCancel}
                   />
                 </div>
                 <div className="edit-photo-circle">
-                  <img
-                    src={
-                      previewUrl ||
-                      user.profilePictureUrl.url ||
-                      defaultProfilePic
-                    }
-                    alt="Profile Photo"
-                  />
+                  {stream ? (
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      playsInline
+                      muted
+                      className="camera-preview"
+                    />
+                  ) : (
+                    <img
+                      src={
+                        previewUrl ||
+                        user.profilePictureUrl.url ||
+                        defaultProfilePic
+                      }
+                      alt="Profile Photo"
+                    />
+                  )}
                 </div>
                 {!selectedFile ? (
                   <div className="edit-photo-buttons">
-                    <div className="main-two-buttons">
-                      <button className="photo-buttons">
-                        <img
-                          src={assets.camera}
-                          alt="camera icon"
-                          className="delete-icon"
-                        />
+                    {stream ? (
+                      <button className="save-buttons" onClick={capturePhoto}>
+                        Capture
                       </button>
-                      <button
-                        className="photo-buttons"
-                        onClick={handleUpdateClick}
-                      >
-                        Upload Image
-                        <input
-                          type="file"
-                          accept="image/*"
-                          ref={fileInputRef}
-                          style={{ display: "none" }}
-                          onChange={handleFileChange}
-                        />
-                      </button>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="main-two-buttons">
+                          <button
+                            className="photo-buttons"
+                            onClick={openCamera}
+                          >
+                            <img
+                              src={assets.camera}
+                              alt="camera icon"
+                              className="delete-icon"
+                            />
+                          </button>
+                          <button
+                            className="photo-buttons"
+                            onClick={handleUpdateClick}
+                          >
+                            Upload Image
+                            <input
+                              type="file"
+                              accept="image/*"
+                              ref={fileInputRef}
+                              style={{ display: "none" }}
+                              onChange={handleFileChange}
+                            />
+                          </button>
+                        </div>
 
-                    <button
-                      className="photo-buttons"
-                      onClick={handleProfilePicDelete}
-                    >
-                      <img
-                        src={assets.deleteicon}
-                        alt="edit-icon"
-                        className="edit-icon"
-                      />
-                    </button>
+                        <button
+                          className="photo-buttons"
+                          onClick={handleProfilePicDelete}
+                        >
+                          <img
+                            src={assets.deleteicon}
+                            alt="edit-icon"
+                            className="edit-icon"
+                          />
+                        </button>
+                      </>
+                    )}
                   </div>
                 ) : (
                   <>
