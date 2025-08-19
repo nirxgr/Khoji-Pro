@@ -12,7 +12,24 @@ const userSchema = new mongoose.Schema({
       enum: ["Incomplete", "Completed"],
       default: "Incomplete",
     },
-    profilePictureUrl: {type: String, default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'},
+
+    profilePictureUrl: {
+      url: {
+        type:String,
+        default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'
+      },
+      public_id: {
+        type: String,
+        default: "profilepic/default"
+      },
+      createdAt: {
+        type:Date,
+        default: Date.now
+      }
+    },
+
+
+    
     coverPictureUrl: {type: String, default:'https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png'},
     profession: {type: String, default:''},
     skills: {type: [String], default:[]},

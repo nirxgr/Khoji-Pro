@@ -21,6 +21,8 @@ import userplus from './user-plus.svg'
 import shield from './shield.svg'
 import mail2 from './mail2.svg'
 import phone2 from './phone2.svg'
+import cancel from './cancel.svg'
+import camera from './camera.svg'
 
 export const assets = {
     arrow_icon,
@@ -45,5 +47,7 @@ export const assets = {
     userplus,
     network2,
     mail2,
-    phone2
+    phone2,
+    cancel,
+    camera
 }

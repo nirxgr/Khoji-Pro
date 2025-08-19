@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 
 const Header = () => {
   const navigate = useNavigate();
+  const defaultProfilePic =
+    "http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg";
   const { userData, backendUrl, setUserData, setIsLoggedin } =
     useContext(AppContext);
 
@@ -37,7 +39,10 @@ const Header = () => {
         </div>
         <div className="profile-circle">
           <div className="profile-img-wrapper">
-            <img src={userData.profilePictureUrl} alt="profile-photo" />
+            <img
+              src={userData.profilePictureUrl.url || defaultProfilePic}
+              alt="profile-photo"
+            />
           </div>
 
           <div className="dropdown">
