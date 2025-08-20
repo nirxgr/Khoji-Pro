@@ -64,12 +64,11 @@ const SearchedProfilePage = () => {
     "https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png";
   const [user, setUser] = useState<IUser | null>(null);
   const [reloadUser, setReloadUser] = useState(false);
-  const { backendUrl, userData } = useContext(AppContext);
+  const { backendUrl, userData, setUserData, getUserData } =
+    useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const profileInputRef = useRef<HTMLInputElement>(null);
-  const coverInputRef = useRef<HTMLInputElement>(null);
 
   const [showForm, setShowForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -85,8 +84,6 @@ const SearchedProfilePage = () => {
   const [selectedEdu, setSelectedEdu] = useState<IEducation | null>(null);
   const [showDeleteEdu, setShowDeleteEdu] = useState(false);
   const [showEditEdu, setShowEditEdu] = useState(false);
-
-  const [loading, setLoading] = useState(false);
 
   const isOwner = userData?._id === id;
 
@@ -130,7 +127,6 @@ const SearchedProfilePage = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [captured, setCaptured] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,6 +231,11 @@ const SearchedProfilePage = () => {
       );
 
       if (res.data.success) {
+        await getUserData();
+        setUserData((prev: any) => ({
+          ...prev,
+          profilePictureUrl: res.data.image,
+        }));
         toast.success(res.data.message);
         setReloadUser(true);
         handleExit();
@@ -279,6 +280,7 @@ const SearchedProfilePage = () => {
 
   const handleProfilePicDelete = async () => {
     try {
+      setIsUploading(true);
       const res = await axios.delete(backendUrl + "/api/user/deleteProfilePic");
       if (res.data.success) {
         toast.success(res.data.message);
@@ -288,11 +290,14 @@ const SearchedProfilePage = () => {
       }
     } catch (error) {
       toast.error("Error deleting profile picture");
+    } finally {
+      setIsUploading(false);
     }
   };
 
   const handleCoverPicDelete = async () => {
     try {
+      setIsUploading(true);
       const res = await axios.delete(backendUrl + "/api/user/deleteCoverPic");
       if (res.data.success) {
         toast.success(res.data.message);
@@ -302,6 +307,8 @@ const SearchedProfilePage = () => {
       }
     } catch (error) {
       toast.error("Error deleting cover picture");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -544,7 +551,10 @@ const SearchedProfilePage = () => {
                   {!selectedFile ? (
                     <div className="edit-photo-buttons">
                       {stream ? (
-                        <button className="save-buttons" onClick={capturePhoto}>
+                        <button
+                          className="capture-button"
+                          onClick={capturePhoto}
+                        >
                           Capture
                         </button>
                       ) : (
@@ -585,6 +595,11 @@ const SearchedProfilePage = () => {
                               className="edit-icon"
                             />
                           </button>
+                          {isUploading && (
+                            <div className="loading-overlay">
+                              <div className="spinner"></div>
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
@@ -601,18 +616,17 @@ const SearchedProfilePage = () => {
                           Cancel
                         </button>
                       </div>
+                      {isUploading && (
+                        <div className="loading-overlay">
+                          <div className="spinner"></div>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
               </>
             )}
           </div>
-
-          {loading && (
-            <div className="loading-overlay">
-              <div className="spinner"></div>
-            </div>
-          )}
 
           {openProfileEdit && (
             <>
@@ -651,9 +665,10 @@ const SearchedProfilePage = () => {
                 {!selectedFile ? (
                   <div className="edit-photo-buttons">
                     {stream ? (
-                      <button className="save-buttons" onClick={capturePhoto}>
-                        Capture
-                      </button>
+                      <button
+                        className="capture-button"
+                        onClick={capturePhoto}
+                      ></button>
                     ) : (
                       <>
                         <div className="main-two-buttons">
@@ -692,6 +707,11 @@ const SearchedProfilePage = () => {
                             className="edit-icon"
                           />
                         </button>
+                        {isUploading && (
+                          <div className="loading-overlay">
+                            <div className="spinner"></div>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
@@ -708,6 +728,11 @@ const SearchedProfilePage = () => {
                         Cancel
                       </button>
                     </div>
+                    {isUploading && (
+                      <div className="loading-overlay">
+                        <div className="spinner"></div>
+                      </div>
+                    )}
                   </>
                 )}
               </div>

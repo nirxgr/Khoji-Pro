@@ -26,16 +26,15 @@ const Header = () => {
       toast.error(error.message);
     }
   };
+  const handleClick = async (e: React.MouseEvent<HTMLImageElement>) => {
+    navigate("/home");
+  };
 
   return (
     <div className="container">
       <nav>
-        <div>
-          <img src={assets.logo1} alt="Logo" className="logo" />
-        </div>
-        <div className="nav-links">
-          <Link to="/home">Home</Link>
-          <Link to="">About Us</Link>
+        <div className="logo">
+          <img src={assets.logo1} alt="Logo" onClick={handleClick} />
         </div>
         <div className="profile-circle">
           <div className="profile-img-wrapper">

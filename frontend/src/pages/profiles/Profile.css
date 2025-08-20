@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
   isolation: isolate;
-  margin-top: 95px;
+  margin-top: 75px;
 }
 
 .profile-container {
@@ -87,19 +87,25 @@
 .photo-element:hover{
   background-color: rgb(234, 231, 231);
 }
-.loading-spinner {
-  border: 4px solid rgba(0,0,0,0.1);
-  border-left-color: #6366F1; /* Indigo-500 */
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  animation: spin 1s linear infinite;
-  margin: auto;
-  z-index: 9999;
+
+.loading-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  
+  inset: 0; 
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 4px solid rgba(0,0,0,0.1);
+  border-left-color: #6366F1; 
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -789,4 +795,16 @@ width: 25px;
 
 .save-buttons:hover {
   background-color: rgb(166, 164, 169);
+}
+
+.capture-button {
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+  transition: 0.3s;
+  margin: 0 auto;
+  border: none;
+}
+.capture-button:hover {
+  background-color: rgb(134, 128, 128);
 }

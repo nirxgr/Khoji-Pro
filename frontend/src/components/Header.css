@@ -3,38 +3,22 @@ nav {
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
-      padding: 25px 20px;
+      padding: 35px 20px;
       position: fixed;
       width: 100%;
       z-index: 100;
       top: 0;
       background-color: black;
     }
-        .logo {
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+        .logo img {
           height: 50px;
           width: auto;
-          object-fit: contain;
+          object-fit: cover;  
         }
-
-        .nav-links {
-            display: flex;
-            gap: 120px;
-            justify-content: center;
-            align-items: center;
-            
-        }
-
-        .nav-links a {
-            color: #A598D1;
-            text-decoration: none;
-            font-size: 1.4rem;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
 
         .profile-circle img {
         width: 100%;
