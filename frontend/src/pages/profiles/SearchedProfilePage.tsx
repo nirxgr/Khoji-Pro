@@ -21,7 +21,11 @@ interface IUser {
   linkedid: string;
   github: string;
   languages: string[];
-  coverPictureUrl: string;
+  coverPictureUrl: {
+    url: string;
+    public_id: string;
+    createdAt: Date;
+  };
   profilePictureUrl: {
     url: string;
     public_id: string;
@@ -55,6 +59,9 @@ const SearchedProfilePage = () => {
   const { id } = useParams();
   const defaultProfilePic =
     "http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg";
+
+  const defaultCoverPic =
+    "https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png";
   const [user, setUser] = useState<IUser | null>(null);
   const [reloadUser, setReloadUser] = useState(false);
   const { backendUrl, userData } = useContext(AppContext);
@@ -199,10 +206,19 @@ const SearchedProfilePage = () => {
     setPreviewUrl(null);
     setSelectedFile(null);
     setOpenProfileEdit(false);
-    setOpenProfileEdit(false);
   };
 
-  const handleSave = async () => {
+  const handleCoverUploadCancel = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+    setPreviewUrl(null);
+    setSelectedFile(null);
+    setOpen(false);
+  };
+
+  const handleProfilePicSave = async () => {
     if (!selectedFile) return;
 
     try {
@@ -231,6 +247,35 @@ const SearchedProfilePage = () => {
       setIsUploading(false);
     }
   };
+  const handleCoverPicSave = async () => {
+    if (!selectedFile) return;
+
+    try {
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      const res = await axios.patch(
+        backendUrl + "/api/user/updateCoverPic",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setReloadUser(true);
+        handleExit();
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      toast.error("Error uploading cover picture");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleProfilePicDelete = async () => {
     try {
@@ -243,6 +288,20 @@ const SearchedProfilePage = () => {
       }
     } catch (error) {
       toast.error("Error deleting profile picture");
+    }
+  };
+
+  const handleCoverPicDelete = async () => {
+    try {
+      const res = await axios.delete(backendUrl + "/api/user/deleteCoverPic");
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setReloadUser(true);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      toast.error("Error deleting cover picture");
     }
   };
 
@@ -428,7 +487,7 @@ const SearchedProfilePage = () => {
         <div className="profile-header">
           <div className="cover-container" ref={containerRef}>
             <img
-              src={user.coverPictureUrl}
+              src={user.coverPictureUrl.url || defaultCoverPic}
               alt="cover-photo"
               className="cover-photo"
             />
@@ -447,7 +506,10 @@ const SearchedProfilePage = () => {
 
             {open && (
               <>
-                <div className="overlay" onClick={() => setOpen(false)}></div>
+                <div
+                  className="overlay"
+                  onClick={handleCoverUploadCancel}
+                ></div>
 
                 <div className="edit-photo-overlay">
                   <div className="edit-photo-top">
@@ -456,52 +518,83 @@ const SearchedProfilePage = () => {
                       src={assets.cancel}
                       alt="Cancel Icon"
                       className="cancel-icon"
-                      onClick={() => setOpen((prev) => !prev)}
+                      onClick={handleCoverUploadCancel}
                     />
                   </div>
                   <div className="edit-photo-rectangle">
-                    <img src={user.coverPictureUrl} alt="Cover Photo" />
+                    {stream ? (
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="camera-preview"
+                      />
+                    ) : (
+                      <img
+                        src={
+                          previewUrl ||
+                          user.coverPictureUrl.url ||
+                          defaultCoverPic
+                        }
+                        alt="Cover Photo"
+                      />
+                    )}
                   </div>
                   {!selectedFile ? (
                     <div className="edit-photo-buttons">
-                      <div className="main-two-buttons">
-                        <button className="photo-buttons">
-                          <img
-                            src={assets.camera}
-                            alt="camera icon"
-                            className="delete-icon"
-                          />
+                      {stream ? (
+                        <button className="save-buttons" onClick={capturePhoto}>
+                          Capture
                         </button>
-                        <button
-                          className="photo-buttons"
-                          onClick={handleUpdateClick}
-                        >
-                          Upload Image
-                          <input
-                            type="file"
-                            accept="image/*"
-                            ref={fileInputRef}
-                            style={{ display: "none" }}
-                            onChange={handleFileChange}
-                          />
-                        </button>
-                      </div>
+                      ) : (
+                        <>
+                          <div className="main-two-buttons">
+                            <button
+                              className="photo-buttons"
+                              onClick={openCamera}
+                            >
+                              <img
+                                src={assets.camera}
+                                alt="camera icon"
+                                className="delete-icon"
+                              />
+                            </button>
+                            <button
+                              className="photo-buttons"
+                              onClick={handleUpdateClick}
+                            >
+                              Upload Image
+                              <input
+                                type="file"
+                                accept="image/*"
+                                ref={fileInputRef}
+                                style={{ display: "none" }}
+                                onChange={handleFileChange}
+                              />
+                            </button>
+                          </div>
 
-                      <button
-                        className="photo-buttons"
-                        onClick={handleProfilePicDelete}
-                      >
-                        <img
-                          src={assets.deleteicon}
-                          alt="edit-icon"
-                          className="edit-icon"
-                        />
-                      </button>
+                          <button
+                            className="photo-buttons"
+                            onClick={handleCoverPicDelete}
+                          >
+                            <img
+                              src={assets.deleteicon}
+                              alt="edit-icon"
+                              className="edit-icon"
+                            />
+                          </button>
+                        </>
+                      )}
                     </div>
                   ) : (
                     <>
                       <div className="save-photo-buttons">
-                        <button className="save-buttons" onClick={handleSave}>
+                        <button
+                          className="save-buttons"
+                          onClick={handleCoverPicSave}
+                        >
                           Save
                         </button>
                         <button className="save-buttons" onClick={handleExit}>
@@ -523,10 +616,7 @@ const SearchedProfilePage = () => {
 
           {openProfileEdit && (
             <>
-              <div
-                className="overlay"
-                onClick={() => setOpenProfileEdit(false)}
-              ></div>
+              <div className="overlay" onClick={handleCancel}></div>
 
               <div className="edit-photo-overlay">
                 <div className="edit-photo-top">
@@ -608,7 +698,10 @@ const SearchedProfilePage = () => {
                 ) : (
                   <>
                     <div className="save-photo-buttons">
-                      <button className="save-buttons" onClick={handleSave}>
+                      <button
+                        className="save-buttons"
+                        onClick={handleProfilePicSave}
+                      >
                         Save
                       </button>
                       <button className="save-buttons" onClick={handleExit}>

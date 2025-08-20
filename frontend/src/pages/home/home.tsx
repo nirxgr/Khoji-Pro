@@ -17,7 +17,11 @@ interface IUser {
   profession: string;
   location: string;
   skills: string[];
-  profilePictureUrl: string;
+  profilePictureUrl: {
+    url: string;
+    public_id: string;
+    createdAt: Date;
+  };
 }
 
 const Home = () => {
@@ -151,7 +155,10 @@ const Home = () => {
                   >
                     <div className="card-header">
                       <div className="card-picture">
-                        <img src={user.profilePictureUrl} alt="profile-photo" />
+                        <img
+                          src={user.profilePictureUrl.url}
+                          alt="profile-photo"
+                        />
                       </div>
                       <div className="card-details">
                         <p>

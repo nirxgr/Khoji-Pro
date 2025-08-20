@@ -28,9 +28,21 @@ const userSchema = new mongoose.Schema({
       }
     },
 
-
+     coverPictureUrl: {
+      url: {
+        type:String,
+        default:'https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png'
+      },
+      public_id: {
+        type: String,
+        default: "profilepic/default"
+      },
+      createdAt: {
+        type:Date,
+        default: Date.now
+      }
+    },
     
-    coverPictureUrl: {type: String, default:'https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png'},
     profession: {type: String, default:''},
     skills: {type: [String], default:[]},
     location: {type: String, default:''},
