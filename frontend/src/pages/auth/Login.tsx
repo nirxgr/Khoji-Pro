@@ -21,7 +21,7 @@ const Login = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({ mode: "onBlur" });
+  } = useForm<LoginFormData>({ mode: "onSubmit" });
 
   const onSubmitHandler = async (data: LoginFormData) => {
     try {
@@ -43,8 +43,6 @@ const Login = () => {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
-    } finally {
-      reset();
     }
   };
 

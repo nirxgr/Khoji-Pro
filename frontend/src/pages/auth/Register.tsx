@@ -36,14 +36,14 @@ const Register = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({ mode: "onBlur" });
+  } = useForm<SignUpFormData>({ mode: "onSubmit" });
 
   const {
     register: registerOtp,
     handleSubmit: handleOtpSubmit,
     setValue: setOtpValue,
     formState: { isSubmitting: isSubmittingOtp },
-  } = useForm<OtpFormData>({ mode: "onBlur" });
+  } = useForm<OtpFormData>({ mode: "onSubmit" });
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -117,8 +117,6 @@ const Register = () => {
       }
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      reset();
     }
   };
 

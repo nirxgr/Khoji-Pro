@@ -41,7 +41,7 @@ const ResetPassword = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<EmailFormData>({ mode: "onBlur" });
+  } = useForm<EmailFormData>({ mode: "onSubmit" });
 
   const {
     register: resetOtp,
@@ -54,7 +54,7 @@ const ResetPassword = () => {
     register: newPass,
     handleSubmit: handlePassSubmit,
     formState: { errors: passErrors, isSubmitting: isSubmittingPass },
-  } = useForm<NewPassFormData>({ mode: "onBlur" });
+  } = useForm<NewPassFormData>({ mode: "onSubmit" });
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -116,13 +116,12 @@ const ResetPassword = () => {
         toast.success(response.data.message);
         setUserEmail(email);
         response.data.success && setIsEmailSent(true);
+        reset();
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      reset();
     }
   };
 
@@ -221,6 +220,12 @@ const ResetPassword = () => {
             <button className="submit-button" disabled={isSubmitting}>
               Submit
             </button>
+            <p className="auth-toggle">
+              Oh wait, you remember your password?{" "}
+              <span className="toggle-link" onClick={() => navigate("/login")}>
+                Login
+              </span>
+            </p>
           </form>
         </div>
       )}
