@@ -18,8 +18,8 @@ interface IUser {
   profession: string;
   skills: string[];
   location: string;
-  linkedid: string;
-  github: string;
+  linkedinId: string;
+  githubId: string;
   languages: string[];
   coverPictureUrl: {
     url: string;
@@ -72,7 +72,7 @@ const SearchedProfilePage = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
-
+  const [showSocialForm, setShowSocialForm] = useState(false);
   const [experiences, setExperiences] = useState<IExperience[]>([]);
   const [showExpForm, setShowExpForm] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -84,6 +84,8 @@ const SearchedProfilePage = () => {
   const [selectedEdu, setSelectedEdu] = useState<IEducation | null>(null);
   const [showDeleteEdu, setShowDeleteEdu] = useState(false);
   const [showEditEdu, setShowEditEdu] = useState(false);
+  const [showDeleteGithubId, setShowDeleteGithubId] = useState(false);
+  const [showDeleteLinkedinId, setShowDeleteLinkedinId] = useState(false);
 
   const isOwner = userData?._id === id;
 
@@ -121,6 +123,19 @@ const SearchedProfilePage = () => {
     reset: resetEditEdu,
     formState: { errors: editEduErrors, isSubmitting: isSubmittingEditEdu },
   } = useForm<IEducation>({ mode: "onBlur" });
+
+  const {
+    register: registerSocial,
+    handleSubmit: handleSocial,
+    reset: resetSocial,
+    formState: { errors: socialErrors, isSubmitting: isSubmittingSocial },
+  } = useForm<IUser>({
+    mode: "onBlur",
+    defaultValues: {
+      githubId: user?.githubId || "",
+      linkedinId: user?.linkedinId || "",
+    },
+  });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -342,6 +357,15 @@ const SearchedProfilePage = () => {
   }, [id, backendUrl, reloadUser, reset]);
 
   useEffect(() => {
+    if (user) {
+      resetSocial({
+        githubId: user.githubId,
+        linkedinId: user.linkedinId,
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         containerRef.current &&
@@ -385,6 +409,7 @@ const SearchedProfilePage = () => {
         setReloadUser(true);
         if (showForm) setShowForm(false);
         if (showContactForm) setShowContactForm(false);
+        if (showSocialForm) setShowSocialForm(false);
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
@@ -487,6 +512,11 @@ const SearchedProfilePage = () => {
     }
   };
 
+  const handleSocialCancel = () => {
+    resetSocial();
+    setShowSocialForm(false);
+  };
+
   return (
     <div className="main">
       <Header />
@@ -567,7 +597,7 @@ const SearchedProfilePage = () => {
                               <img
                                 src={assets.camera}
                                 alt="camera icon"
-                                className="delete-icon"
+                                className="delete-picture"
                               />
                             </button>
                             <button
@@ -679,7 +709,7 @@ const SearchedProfilePage = () => {
                             <img
                               src={assets.camera}
                               alt="camera icon"
-                              className="delete-icon"
+                              className="delete-picture"
                             />
                           </button>
                           <button
@@ -1907,23 +1937,235 @@ const SearchedProfilePage = () => {
         </div>
 
         <div className="profile-section">
-          <h3 className="profile-section-title">Social</h3>
+          <div className="exp-section">
+            <h3 className="profile-section-title">Social</h3>
+            {isOwner && (
+              <>
+                {user.linkedinId !== "" && user.githubId !== "" ? (
+                  <button
+                    className="add-btn"
+                    type="button"
+                    onClick={() => setShowSocialForm(true)}
+                  >
+                    <img
+                      src={assets.pencil}
+                      alt="edit-icon"
+                      className="add-icon"
+                    />
+                  </button>
+                ) : (
+                  <button
+                    className="add-btn"
+                    onClick={() => setShowSocialForm(true)}
+                  >
+                    <img src={assets.add} alt="add-icon" className="add-icon" />
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+          {showSocialForm && (
+            <div className="profile-form-overlay">
+              <div className="profile-form">
+                {user.githubId && user.linkedinId ? (
+                  <h2 className="profile-form-title"> Edit Social Links</h2>
+                ) : (
+                  <h2 className="profile-form-title">Add Social Links</h2>
+                )}
+
+                <form
+                  className="form-group"
+                  onSubmit={handleSocial(handleProfileSave)}
+                >
+                  <div className="input">
+                    <label htmlFor="company">GitHub ID Link</label>
+                    <div className="link-delete">
+                      <input
+                        type="text"
+                        className="edit-input-field"
+                        id="company"
+                        {...registerSocial("githubId")}
+                      />
+                      {user.githubId && (
+                        <button className="delete-link-btn" type="button">
+                          <img
+                            src={assets.deleteicon}
+                            alt="Delete"
+                            className="delete-icon"
+                            onClick={() => setShowDeleteGithubId(true)}
+                          />
+                        </button>
+                      )}
+                    </div>
+                    {socialErrors.githubId?.message && (
+                      <p className="profile-error">
+                        {socialErrors.githubId.message}
+                      </p>
+                    )}
+                    {showDeleteGithubId && (
+                      <div className="popup-overlay">
+                        <div className="popup">
+                          <h3>Delete Github ID Link</h3>
+                          <p>
+                            Are you sure you want to delete your Github ID Link
+                            ?
+                          </p>
+                          <div className="popup-actions">
+                            <button
+                              className="cancel-btn-popup"
+                              type="button"
+                              onClick={() => setShowDeleteGithubId(false)}
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="delete-btn-popup"
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  const { data } = await axios.delete(
+                                    `${backendUrl}/api/user/deleteGithubId`
+                                  );
+                                  if (data.success) {
+                                    setReloadUser(true);
+                                    setShowDeleteGithubId(false);
+                                    toast.success(data.message);
+                                  } else {
+                                    toast.error(data.message);
+                                  }
+                                } catch (err) {
+                                  toast.error(err.message);
+                                }
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="input">
+                    <label htmlFor="position">Linkedin ID Link</label>
+                    <div className="link-delete">
+                      <input
+                        type="text"
+                        className="edit-input-field"
+                        id="position"
+                        {...registerSocial("linkedinId")}
+                      />
+                      {user.linkedinId && (
+                        <button className="delete-link-btn" type="button">
+                          <img
+                            src={assets.deleteicon}
+                            alt="Delete"
+                            className="delete-icon"
+                            onClick={() => setShowDeleteLinkedinId(true)}
+                          />
+                        </button>
+                      )}
+                    </div>
+
+                    {socialErrors.linkedinId?.message && (
+                      <p className="profile-error">
+                        {socialErrors.linkedinId.message}
+                      </p>
+                    )}
+                    {showDeleteLinkedinId && (
+                      <div className="popup-overlay">
+                        <div className="popup">
+                          <h3>Delete Linkedin ID Link</h3>
+                          <p>
+                            Are you sure you want to delete your Linkedin ID
+                            Link ?
+                          </p>
+                          <div className="popup-actions">
+                            <button
+                              className="cancel-btn-popup"
+                              type="button"
+                              onClick={() => setShowDeleteLinkedinId(false)}
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="delete-btn-popup"
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  const { data } = await axios.delete(
+                                    `${backendUrl}/api/user/deleteLinkedinId`
+                                  );
+                                  if (data.success) {
+                                    setReloadUser(true);
+                                    setShowDeleteLinkedinId(false);
+                                    toast.success(data.message);
+                                  } else {
+                                    toast.error(data.message);
+                                  }
+                                } catch (err) {
+                                  toast.error(
+                                    err.response?.data?.message ||
+                                      err.message ||
+                                      "Server error"
+                                  );
+                                }
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-buttons">
+                    <button type="submit" className="btn-save">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-cancel"
+                      onClick={handleSocialCancel}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+                {isSubmittingSocial && (
+                  <div className="loading-overlay">
+                    <div className="spinner"></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <div className="social-links">
-            <a
-              href={user.github || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {" "}
-              GitHub Profile
-            </a>
-            <a
-              href={user.linkedid || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn Profile
-            </a>
+            {user.githubId === "" && user.linkedinId === "" ? (
+              <p>No social links added yet.</p>
+            ) : (
+              <>
+                {user.githubId && (
+                  <a
+                    href={user.githubId}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {" "}
+                    GitHub Profile
+                  </a>
+                )}
+                {user.linkedinId && (
+                  <a
+                    href={user.linkedinId}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    LinkedIn Profile
+                  </a>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

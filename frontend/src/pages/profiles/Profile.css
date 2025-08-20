@@ -363,9 +363,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); 
   z-index: 9998;
-  backdrop-filter: blur(2px);
 }
 
 .profile-form {
@@ -373,15 +373,16 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(145deg, #1e0025, #120012);
   color: #fff;
   padding: 3rem 4rem ;
   border-radius: 25px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(145deg, #1a1a2e, #0f0f1a);;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   z-index: 9999;
   width: 600px;
   height: auto;
   max-width: 90%;
+  
 }
 
 .form-group {
@@ -766,7 +767,7 @@ input[type="date"].edit-input-field {
   border-radius: 6px;
 
 }
-.delete-icon {
+.delete-picture {
 height: 25px;
 width: 25px;
 }
@@ -807,4 +808,25 @@ width: 25px;
 }
 .capture-button:hover {
   background-color: rgb(134, 128, 128);
+}
+.link-delete{
+  display: flex;
+  gap: 5px;
+}
+.delete-link-btn{
+    cursor: pointer;
+  padding: 0;  
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;  
+  width: 40px;                
+  height: 40px; 
+}
+
+.delete-link-btn:hover{
+  background-color: rgb(101, 99, 99);
+  border-radius: 10px;
 }

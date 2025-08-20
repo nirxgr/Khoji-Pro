@@ -53,6 +53,8 @@ export async function updateProfileDetails(req, res) {
         user.location = req.body.location || user.location;
         user.bio = req.body.bio || user.bio;
         user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+        user.linkedinId = req.body.linkedinId || user.linkedinId;
+        user.githubId = req.body.githubId || user.githubId;
         await user.save();
 
         return res.json({success: true, message: "Profile details updated successfully."})

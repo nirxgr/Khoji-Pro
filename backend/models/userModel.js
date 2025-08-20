@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
     profession: {type: String, default:''},
     skills: {type: [String], default:[]},
     location: {type: String, default:''},
-    linkedId: {type: String, default:''},
+    linkedinId: {type: String, default:''},
     githubId: {type: String, default:''},
     bio: {type: String, default:''},
     experiences: [
