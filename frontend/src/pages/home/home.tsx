@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../components/Header.tsx";
+import Header from "../../components/Header/Header.tsx";
 import { Link, useNavigate } from "react-router-dom";
 import Hero from "../../components/HeroSection.tsx";
 import { assets } from "../../assets/assets.js";

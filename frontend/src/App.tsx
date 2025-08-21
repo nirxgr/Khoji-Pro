@@ -1,82 +1,89 @@
-import { useState } from 'react'
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import Register from './pages/auth/Register.tsx'
-import Home from './pages/home/home.tsx'
-import Landingpage from './pages/home/landingpage.tsx'
-import Login from './pages/auth/Login.tsx'
-import LoginGuard from './shared/guards/loginGuard.tsx'
-import AuthGuard from './shared/guards/authGuard.tsx'
-import ResetPassword from './pages/auth/ResetPassword.tsx'
-import SearchedProfilePage from './pages/profiles/SearchedProfilePage.tsx'
-import NotFoundPage from './pages/NotFoundPage.tsx'
-import ProfileCompletion from './pages/auth/ProfileCompletion.tsx'
-import CompleteProfileGuard from './shared/guards/completeProfileGuard.tsx'
-
+import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import Register from "./pages/auth/Register.tsx";
+import Home from "./pages/home/home.tsx";
+import Login from "./pages/auth/Login.tsx";
+import LoginGuard from "./shared/guards/loginGuard.tsx";
+import AuthGuard from "./shared/guards/authGuard.tsx";
+import ResetPassword from "./pages/auth/ResetPassword.tsx";
+import SearchedProfilePage from "./pages/profiles/Profile.tsx";
+import NotFoundPage from "./pages/notfound/NotFoundPage.tsx";
+import ProfileCompletion from "./pages/auth/ProfileCompletion.tsx";
+import CompleteProfileGuard from "./shared/guards/completeProfileGuard.tsx";
+import LandingPage from "./pages/landing/LandingPage.tsx";
 
 function App() {
-
   return (
     <div>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={
-          <LoginGuard>
-            <Landingpage />
-          </LoginGuard>  
-        
-        } />
-        
-        <Route path="/register" element={
-          <LoginGuard>
-            <Register />
-          </LoginGuard>  
-        } />
+        <Route
+          path="/"
+          element={
+            <LoginGuard>
+              <LandingPage />
+            </LoginGuard>
+          }
+        />
 
-        <Route path="/complete-profile" element={
+        <Route
+          path="/register"
+          element={
+            <LoginGuard>
+              <Register />
+            </LoginGuard>
+          }
+        />
+
+        <Route
+          path="/complete-profile"
+          element={
             <CompleteProfileGuard>
               <ProfileCompletion />
             </CompleteProfileGuard>
-        } />
-        
-        <Route path="/login" element={
-          <LoginGuard>
-            <Login />
-          </LoginGuard>  
-        } />
+          }
+        />
 
-        <Route path="/reset-password" element={
-          <LoginGuard>
-            <ResetPassword /> 
-          </LoginGuard>  
-        } />
+        <Route
+          path="/login"
+          element={
+            <LoginGuard>
+              <Login />
+            </LoginGuard>
+          }
+        />
 
+        <Route
+          path="/reset-password"
+          element={
+            <LoginGuard>
+              <ResetPassword />
+            </LoginGuard>
+          }
+        />
 
-        <Route path="/home" element={
-          <AuthGuard>
-            <Home />
-          </AuthGuard>  
+        <Route
+          path="/home"
+          element={
+            <AuthGuard>
+              <Home />
+            </AuthGuard>
+          }
+        />
 
-        } />
+        <Route
+          path="/profile/:id"
+          element={
+            <AuthGuard>
+              <SearchedProfilePage />
+            </AuthGuard>
+          }
+        />
 
-        
-        <Route path="/profile/:id" element={
-          <AuthGuard>
-            <SearchedProfilePage /> 
-          </AuthGuard>  
-        } />
-
-        <Route path="/*" element={
-            <NotFoundPage />  
-        } />
-
-
-        
+        <Route path="/*" element={<NotFoundPage />} />
       </Routes>
-      
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -374,12 +374,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
-  padding: 3rem 4rem ;
+  padding: 2rem 4rem ;
   border-radius: 25px;
   background: linear-gradient(145deg, #1a1a2e, #0f0f1a);;
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   z-index: 9999;
-  width: 600px;
+  width: 800px;
   height: auto;
   max-width: 90%;
   
@@ -388,7 +388,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 .profile-form-title {
   font-size: 1.8rem;
@@ -409,7 +409,7 @@
 }
 
 .input label {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #d9b8ff;
   display: block;
   margin-bottom: 0.6rem;
@@ -423,7 +423,7 @@
   outline: none;
   background-color: rgba(255, 255, 255, 0.08);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: background 0.3s ease;
 }
 
@@ -441,7 +441,7 @@
   resize: vertical;
   background-color: rgba(255, 255, 255, 0.08);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.4;
   transition: background 0.3s ease;
   text-align: justify;
@@ -615,10 +615,13 @@ input[type="date"].edit-input-field {
 }
 
 .profile-error{
-  color: red;
-  font-size: 13px;
+  color: rgb(186, 11, 11);
+  font-size: 15px;
+  letter-spacing: 1px;
   padding-left: 5px;
+  padding-top: 5px;
   position: absolute;
+  font-weight: 500;
 }
 
 

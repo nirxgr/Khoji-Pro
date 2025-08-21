@@ -3,46 +3,16 @@ import { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext.jsx";
 import "./Profile.css";
-import Header from "../../components/Header";
+import ProfileDetails from "../../components/ProfileDetails/ProfileDetails.tsx";
+import ContactDetails from "../../components/ProfileDetails/ContactDetails.tsx";
+import SoicalLinks from "../../components/ProfileDetails/SocialLinks.tsx";
+import Header from "../../components/Header/Header.js";
 import { assets } from "../../assets/assets.js";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-
-interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  bio: string;
-  phoneNumber: string;
-  experienceYears: number;
-  profession: string;
-  skills: string[];
-  location: string;
-  linkedinId: string;
-  githubId: string;
-  languages: string[];
-  coverPictureUrl: {
-    url: string;
-    public_id: string;
-    createdAt: Date;
-  };
-  profilePictureUrl: {
-    url: string;
-    public_id: string;
-    createdAt: Date;
-  };
-}
-
-interface IExperience {
-  company: string;
-  position: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-  employmentType: string;
-  _id: string;
-}
+import { IUser } from "../../shared/interfaces/user.interface.tsx";
+import { IExperience } from "../../shared/interfaces/experience.interface.tsx";
+import ExperienceForm from "../../components/Experience/ExperienceForm.tsx";
 
 interface IEducation {
   school: string;
@@ -66,13 +36,14 @@ const SearchedProfilePage = () => {
   const [reloadUser, setReloadUser] = useState(false);
   const { backendUrl, userData, setUserData, getUserData } =
     useContext(AppContext);
+  const [showForm, setShowForm] = useState(false);
   const [open, setOpen] = useState(false);
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [showForm, setShowForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showSocialForm, setShowSocialForm] = useState(false);
+
   const [experiences, setExperiences] = useState<IExperience[]>([]);
   const [showExpForm, setShowExpForm] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -84,58 +55,22 @@ const SearchedProfilePage = () => {
   const [selectedEdu, setSelectedEdu] = useState<IEducation | null>(null);
   const [showDeleteEdu, setShowDeleteEdu] = useState(false);
   const [showEditEdu, setShowEditEdu] = useState(false);
-  const [showDeleteGithubId, setShowDeleteGithubId] = useState(false);
-  const [showDeleteLinkedinId, setShowDeleteLinkedinId] = useState(false);
 
   const isOwner = userData?._id === id;
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<IUser>({ mode: "onBlur" });
-
-  const {
-    register: registerAddExp,
-    handleSubmit: handleAddExp,
-    reset: resetAddExp,
-    formState: { errors: addErrors, isSubmitting: isSubmittingAddExp },
-  } = useForm<IExperience>({ mode: "onBlur" });
-
-  const {
-    register: registerEditExp,
-    handleSubmit: handleEditExp,
-    reset: resetEditExp,
-    formState: { errors: editErrors, isSubmitting: isSubmittingEditExp },
-  } = useForm<IExperience>({ mode: "onBlur" });
 
   const {
     register: registerAddEdu,
     handleSubmit: handleAddEdu,
     reset: resetAddEdu,
     formState: { errors: addEduErrors, isSubmitting: isSubmittingAddEdu },
-  } = useForm<IEducation>({ mode: "onBlur" });
+  } = useForm<IEducation>({ mode: "onSubmit" });
 
   const {
     register: registerEditEdu,
     handleSubmit: handleEditEdu,
     reset: resetEditEdu,
     formState: { errors: editEduErrors, isSubmitting: isSubmittingEditEdu },
-  } = useForm<IEducation>({ mode: "onBlur" });
-
-  const {
-    register: registerSocial,
-    handleSubmit: handleSocial,
-    reset: resetSocial,
-    formState: { errors: socialErrors, isSubmitting: isSubmittingSocial },
-  } = useForm<IUser>({
-    mode: "onBlur",
-    defaultValues: {
-      githubId: user?.githubId || "",
-      linkedinId: user?.linkedinId || "",
-    },
-  });
+  } = useForm<IEducation>({ mode: "onSubmit" });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -333,7 +268,7 @@ const SearchedProfilePage = () => {
         // Fetch user profile
         const res = await axios.get(`${backendUrl}/api/user/${id}`);
         setUser(res.data);
-        reset(res.data);
+        // reset(res.data);
 
         // Fetch user experiences
         const expRes = await axios.get(
@@ -354,16 +289,7 @@ const SearchedProfilePage = () => {
     };
 
     fetchData();
-  }, [id, backendUrl, reloadUser, reset]);
-
-  useEffect(() => {
-    if (user) {
-      resetSocial({
-        githubId: user.githubId,
-        linkedinId: user.linkedinId,
-      });
-    }
-  }, [user]);
+  }, [id, backendUrl, reloadUser]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -397,75 +323,6 @@ const SearchedProfilePage = () => {
   }, [stream]);
 
   if (!user) return <p>No user found</p>;
-
-  const handleProfileSave = async (data: IUser) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const res = await axios.post(
-        backendUrl + "/api/update/updateProfileDetails",
-        data
-      );
-      if (res.data.success) {
-        setReloadUser(true);
-        if (showForm) setShowForm(false);
-        if (showContactForm) setShowContactForm(false);
-        if (showSocialForm) setShowSocialForm(false);
-        toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error updating profile");
-    }
-  };
-
-  const handleExpAdd = async (expFormData: IExperience) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const res = await axios.post(
-        backendUrl + "/api/exp/add-experience",
-        expFormData
-      );
-      if (res.data.success) {
-        setReloadUser(true);
-        setShowExpForm(false);
-
-        toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error adding experience!");
-    }
-  };
-
-  const handleExpCancel = () => {
-    resetAddExp();
-    setShowExpForm(false);
-  };
-
-  const handleUpdateExperience = async (
-    id: string,
-    updatedData: IExperience
-  ) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const response = await axios.put(
-        `${backendUrl}/api/exp/update-experience/${id}`,
-        updatedData
-      );
-
-      if (response.data.success) {
-        setReloadUser(true);
-        setShowEditPopup(false);
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Update failed:", error);
-    }
-  };
 
   const handleEduAdd = async (eduFormData: IEducation) => {
     try {
@@ -510,11 +367,6 @@ const SearchedProfilePage = () => {
     } catch (error) {
       console.error("Update failed:", error);
     }
-  };
-
-  const handleSocialCancel = () => {
-    resetSocial();
-    setShowSocialForm(false);
   };
 
   return (
@@ -799,129 +651,13 @@ const SearchedProfilePage = () => {
                 </button>
               )}
 
-              {showForm && (
-                <div className="profile-form-overlay">
-                  <div className="profile-form">
-                    <h2 className="profile-form-title">Edit Profile</h2>
-                    <p className="profile-form-subtitle">
-                      Edit your profile details
-                    </p>
-                    <form
-                      className="form-group"
-                      onSubmit={handleSubmit(handleProfileSave)}
-                    >
-                      <div className="input">
-                        <label htmlFor="firstName">First Name</label>
-                        <input
-                          type="text"
-                          className="edit-input-field"
-                          id="firstName"
-                          {...register("firstName", {
-                            required: {
-                              value: true,
-                              message: "First Name is required.",
-                            },
-                          })}
-                        />
-                        {errors.firstName?.message && (
-                          <p className="profile-error">
-                            {errors.firstName.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="input">
-                        <label htmlFor="lastName">Last Name</label>
-                        <input
-                          type="text"
-                          className="edit-input-field"
-                          id="lastName"
-                          {...register("lastName", {
-                            required: {
-                              value: true,
-                              message: "Last Name is required.",
-                            },
-                          })}
-                        />
-                        {errors.lastName?.message && (
-                          <p className="profile-error">
-                            {errors.lastName.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="input">
-                        <label htmlFor="profession">Designation</label>
-                        <input
-                          type="text"
-                          className="edit-input-field"
-                          id="profession"
-                          {...register("profession", {
-                            required: {
-                              value: true,
-                              message: "Desgination is required.",
-                            },
-                          })}
-                        />
-                        {errors.profession?.message && (
-                          <p className="profile-error">
-                            {errors.profession.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="input">
-                        <label htmlFor="location">Location</label>
-                        <input
-                          type="text"
-                          className="edit-input-field"
-                          id="location"
-                          {...register("location", {
-                            required: {
-                              value: true,
-                              message: "Location is required.",
-                            },
-                          })}
-                        />
-                        {errors.location?.message && (
-                          <p className="profile-error">
-                            {errors.location.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="input">
-                        <label htmlFor="bio">Bio</label>
-                        <textarea
-                          id="bio"
-                          {...register("bio", {
-                            required: {
-                              value: true,
-                              message: "Bio is required.",
-                            },
-                          })}
-                        />
-                        {errors.bio?.message && (
-                          <p className="profile-error">{errors.bio.message}</p>
-                        )}
-                      </div>
-                      <div className="form-buttons">
-                        <button type="submit" className="btn-save">
-                          Save
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-cancel"
-                          onClick={() => setShowForm(false)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                    {isSubmitting && (
-                      <div className="loading-overlay">
-                        {" "}
-                        <div className="spinner"></div>{" "}
-                      </div>
-                    )}
-                  </div>
-                </div>
+              {showForm && user && (
+                <ProfileDetails
+                  user={user}
+                  backendUrl={backendUrl}
+                  setReloadUser={setReloadUser}
+                  setShowForm={setShowForm}
+                />
               )}
 
               <p className="profession">{user.profession || "---"}</p>
@@ -970,59 +706,13 @@ const SearchedProfilePage = () => {
             </p>
           </div>
         </div>
-        {showContactForm && (
-          <div className="profile-form-overlay">
-            <div className="profile-form">
-              <h2 className="profile-form-title">Edit Contact</h2>
-              <p className="profile-form-subtitle">Edit your contact details</p>
-              <form
-                className="form-group"
-                onSubmit={handleSubmit(handleProfileSave)}
-              >
-                <div className="input">
-                  <label htmlFor="firstName">Phone Number</label>
-                  <input
-                    type="text"
-                    className="edit-input-field"
-                    id="phoneNumber"
-                    {...register("phoneNumber", {
-                      required: {
-                        value: true,
-                        message: "Phone number is required.",
-                      },
-                      pattern: {
-                        value: /^\d{10}$/,
-                        message: "Phone Number must be exactly 10 digits",
-                      },
-                    })}
-                  />
-                  {errors.phoneNumber?.message && (
-                    <p className="profile-error">
-                      {errors.phoneNumber.message}
-                    </p>
-                  )}
-                </div>
-                <div className="form-buttons">
-                  <button type="submit" className="btn-save">
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cancel"
-                    onClick={() => setShowContactForm(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-              {isSubmitting && (
-                <div className="loading-overlay">
-                  {" "}
-                  <div className="spinner"></div>{" "}
-                </div>
-              )}
-            </div>
-          </div>
+        {showContactForm && user && (
+          <ContactDetails
+            user={user}
+            backendUrl={backendUrl}
+            setReloadUser={setReloadUser}
+            setShowContactForm={setShowContactForm}
+          />
         )}
 
         <div className="profile-section">
@@ -1044,163 +734,14 @@ const SearchedProfilePage = () => {
             <div className="profile-form-overlay">
               <div className="profile-form">
                 <h2 className="profile-form-title">Add Experience</h2>
-                <form
-                  className="form-group"
-                  onSubmit={handleAddExp(handleExpAdd)}
-                >
-                  <div className="input">
-                    <label htmlFor="company">Company</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      id="company"
-                      {...registerAddExp("company", {
-                        required: {
-                          value: true,
-                          message: "Company name is required.",
-                        },
-                      })}
-                    />
-                    {addErrors.company?.message && (
-                      <p className="profile-error">
-                        {addErrors.company.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="position">Position</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      id="position"
-                      {...registerAddExp("position", {
-                        required: {
-                          value: true,
-                          message: "Position is required.",
-                        },
-                      })}
-                    />
-                    {addErrors.position?.message && (
-                      <p className="profile-error">
-                        {addErrors.position.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="location">Location</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      id="location"
-                      {...registerAddExp("location", {
-                        required: {
-                          value: true,
-                          message: "Location is required.",
-                        },
-                      })}
-                    />
-                    {addErrors.location?.message && (
-                      <p className="profile-error">
-                        {addErrors.location.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="startDate">Start Date</label>
-                    <input
-                      type="date"
-                      className="edit-input-field"
-                      id="startDate"
-                      {...registerAddExp("startDate", {
-                        required: {
-                          value: true,
-                          message: "Start Date is required.",
-                        },
-                      })}
-                    />
-                    {addErrors.startDate?.message && (
-                      <p className="profile-error">
-                        {addErrors.startDate.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="endDate">End Date</label>
-
-                    <input
-                      type="date"
-                      className="edit-input-field"
-                      id="endDate"
-                      {...registerAddExp("endDate")}
-                    />
-                  </div>
-
-                  <div className="input">
-                    <label htmlFor="employmentType">Employment Type</label>
-
-                    <select
-                      className="edit-input-field"
-                      id="employmentType"
-                      defaultValue=""
-                      {...registerAddExp("employmentType", {
-                        required: {
-                          value: true,
-                          message: "Employment type is required.",
-                        },
-                      })}
-                    >
-                      <option value="" disabled>
-                        Select type
-                      </option>
-                      <option value="Full-time">Full-time</option>
-                      <option value="Part-time">Part-time</option>
-                      <option value="Self-employed">Self-employed</option>
-                      <option value="Freelance">Freelance</option>
-                      <option value="Contract">Contract</option>
-                      <option value="Internship">Internship</option>
-                    </select>
-                    {addErrors.employmentType?.message && (
-                      <p className="profile-error">
-                        {addErrors.employmentType.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="input">
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                      id="description"
-                      {...registerAddExp("description", {
-                        required: {
-                          value: true,
-                          message: "Description is required.",
-                        },
-                      })}
-                    />
-                    {addErrors.description?.message && (
-                      <p className="profile-error">
-                        {addErrors.description.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="form-buttons">
-                    <button type="submit" className="btn-save">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-cancel"
-                      onClick={handleExpCancel}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-                {isSubmittingAddExp && (
-                  <div className="loading-overlay">
-                    <div className="spinner"></div>
-                  </div>
-                )}
+                <ExperienceForm
+                  type="add"
+                  backendUrl={backendUrl}
+                  setReloadUser={setReloadUser}
+                  setShowExpForm={setShowExpForm}
+                  setShowEditPopup={setShowEditPopup}
+                  onCancel={() => setShowExpForm(false)}
+                />
               </div>
             </div>
           )}
@@ -1233,36 +774,31 @@ const SearchedProfilePage = () => {
                     </div>
                     {isOwner && (
                       <div className="experience-actions">
-                        <button className="pencil-btn">
+                        <button
+                          className="pencil-btn"
+                          onClick={() => {
+                            setSelectedExp(exp);
+                            setShowEditPopup(true);
+                          }}
+                        >
                           <img
                             src={assets.pencil}
                             alt="Edit button"
                             className="edit-icon"
-                            onClick={() => {
-                              setSelectedExp(exp);
-                              resetEditExp({
-                                ...exp,
-                                startDate: exp.startDate
-                                  ? exp.startDate.split("T")[0]
-                                  : "",
-                                endDate: exp.endDate
-                                  ? exp.endDate.split("T")[0]
-                                  : "",
-                              });
-                              setShowEditPopup(true);
-                            }}
                           />
                         </button>
 
-                        <button className="delete-btn">
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            setSelectedExp(exp);
+                            setShowDeletePopup(true);
+                          }}
+                        >
                           <img
                             src={assets.deleteicon}
                             alt="Delete"
                             className="delete-icon"
-                            onClick={() => {
-                              setSelectedExp(exp);
-                              setShowDeletePopup(true);
-                            }}
                           />
                         </button>
                       </div>
@@ -1276,165 +812,23 @@ const SearchedProfilePage = () => {
                 <div className="profile-form">
                   <h2 className="profile-form-title">Update Experience</h2>
 
-                  <form
-                    onSubmit={handleEditExp((data) =>
-                      handleUpdateExperience(selectedExp._id, data)
-                    )}
-                  >
-                    <div className="input">
-                      <label htmlFor="company">Company</label>
-                      <input
-                        type="text"
-                        id="company"
-                        className="edit-input-field"
-                        {...registerEditExp("company", {
-                          required: {
-                            value: true,
-                            message: "Company name is required.",
-                          },
-                        })}
-                      />
-                      {editErrors.company?.message && (
-                        <p className="profile-error">
-                          {editErrors.company.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="position">Position</label>
-                      <input
-                        type="text"
-                        id="position"
-                        className="edit-input-field"
-                        {...registerEditExp("position", {
-                          required: {
-                            value: true,
-                            message: "Position is required.",
-                          },
-                        })}
-                      />
-                      {editErrors.position?.message && (
-                        <p className="profile-error">
-                          {editErrors.position.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="location">Location</label>
-                      <input
-                        type="text"
-                        id="location"
-                        {...registerEditExp("location", {
-                          required: {
-                            value: true,
-                            message: "Location is required.",
-                          },
-                        })}
-                        className="edit-input-field"
-                      />
-                      {editErrors.location?.message && (
-                        <p className="profile-error">
-                          {editErrors.location.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="startDate">Start Date</label>
-                      <input
-                        type="date"
-                        className="edit-input-field"
-                        {...registerEditExp("startDate", {
-                          required: {
-                            value: true,
-                            message: "Start Date is required.",
-                          },
-                        })}
-                      />
-                      {editErrors.startDate?.message && (
-                        <p className="profile-error">
-                          {editErrors.startDate.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="endDate">End Date</label>
-                      <input
-                        type="date"
-                        className="edit-input-field"
-                        {...registerEditExp("endDate")}
-                      />
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="employmentType">Employment Type</label>
-                      <select
-                        id="employmentType"
-                        className="edit-input-field"
-                        {...registerEditExp("employmentType", {
-                          required: {
-                            value: true,
-                            message: "Employment Type is required.",
-                          },
-                        })}
-                      >
-                        <option value="" disabled>
-                          Select Employment Type
-                        </option>
-                        <option value="Full-time">Full-time</option>
-                        <option value="Part-time">Part-time</option>
-                        <option value="Self-employed">Self-employed</option>
-                        <option value="Freelance">Freelance</option>
-                        <option value="Contract">Contract</option>
-                        <option value="Internship">Internship</option>
-                      </select>
-                      {editErrors.employmentType?.message && (
-                        <p className="profile-error">
-                          {editErrors.employmentType.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="description">Description</label>
-                      <textarea
-                        id="description"
-                        {...registerEditExp("description", {
-                          required: {
-                            value: true,
-                            message: "Description  is required.",
-                          },
-                        })}
-                        className="edit-input-field"
-                      />
-                      {editErrors.description?.message && (
-                        <p className="profile-error">
-                          {editErrors.description.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="form-buttons">
-                      <button type="submit" className="btn-save">
-                        Update
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-cancel"
-                        onClick={() => setShowEditPopup(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                  {isSubmittingEditExp && (
-                    <div className="loading-overlay">
-                      <div className="spinner"></div>
-                    </div>
-                  )}
+                  <ExperienceForm
+                    type="edit"
+                    backendUrl={backendUrl}
+                    initialValues={{
+                      ...selectedExp,
+                      startDate: selectedExp.startDate
+                        ? selectedExp.startDate.split("T")[0]
+                        : "",
+                      endDate: selectedExp.endDate
+                        ? selectedExp.endDate.split("T")[0]
+                        : "",
+                    }}
+                    setReloadUser={setReloadUser}
+                    setShowEditPopup={setShowEditPopup}
+                    setShowExpForm={setShowExpForm}
+                    onCancel={() => setShowEditPopup(false)}
+                  />
                 </div>
               </div>
             )}
@@ -1606,6 +1000,7 @@ const SearchedProfilePage = () => {
                     <input
                       type="text"
                       className="edit-input-field"
+                      placeholder="(Optional)"
                       id="grade"
                       {...registerAddEdu("grade")}
                     />
@@ -1620,6 +1015,7 @@ const SearchedProfilePage = () => {
                     <label htmlFor="activities">Activities</label>
                     <textarea
                       id="activities"
+                      placeholder="Write the activites you did here (Optional)."
                       {...registerAddEdu("activities")}
                     />
                     {addEduErrors.activities?.message && (
@@ -1700,15 +1096,17 @@ const SearchedProfilePage = () => {
                           />
                         </button>
 
-                        <button className="delete-btn">
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            setSelectedEdu(edu);
+                            setShowDeleteEdu(true);
+                          }}
+                        >
                           <img
                             src={assets.deleteicon}
                             alt="Delete"
                             className="delete-icon"
-                            onClick={() => {
-                              setSelectedEdu(edu);
-                              setShowDeleteEdu(true);
-                            }}
                           />
                         </button>
                       </div>
@@ -1964,182 +1362,16 @@ const SearchedProfilePage = () => {
               </>
             )}
           </div>
-          {showSocialForm && (
-            <div className="profile-form-overlay">
-              <div className="profile-form">
-                {user.githubId && user.linkedinId ? (
-                  <h2 className="profile-form-title"> Edit Social Links</h2>
-                ) : (
-                  <h2 className="profile-form-title">Add Social Links</h2>
-                )}
 
-                <form
-                  className="form-group"
-                  onSubmit={handleSocial(handleProfileSave)}
-                >
-                  <div className="input">
-                    <label htmlFor="company">GitHub ID Link</label>
-                    <div className="link-delete">
-                      <input
-                        type="text"
-                        className="edit-input-field"
-                        id="company"
-                        {...registerSocial("githubId")}
-                      />
-                      {user.githubId && (
-                        <button className="delete-link-btn" type="button">
-                          <img
-                            src={assets.deleteicon}
-                            alt="Delete"
-                            className="delete-icon"
-                            onClick={() => setShowDeleteGithubId(true)}
-                          />
-                        </button>
-                      )}
-                    </div>
-                    {socialErrors.githubId?.message && (
-                      <p className="profile-error">
-                        {socialErrors.githubId.message}
-                      </p>
-                    )}
-                    {showDeleteGithubId && (
-                      <div className="popup-overlay">
-                        <div className="popup">
-                          <h3>Delete Github ID Link</h3>
-                          <p>
-                            Are you sure you want to delete your Github ID Link
-                            ?
-                          </p>
-                          <div className="popup-actions">
-                            <button
-                              className="cancel-btn-popup"
-                              type="button"
-                              onClick={() => setShowDeleteGithubId(false)}
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              className="delete-btn-popup"
-                              type="button"
-                              onClick={async () => {
-                                try {
-                                  const { data } = await axios.delete(
-                                    `${backendUrl}/api/user/deleteGithubId`
-                                  );
-                                  if (data.success) {
-                                    setReloadUser(true);
-                                    setShowDeleteGithubId(false);
-                                    toast.success(data.message);
-                                  } else {
-                                    toast.error(data.message);
-                                  }
-                                } catch (err) {
-                                  toast.error(err.message);
-                                }
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="position">Linkedin ID Link</label>
-                    <div className="link-delete">
-                      <input
-                        type="text"
-                        className="edit-input-field"
-                        id="position"
-                        {...registerSocial("linkedinId")}
-                      />
-                      {user.linkedinId && (
-                        <button className="delete-link-btn" type="button">
-                          <img
-                            src={assets.deleteicon}
-                            alt="Delete"
-                            className="delete-icon"
-                            onClick={() => setShowDeleteLinkedinId(true)}
-                          />
-                        </button>
-                      )}
-                    </div>
-
-                    {socialErrors.linkedinId?.message && (
-                      <p className="profile-error">
-                        {socialErrors.linkedinId.message}
-                      </p>
-                    )}
-                    {showDeleteLinkedinId && (
-                      <div className="popup-overlay">
-                        <div className="popup">
-                          <h3>Delete Linkedin ID Link</h3>
-                          <p>
-                            Are you sure you want to delete your Linkedin ID
-                            Link ?
-                          </p>
-                          <div className="popup-actions">
-                            <button
-                              className="cancel-btn-popup"
-                              type="button"
-                              onClick={() => setShowDeleteLinkedinId(false)}
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              className="delete-btn-popup"
-                              type="button"
-                              onClick={async () => {
-                                try {
-                                  const { data } = await axios.delete(
-                                    `${backendUrl}/api/user/deleteLinkedinId`
-                                  );
-                                  if (data.success) {
-                                    setReloadUser(true);
-                                    setShowDeleteLinkedinId(false);
-                                    toast.success(data.message);
-                                  } else {
-                                    toast.error(data.message);
-                                  }
-                                } catch (err) {
-                                  toast.error(
-                                    err.response?.data?.message ||
-                                      err.message ||
-                                      "Server error"
-                                  );
-                                }
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="form-buttons">
-                    <button type="submit" className="btn-save">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-cancel"
-                      onClick={handleSocialCancel}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-                {isSubmittingSocial && (
-                  <div className="loading-overlay">
-                    <div className="spinner"></div>
-                  </div>
-                )}
-              </div>
-            </div>
+          {showSocialForm && user && (
+            <SoicalLinks
+              user={user}
+              backendUrl={backendUrl}
+              setReloadUser={setReloadUser}
+              setShowSocialForm={setShowSocialForm}
+            />
           )}
+
           <div className="social-links">
             {user.githubId === "" && user.linkedinId === "" ? (
               <p>No social links added yet.</p>
