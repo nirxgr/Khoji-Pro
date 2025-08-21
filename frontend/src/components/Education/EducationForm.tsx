@@ -1,79 +1,77 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { IExperience } from "../../shared/interfaces/experience.interface.tsx";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { IEducation } from "../../shared/interfaces/education.interface.tsx";
 import { AppContext } from "../../context/AppContext.jsx";
 import { useContext } from "react";
 
-interface ExperienceFormProps {
+interface EducationFormProps {
   type: "add" | "edit";
-  initialValues?: Partial<IExperience>;
+  initialValues?: Partial<IEducation>;
   setReloadUser: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowExpForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowEditPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEduForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEditEdu: React.Dispatch<React.SetStateAction<boolean>>;
   onCancel: () => void;
 }
 
-const ExperienceForm: React.FC<ExperienceFormProps> = ({
+const EducationForm: React.FC<EducationFormProps> = ({
   type,
   initialValues,
   onCancel,
   setReloadUser,
-  setShowExpForm,
-  setShowEditPopup,
+  setShowEduForm,
+  setShowEditEdu,
 }) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<IExperience>({
+  } = useForm<IEducation>({
     defaultValues: initialValues || {
-      company: "",
-      position: "",
-      location: "",
+      school: "",
+      degree: "",
+      fieldOfStudy: "",
       startDate: "",
       endDate: "",
-      employmentType: "",
-      description: "",
+      grade: "",
+      activities: "",
     },
   });
-
   const { backendUrl } = useContext(AppContext);
-  const onSubmit = async (data: IExperience) => {
+  const onSubmit = async (data: IEducation) => {
     try {
       if (type === "add") {
         try {
           await new Promise((resolve) => setTimeout(resolve, 2000));
           const res = await axios.post(
-            backendUrl + "/api/exp/add-experience",
+            backendUrl + "/api/edu/add-education",
             data
           );
           if (res.data.success) {
             setReloadUser(true);
-            setShowExpForm(false);
+            setShowEduForm(false);
             reset();
             toast.success(res.data.message);
           } else {
             toast.error(res.data.message);
           }
         } catch (error) {
-          toast.error("Error adding experience!");
+          toast.error("Error adding education!");
         }
       } else if (type === "edit") {
         if (!initialValues?._id)
           throw new Error("Experience ID is required for edit");
-
         try {
           await new Promise((resolve) => setTimeout(resolve, 2000));
           const response = await axios.put(
-            `${backendUrl}/api/exp/update-experience/${initialValues._id}`,
+            `${backendUrl}/api/edu/update-education/${initialValues._id}`,
             data
           );
 
           if (response.data.success) {
             setReloadUser(true);
-            setShowEditPopup(false);
+            setShowEditEdu(false);
             toast.success(response.data.message);
           } else {
             toast.error(response.data.message);
@@ -90,54 +88,54 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
   return (
     <form className="form-group" onSubmit={handleSubmit(onSubmit)}>
       <div className="input">
-        <label htmlFor="company">Company</label>
+        <label htmlFor="school">School</label>
         <input
           type="text"
           className="edit-input-field"
-          id="company"
-          {...register("company", {
+          id="school"
+          {...register("school", {
             required: {
               value: true,
-              message: "Company name is required.",
+              message: "School name is required.",
             },
           })}
         />
-        {errors.company?.message && (
-          <p className="profile-error">{errors.company.message}</p>
+        {errors.school?.message && (
+          <p className="profile-error">{errors.school.message}</p>
         )}
       </div>
       <div className="input">
-        <label htmlFor="position">Position</label>
+        <label htmlFor="degree">Degree</label>
         <input
           type="text"
           className="edit-input-field"
-          id="position"
-          {...register("position", {
+          id="degree"
+          {...register("degree", {
             required: {
               value: true,
-              message: "Position is required.",
+              message: "Degree name is required.",
             },
           })}
         />
-        {errors.position?.message && (
-          <p className="profile-error">{errors.position.message}</p>
+        {errors.degree?.message && (
+          <p className="profile-error">{errors.degree.message}</p>
         )}
       </div>
       <div className="input">
-        <label htmlFor="location">Location</label>
+        <label htmlFor="fieldOfStudy">Field of Study</label>
         <input
           type="text"
           className="edit-input-field"
-          id="location"
-          {...register("location", {
+          id="fieldOfStudy"
+          {...register("fieldOfStudy", {
             required: {
               value: true,
-              message: "Location is required.",
+              message: "Field of Study is required.",
             },
           })}
         />
-        {errors.location?.message && (
-          <p className="profile-error">{errors.location.message}</p>
+        {errors.fieldOfStudy?.message && (
+          <p className="profile-error">{errors.fieldOfStudy.message}</p>
         )}
       </div>
       <div className="input">
@@ -159,53 +157,45 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
       </div>
       <div className="input">
         <label htmlFor="endDate">End Date</label>
-
         <input
           type="date"
           className="edit-input-field"
           id="endDate"
-          {...register("endDate")}
-        />
-      </div>
-
-      <div className="input">
-        <label htmlFor="employmentType">Employment Type</label>
-
-        <select
-          className="edit-input-field"
-          id="employmentType"
-          defaultValue=""
-          {...register("employmentType", {
+          {...register("endDate", {
             required: {
               value: true,
-              message: "Employment type is required.",
+              message: "End Date is required.",
             },
           })}
-        >
-          <option value="" disabled>
-            Select type
-          </option>
-          <option value="Full-time">Full-time</option>
-          <option value="Part-time">Part-time</option>
-          <option value="Self-employed">Self-employed</option>
-          <option value="Freelance">Freelance</option>
-          <option value="Contract">Contract</option>
-          <option value="Internship">Internship</option>
-        </select>
-        {errors.employmentType?.message && (
-          <p className="profile-error">{errors.employmentType.message}</p>
+        />
+        {errors.endDate?.message && (
+          <p className="profile-error">{errors.endDate.message}</p>
         )}
       </div>
 
       <div className="input">
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          placeholder="Write a description of your experience (Optional)."
-          {...register("description")}
+        <label htmlFor="grade">Grade</label>
+        <input
+          type="text"
+          className="edit-input-field"
+          placeholder="(Optional)"
+          id="grade"
+          {...register("grade")}
         />
-        {errors.description?.message && (
-          <p className="profile-error">{errors.description.message}</p>
+        {errors.grade?.message && (
+          <p className="profile-error">{errors.grade.message}</p>
+        )}
+      </div>
+
+      <div className="input">
+        <label htmlFor="activities">Activities</label>
+        <textarea
+          id="activities"
+          placeholder="Write the activites you did here (Optional)."
+          {...register("activities")}
+        />
+        {errors.activities?.message && (
+          <p className="profile-error">{errors.activities.message}</p>
         )}
       </div>
       <div className="form-buttons">
@@ -225,4 +215,4 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
   );
 };
 
-export default ExperienceForm;
+export default EducationForm;

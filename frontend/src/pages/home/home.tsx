@@ -1,28 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header/Header.tsx";
-import { Link, useNavigate } from "react-router-dom";
-import Hero from "../../components/HeroSection.tsx";
+import { useNavigate } from "react-router-dom";
+import Hero from "../../components/HeroSection/HeroSection.tsx";
 import { assets } from "../../assets/assets.js";
 import "./home.css";
 import { AppContext } from "../../context/AppContext.jsx";
 import axios from "axios";
-
-interface IUser {
-  _id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  bio: string;
-  experienceYears: number;
-  profession: string;
-  location: string;
-  skills: string[];
-  profilePictureUrl: {
-    url: string;
-    public_id: string;
-    createdAt: Date;
-  };
-}
+import { IUser } from "../../shared/interfaces/user.interface.tsx";
 
 const Home = () => {
   const { backendUrl } = useContext(AppContext);

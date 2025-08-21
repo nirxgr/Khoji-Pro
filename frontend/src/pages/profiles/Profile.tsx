@@ -9,27 +9,16 @@ import SoicalLinks from "../../components/ProfileDetails/SocialLinks.tsx";
 import Header from "../../components/Header/Header.js";
 import { assets } from "../../assets/assets.js";
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
 import { IUser } from "../../shared/interfaces/user.interface.tsx";
 import { IExperience } from "../../shared/interfaces/experience.interface.tsx";
+import { IEducation } from "../../shared/interfaces/education.interface.tsx";
 import ExperienceForm from "../../components/Experience/ExperienceForm.tsx";
-
-interface IEducation {
-  school: string;
-  degree: string;
-  fieldOfStudy: string;
-  startDate: string;
-  endDate: string;
-  grade: string;
-  activities: string;
-  _id: string;
-}
+import EducationForm from "../../components/Education/EducationForm.tsx";
 
 const SearchedProfilePage = () => {
   const { id } = useParams();
   const defaultProfilePic =
     "http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg";
-
   const defaultCoverPic =
     "https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png";
   const [user, setUser] = useState<IUser | null>(null);
@@ -57,20 +46,6 @@ const SearchedProfilePage = () => {
   const [showEditEdu, setShowEditEdu] = useState(false);
 
   const isOwner = userData?._id === id;
-
-  const {
-    register: registerAddEdu,
-    handleSubmit: handleAddEdu,
-    reset: resetAddEdu,
-    formState: { errors: addEduErrors, isSubmitting: isSubmittingAddEdu },
-  } = useForm<IEducation>({ mode: "onSubmit" });
-
-  const {
-    register: registerEditEdu,
-    handleSubmit: handleEditEdu,
-    reset: resetEditEdu,
-    formState: { errors: editEduErrors, isSubmitting: isSubmittingEditEdu },
-  } = useForm<IEducation>({ mode: "onSubmit" });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -292,25 +267,6 @@ const SearchedProfilePage = () => {
   }, [id, backendUrl, reloadUser]);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    }
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open]);
-
-  useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
       videoRef.current.muted = true;
@@ -323,51 +279,6 @@ const SearchedProfilePage = () => {
   }, [stream]);
 
   if (!user) return <p>No user found</p>;
-
-  const handleEduAdd = async (eduFormData: IEducation) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const res = await axios.post(
-        backendUrl + "/api/edu/add-education",
-        eduFormData
-      );
-      if (res.data.success) {
-        setReloadUser(true);
-        setShowEduForm(false);
-        resetAddEdu();
-        toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error adding education!");
-    }
-  };
-
-  const handleEduCancel = () => {
-    setShowEduForm(false);
-    resetAddEdu();
-  };
-
-  const handleUpdateEducation = async (id: string, updatedData: IEducation) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const response = await axios.put(
-        `${backendUrl}/api/edu/update-education/${id}`,
-        updatedData
-      );
-
-      if (response.data.success) {
-        setReloadUser(true);
-        setShowEditEdu(false);
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Update failed:", error);
-    }
-  };
 
   return (
     <div className="main">
@@ -654,7 +565,6 @@ const SearchedProfilePage = () => {
               {showForm && user && (
                 <ProfileDetails
                   user={user}
-                  backendUrl={backendUrl}
                   setReloadUser={setReloadUser}
                   setShowForm={setShowForm}
                 />
@@ -709,7 +619,6 @@ const SearchedProfilePage = () => {
         {showContactForm && user && (
           <ContactDetails
             user={user}
-            backendUrl={backendUrl}
             setReloadUser={setReloadUser}
             setShowContactForm={setShowContactForm}
           />
@@ -736,7 +645,6 @@ const SearchedProfilePage = () => {
                 <h2 className="profile-form-title">Add Experience</h2>
                 <ExperienceForm
                   type="add"
-                  backendUrl={backendUrl}
                   setReloadUser={setReloadUser}
                   setShowExpForm={setShowExpForm}
                   setShowEditPopup={setShowEditPopup}
@@ -814,7 +722,6 @@ const SearchedProfilePage = () => {
 
                   <ExperienceForm
                     type="edit"
-                    backendUrl={backendUrl}
                     initialValues={{
                       ...selectedExp,
                       startDate: selectedExp.startDate
@@ -895,153 +802,13 @@ const SearchedProfilePage = () => {
             <div className="profile-form-overlay">
               <div className="profile-form">
                 <h2 className="profile-form-title">Add Education</h2>
-                <form
-                  className="form-group"
-                  onSubmit={handleAddEdu(handleEduAdd)}
-                >
-                  <div className="input">
-                    <label htmlFor="school">School</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      id="school"
-                      {...registerAddEdu("school", {
-                        required: {
-                          value: true,
-                          message: "School name is required.",
-                        },
-                      })}
-                    />
-                    {addEduErrors.school?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.school.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="degree">Degree</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      id="degree"
-                      {...registerAddEdu("degree", {
-                        required: {
-                          value: true,
-                          message: "Degree name is required.",
-                        },
-                      })}
-                    />
-                    {addEduErrors.degree?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.degree.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="fieldOfStudy">Field of Study</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      id="fieldOfStudy"
-                      {...registerAddEdu("fieldOfStudy", {
-                        required: {
-                          value: true,
-                          message: "Field of Study is required.",
-                        },
-                      })}
-                    />
-                    {addEduErrors.fieldOfStudy?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.fieldOfStudy.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="startDate">Start Date</label>
-                    <input
-                      type="date"
-                      className="edit-input-field"
-                      id="startDate"
-                      {...registerAddEdu("startDate", {
-                        required: {
-                          value: true,
-                          message: "Start Date is required.",
-                        },
-                      })}
-                    />
-                    {addEduErrors.startDate?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.startDate.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="input">
-                    <label htmlFor="endDate">End Date</label>
-                    <input
-                      type="date"
-                      className="edit-input-field"
-                      id="endDate"
-                      {...registerAddEdu("endDate", {
-                        required: {
-                          value: true,
-                          message: "End Date is required.",
-                        },
-                      })}
-                    />
-                    {addEduErrors.endDate?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.endDate.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="input">
-                    <label htmlFor="grade">Grade</label>
-                    <input
-                      type="text"
-                      className="edit-input-field"
-                      placeholder="(Optional)"
-                      id="grade"
-                      {...registerAddEdu("grade")}
-                    />
-                    {addEduErrors.grade?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.grade.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="input">
-                    <label htmlFor="activities">Activities</label>
-                    <textarea
-                      id="activities"
-                      placeholder="Write the activites you did here (Optional)."
-                      {...registerAddEdu("activities")}
-                    />
-                    {addEduErrors.activities?.message && (
-                      <p className="profile-error">
-                        {addEduErrors.activities.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="form-buttons">
-                    <button type="submit" className="btn-save">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-cancel"
-                      onClick={handleEduCancel}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-                {isSubmittingAddEdu && (
-                  <div className="loading-overlay">
-                    <div className="spinner"></div>
-                  </div>
-                )}
+                <EducationForm
+                  type="add"
+                  setReloadUser={setReloadUser}
+                  setShowEduForm={setShowEduForm}
+                  setShowEditEdu={setShowEditEdu}
+                  onCancel={() => setShowEduForm(false)}
+                />
               </div>
             </div>
           )}
@@ -1075,24 +842,17 @@ const SearchedProfilePage = () => {
                     </div>
                     {isOwner && (
                       <div className="experience-actions">
-                        <button className="pencil-btn">
+                        <button
+                          className="pencil-btn"
+                          onClick={() => {
+                            setSelectedEdu(edu);
+                            setShowEditEdu(true);
+                          }}
+                        >
                           <img
                             src={assets.pencil}
                             alt="Edit button"
                             className="edit-icon"
-                            onClick={() => {
-                              setSelectedEdu(edu);
-                              resetEditEdu({
-                                ...edu,
-                                startDate: edu.startDate
-                                  ? edu.startDate.split("T")[0]
-                                  : "",
-                                endDate: edu.endDate
-                                  ? edu.endDate.split("T")[0]
-                                  : "",
-                              });
-                              setShowEditEdu(true);
-                            }}
                           />
                         </button>
 
@@ -1121,157 +881,22 @@ const SearchedProfilePage = () => {
                 <div className="profile-form">
                   <h2 className="profile-form-title">Update Education</h2>
 
-                  <form
-                    className="form-group"
-                    onSubmit={handleEditEdu((data) =>
-                      handleUpdateEducation(selectedEdu._id, data)
-                    )}
-                  >
-                    <div className="input">
-                      <label htmlFor="school">School</label>
-                      <input
-                        type="text"
-                        id="school"
-                        className="edit-input-field"
-                        {...registerEditEdu("school", {
-                          required: {
-                            value: true,
-                            message: "School name is required.",
-                          },
-                        })}
-                      />
-                      {editEduErrors.school?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.school.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="degree">Degree</label>
-                      <input
-                        type="text"
-                        id="degree"
-                        className="edit-input-field"
-                        {...registerEditEdu("degree", {
-                          required: {
-                            value: true,
-                            message: "Degree name is required.",
-                          },
-                        })}
-                      />
-                      {editEduErrors.degree?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.degree.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="fieldOfStudy">Field of Study</label>
-                      <input
-                        type="text"
-                        id="fieldOfStudy"
-                        className="edit-input-field"
-                        {...registerEditEdu("fieldOfStudy", {
-                          required: {
-                            value: true,
-                            message: "Field of Study is required.",
-                          },
-                        })}
-                      />
-                      {editEduErrors.fieldOfStudy?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.fieldOfStudy.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="startDate">Start Date</label>
-                      <input
-                        type="date"
-                        className="edit-input-field"
-                        {...registerEditEdu("startDate", {
-                          required: {
-                            value: true,
-                            message: "Start Date is required.",
-                          },
-                        })}
-                      />
-                      {editEduErrors.startDate?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.startDate.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="endDate">End Date</label>
-                      <input
-                        type="date"
-                        className="edit-input-field"
-                        {...registerEditEdu("endDate", {
-                          required: {
-                            value: true,
-                            message: "End Date is required.",
-                          },
-                        })}
-                      />
-                      {editEduErrors.endDate?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.endDate.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="grade">Grade</label>
-                      <input
-                        type="text"
-                        id="grade"
-                        className="edit-input-field"
-                        {...registerEditEdu("grade")}
-                      />
-                      {editEduErrors.grade?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.grade.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="input">
-                      <label htmlFor="activities">Activities</label>
-                      <textarea
-                        id="activities"
-                        className="edit-input-field"
-                        {...registerEditEdu("activities")}
-                      />
-                      {editEduErrors.activities?.message && (
-                        <p className="profile-error">
-                          {editEduErrors.activities.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="form-buttons">
-                      <button type="submit" className="btn-save">
-                        Update
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-cancel"
-                        onClick={() => setShowEditEdu(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                  {isSubmittingEditEdu && (
-                    <div className="loading-overlay">
-                      <div className="spinner"></div>
-                    </div>
-                  )}
+                  <EducationForm
+                    type="edit"
+                    setReloadUser={setReloadUser}
+                    setShowEduForm={setShowEduForm}
+                    setShowEditEdu={setShowEditEdu}
+                    initialValues={{
+                      ...selectedEdu,
+                      startDate: selectedEdu.startDate
+                        ? selectedEdu.startDate.split("T")[0]
+                        : "",
+                      endDate: selectedEdu.endDate
+                        ? selectedEdu.endDate.split("T")[0]
+                        : "",
+                    }}
+                    onCancel={() => setShowEditEdu(false)}
+                  />
                 </div>
               </div>
             )}
@@ -1366,7 +991,6 @@ const SearchedProfilePage = () => {
           {showSocialForm && user && (
             <SoicalLinks
               user={user}
-              backendUrl={backendUrl}
               setReloadUser={setReloadUser}
               setShowSocialForm={setShowSocialForm}
             />

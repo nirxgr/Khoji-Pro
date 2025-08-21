@@ -539,9 +539,9 @@ input[type="date"].edit-input-field {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.65);
   z-index: 9998;
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); 
 }
 
 .popup {
@@ -549,30 +549,30 @@ input[type="date"].edit-input-field {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(145deg, #1e0025, #120012);
+  background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   color: #fff;
-  padding: 2rem 3rem ;
+  padding: 3rem 4rem ;
   border-radius: 25px;
   border: 1px solid white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
   z-index: 9999;
-  width: 400px;
+  width: 450px;
   height: auto;
   max-width: 90%;
 }
 
 .popup h3 {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  padding-bottom: 10px;
-  margin-bottom: 15px; 
+  padding-bottom: 15px;
+  margin-bottom: 20px; 
   border-bottom: 1px solid rgb(255, 255, 255);
   text-align: center;
 }
 
 .popup p {
-  font-size: 0.95rem;
-  padding-bottom: 20px;
+  font-size: 1rem;
+  padding-bottom: 25px;
   line-height: 1.4;
   text-align: justify;
 }
@@ -580,12 +580,11 @@ input[type="date"].edit-input-field {
 .popup-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 15px;
 }
 
-.cancel-btn-popup,
-.delete-btn-popup {
-  padding: 8px 16px;
+.cancel-btn-popup,.delete-btn-popup {
+  padding: 10px 16px;
   border-radius: 50px;
   border: none;
   cursor: pointer;
@@ -600,7 +599,7 @@ input[type="date"].edit-input-field {
 }
 
 .cancel-btn-popup:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(184, 178, 178, 0.25);
   transform: scale(1.05);
 }
 

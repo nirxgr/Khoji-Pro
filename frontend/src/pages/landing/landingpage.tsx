@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { assets } from "../../assets/assets";
 import "./landing.css";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../components/Footer";
+import Footer from "../../components/Footer/Footer.tsx";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();

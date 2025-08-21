@@ -6,15 +6,7 @@ import { AppContext } from "../../context/AppContext.jsx";
 import "./Auth.css";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-
-type ProfileFormValues = {
-  location: string;
-  profession: string;
-  phoneNumber: string;
-  bio: string;
-  linkedinId: string;
-  githubId: string;
-};
+import { ProfileFormValues } from "../../shared/interfaces/auth.interface.js";
 
 const ProfileCompletion = () => {
   const { backendUrl, setUserData } = useContext(AppContext);
