@@ -14,6 +14,8 @@ import { IExperience } from "../../shared/interfaces/experience.interface.tsx";
 import { IEducation } from "../../shared/interfaces/education.interface.tsx";
 import ExperienceForm from "../../components/Experience/ExperienceForm.tsx";
 import EducationForm from "../../components/Education/EducationForm.tsx";
+import { ISkill } from "../../shared/interfaces/skill.interface.tsx";
+import SkillForm from "../../components/Skill/SkillForm.tsx";
 
 const SearchedProfilePage = () => {
   const { id } = useParams();
@@ -44,6 +46,12 @@ const SearchedProfilePage = () => {
   const [selectedEdu, setSelectedEdu] = useState<IEducation | null>(null);
   const [showDeleteEdu, setShowDeleteEdu] = useState(false);
   const [showEditEdu, setShowEditEdu] = useState(false);
+  const [skills, setSkills] = useState<ISkill[]>([]);
+  const [showSkillForm, setShowSkillForm] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<ISkill | null>(null);
+  const [showDeleteSkill, setShowDeleteSkill] = useState(false);
+  const [showEditSkill, setShowEditSkill] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isOwner = userData?._id === id;
 
@@ -243,7 +251,6 @@ const SearchedProfilePage = () => {
         // Fetch user profile
         const res = await axios.get(`${backendUrl}/api/user/${id}`);
         setUser(res.data);
-        // reset(res.data);
 
         // Fetch user experiences
         const expRes = await axios.get(
@@ -256,6 +263,12 @@ const SearchedProfilePage = () => {
           `${backendUrl}/api/edu/get-education/${id}`
         );
         setEducations(eduRes.data || []);
+
+        const skillRes = await axios.get(
+          `${backendUrl}/api/sk/get-skill/${id}`
+        );
+        setSkills(skillRes.data || []);
+        console.log(skillRes.data);
 
         setReloadUser(false);
       } catch (err) {
@@ -565,6 +578,7 @@ const SearchedProfilePage = () => {
               {showForm && user && (
                 <ProfileDetails
                   user={user}
+                  backendUrl={backendUrl}
                   setReloadUser={setReloadUser}
                   setShowForm={setShowForm}
                 />
@@ -619,6 +633,7 @@ const SearchedProfilePage = () => {
         {showContactForm && user && (
           <ContactDetails
             user={user}
+            backendUrl={backendUrl}
             setReloadUser={setReloadUser}
             setShowContactForm={setShowContactForm}
           />
@@ -945,16 +960,154 @@ const SearchedProfilePage = () => {
         </div>
 
         <div className="profile-section">
-          <h3 className="profile-section-title">Skills</h3>
-          <div className="profile-skills">
-            {user.skills?.length ? (
-              user.skills.map((skill, index) => (
-                <span key={index} className="skill-tag">
-                  {skill}
-                </span>
-              ))
+          <div className="exp-section">
+            <h3 className="profile-section-title">Skills</h3>
+            {isOwner && (
+              <button
+                className="add-btn"
+                onClick={() => {
+                  setShowSkillForm(true);
+                }}
+              >
+                <img src={assets.add} alt="add-icon" className="add-icon" />
+              </button>
+            )}
+          </div>
+
+          {showSkillForm && (
+            <div className="profile-form-overlay">
+              <div className="profile-form">
+                <h2 className="profile-form-title">Add Education</h2>
+                <SkillForm
+                  type="add"
+                  setReloadUser={setReloadUser}
+                  setShowSkillForm={setShowSkillForm}
+                  experiences={experiences}
+                  onCancel={() => setShowSkillForm(false)}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="experience-list">
+            {skills.length === 0 ? (
+              <p>No skills added yet.</p>
             ) : (
-              <span className="skill-tag">---</span>
+              <ul>
+                {skills.map((sk) => (
+                  <li key={sk._id} className="experience-item">
+                    <div className="experience-details">
+                      <h3>{sk.name}</h3>
+                      {sk.company && <p>Learned at: {sk.company.company}</p>}
+                    </div>
+                    {isOwner && (
+                      <div className="skill-actions">
+                        <button
+                          className="pencil-btn"
+                          onClick={() => {
+                            setSelectedSkill(sk);
+                            setShowEditSkill(true);
+                          }}
+                        >
+                          <img
+                            src={assets.pencil}
+                            alt="Edit button"
+                            className="edit-icon"
+                          />
+                        </button>
+
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            setSelectedSkill(sk);
+                            setShowDeleteSkill(true);
+                          }}
+                        >
+                          <img
+                            src={assets.deleteicon}
+                            alt="Delete"
+                            className="delete-icon"
+                          />
+                        </button>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {showEditSkill && selectedSkill && (
+              <div className="profile-form-overlay">
+                <div className="profile-form">
+                  <h2 className="profile-form-title">Update Skill</h2>
+
+                  <SkillForm
+                    type="edit"
+                    initialValues={{
+                      ...selectedSkill,
+                    }}
+                    setReloadUser={setReloadUser}
+                    setShowEditSkill={setShowEditSkill}
+                    experiences={experiences}
+                    onCancel={() => setShowEditSkill(false)}
+                  />
+                </div>
+              </div>
+            )}
+
+            {showDeleteSkill && selectedSkill && (
+              <div className="popup-overlay">
+                <div className="popup">
+                  <h3>Delete skill</h3>
+                  <p>
+                    Are you sure you want to delete your "{selectedSkill?.name}"
+                    skill
+                    {selectedSkill?.company?.company
+                      ? ` learned at "${selectedSkill.company.company}"`
+                      : ""}
+                    ?
+                  </p>
+                  <div className="popup-actions">
+                    <button
+                      className="cancel-btn-popup"
+                      onClick={() => setShowDeleteSkill(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="delete-btn-popup"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        try {
+                          await new Promise((resolve) =>
+                            setTimeout(resolve, 1000)
+                          );
+                          const { data } = await axios.delete(
+                            `${backendUrl}/api/sk/delete-skill/${selectedSkill?._id}`
+                          );
+                          if (data.success) {
+                            setReloadUser(true);
+                            setShowDeleteSkill(false);
+                            toast.success(data.message);
+                          } else {
+                            toast.error(data.message);
+                          }
+                        } catch (err) {
+                          console.error("Failed to delete skill:", err);
+                        } finally {
+                          setIsLoading(false);
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                {isLoading && (
+                  <div className="loading-overlay">
+                    <div className="spinner"></div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -991,6 +1144,7 @@ const SearchedProfilePage = () => {
           {showSocialForm && user && (
             <SoicalLinks
               user={user}
+              backendUrl={backendUrl}
               setReloadUser={setReloadUser}
               setShowSocialForm={setShowSocialForm}
             />

@@ -524,9 +524,16 @@ input[type="date"].edit-input-field {
   font-size: 25px;
 }
 
+
 .experience-actions {
   display: flex;
   padding-top: 15px;
+  align-items: center;
+}
+
+.skill-actions {
+  display: flex;
+  align-items: center;
 }
 
 .popup-overlay {
@@ -831,4 +838,21 @@ width: 25px;
 .delete-link-btn:hover{
   background-color: rgb(101, 99, 99);
   border-radius: 10px;
+}
+
+.exp-details-addition{
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+.exp-details-addition h4{
+  font-size: 1rem;
+  color: #d9b8ff;
+  display: block;
+  margin-top: 0.7rem;
+}
+
+.indicator{
+font-size: 1rem;
+margin-bottom: 25px;
 }

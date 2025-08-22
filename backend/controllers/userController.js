@@ -34,52 +34,39 @@ export async function searchUsers(req, res) {
     }
 
     try {
-        let searchCondition;
-         if (filterBy) {
+        let users;
 
-            if(filterBy === "people"){
-                searchCondition = {
-                    $or: [
-                        { firstName: { $regex: query, $options: "i" } },
-                        { lastName: { $regex: query, $options: "i" } }
-                    ]
-                };
+        
+        users = await userModel
+        .find()
+        .populate({ path: "skills", select: "name" })
+        .select("firstName lastName email _id bio profession location skills profilePictureUrl");
 
-            }else if(filterBy === "all"){
+        const q = query.toLowerCase();
 
-                searchCondition = {
-                    $or: [
-                    { firstName: { $regex: query, $options: "i" } },
-                    { lastName: { $regex: query, $options: "i" } },
-                    { profession: { $regex: query, $options: "i" } },
-                    { location: { $regex: query, $options: "i" } },
-                    { skills: { $regex: query, $options: "i" } } 
-                    
-                ]
-                }
-
-            } else {
-                searchCondition = {
-                    [filterBy]: { $regex: query, $options: "i" }
-                };
-            }
-
-        } else {
-            searchCondition = {
-                 //$regex: querysearch for documents where the field matches the regular expression query
-                $or: [
-                    { firstName: { $regex: query, $options: "i" } },
-                    { lastName: { $regex: query, $options: "i" } },
-                    { profession: { $regex: query, $options: "i" } },
-                    { location: { $regex: query, $options: "i" } },
-                    { skills: { $regex: query, $options: "i" } } 
-                    //$options: "i" makes the regex search case-insensitive
-                ]
-            };
-
+        // Filter based on filterBy
+        if (!filterBy || filterBy === "all") {
+            users = users.filter((user) =>
+                user.firstName.toLowerCase().includes(q) ||
+                user.lastName.toLowerCase().includes(q) ||
+                user.profession.toLowerCase().includes(q) ||
+                user.location.toLowerCase().includes(q) ||
+                user.skills.some((skill) => skill.name.toLowerCase().includes(q))
+            );
+        } else if (filterBy === "people") {
+        users = users.filter((user) =>
+            user.firstName.toLowerCase().includes(q) ||
+            user.lastName.toLowerCase().includes(q)
+        );
+        } else if (filterBy === "profession") {
+            users = users.filter((user) => user.profession.toLowerCase().includes(q));
+        } else if (filterBy === "location") {
+            users = users.filter((user) => user.location.toLowerCase().includes(q));
+        } else if (filterBy === "skills") {
+            users = users.filter((user) =>
+                user.skills.some((skill) => skill.name.toLowerCase().includes(q))
+            );
         }
-        const users = await userModel.find(searchCondition).select("firstName lastName email _id bio profession location skills  profilePictureUrl"); 
-    
 
         res.json(users);
     } catch (err) {

@@ -42,9 +42,13 @@ const userSchema = new mongoose.Schema({
         default: Date.now
       }
     },
-    
+    skills: [
+    {
+      type: Types.ObjectId,
+      ref: "Skill",
+    }
+],
     profession: {type: String, default:''},
-    skills: {type: [String], default:[]},
     location: {type: String, default:''},
     linkedinId: {type: String, default:''},
     githubId: {type: String, default:''},

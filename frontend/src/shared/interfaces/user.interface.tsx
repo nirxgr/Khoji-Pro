@@ -7,7 +7,7 @@ export interface IUser {
   phoneNumber: string;
   experienceYears: number;
   profession: string;
-  skills: string[];
+  skills: { _id: string; name: string }[];
   location: string;
   linkedinId: string;
   githubId: string;

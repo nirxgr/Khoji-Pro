@@ -4,12 +4,14 @@ import { submitUserProfile } from "../../shared/service/user.service.tsx";
 
 interface ProfileDetailsProps {
   user: IUser;
+  backendUrl: string;
   setReloadUser: React.Dispatch<React.SetStateAction<boolean>>;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({
   user,
+  backendUrl,
   setReloadUser,
   setShowForm,
 }) => {
@@ -21,7 +23,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
   } = useForm<IUser>({ mode: "onSubmit", defaultValues: user });
 
   const onSubmit = async (data: IUser) => {
-    await submitUserProfile(data, setReloadUser, setShowForm);
+    await submitUserProfile(data, backendUrl, setReloadUser, setShowForm);
     reset(data);
   };
 

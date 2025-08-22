@@ -1,15 +1,16 @@
 import { useForm } from "react-hook-form";
 import { IUser } from "../../shared/interfaces/user.interface.ts";
 import { submitUserProfile } from "../../shared/service/user.service.tsx";
-
 interface ContactDetailsProps {
   user: IUser;
+  backendUrl: string;
   setReloadUser: React.Dispatch<React.SetStateAction<boolean>>;
   setShowContactForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ContactDetails: React.FC<ContactDetailsProps> = ({
   user,
+  backendUrl,
   setReloadUser,
   setShowContactForm,
 }) => {
@@ -21,7 +22,12 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
   } = useForm<IUser>({ mode: "onSubmit", defaultValues: user });
 
   const onSubmit = async (data: IUser) => {
-    await submitUserProfile(data, setReloadUser, setShowContactForm);
+    await submitUserProfile(
+      data,
+      backendUrl,
+      setReloadUser,
+      setShowContactForm
+    );
     reset(data);
   };
   return (

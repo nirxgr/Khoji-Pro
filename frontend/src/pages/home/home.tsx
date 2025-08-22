@@ -9,7 +9,7 @@ import axios from "axios";
 import { IUser } from "../../shared/interfaces/user.interface.tsx";
 
 const Home = () => {
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, userData } = useContext(AppContext);
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState<IUser[]>([]);
   const navigate = useNavigate();
@@ -146,7 +146,8 @@ const Home = () => {
                       </div>
                       <div className="card-details">
                         <p>
-                          {user.firstName} {user.lastName}
+                          {user.firstName} {user.lastName}{" "}
+                          {userData._id === user._id && "(You)"}
                         </p>
                         <p>{user.email}</p>
                         <p>{user.location}</p>
@@ -156,11 +157,16 @@ const Home = () => {
                     <div className="extra-details">
                       <p className="bio-text">{user.bio}</p>
                       <div className="languages-wrapper">
-                        {(user.skills ?? []).slice(0, 4).map((skill, index) => (
-                          <span key={index} className="skill-tag">
-                            {skill}
-                          </span>
-                        ))}
+                        {(user.skills ?? [])
+                          .slice(0, 4)
+                          .map((skillObj, index) => (
+                            <span
+                              key={skillObj._id || index}
+                              className="skill-tag"
+                            >
+                              {skillObj.name}
+                            </span>
+                          ))}
                       </div>
                     </div>
                   </div>

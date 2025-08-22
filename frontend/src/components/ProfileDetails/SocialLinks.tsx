@@ -5,17 +5,17 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../../assets/assets.js";
-import { AppContext } from "../../context/AppContext.jsx";
-import { useContext } from "react";
 
 interface SocialLinksProps {
   user: IUser;
+  backendUrl: string;
   setReloadUser: React.Dispatch<React.SetStateAction<boolean>>;
   setShowSocialForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SociaLinks: React.FC<SocialLinksProps> = ({
+const SocialLinks: React.FC<SocialLinksProps> = ({
   user,
+  backendUrl,
   setReloadUser,
   setShowSocialForm,
 }) => {
@@ -34,7 +34,6 @@ const SociaLinks: React.FC<SocialLinksProps> = ({
       linkedinId: user?.linkedinId || "",
     },
   });
-  const { backendUrl } = useContext(AppContext);
 
   const handleSocialCancel = () => {
     resetSocial();
@@ -42,7 +41,7 @@ const SociaLinks: React.FC<SocialLinksProps> = ({
   };
 
   const onSubmit = async (data: IUser) => {
-    await submitUserProfile(data, setReloadUser, setShowSocialForm);
+    await submitUserProfile(data, backendUrl, setReloadUser, setShowSocialForm);
     resetSocial(data);
   };
 
@@ -235,4 +234,4 @@ const SociaLinks: React.FC<SocialLinksProps> = ({
   );
 };
 
-export default SociaLinks;
+export default SocialLinks;
