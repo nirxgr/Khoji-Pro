@@ -6,12 +6,23 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 
-export const ExperienceSection = () => {
+interface ExperienceSectionProps {
+  isOwner: boolean;
+  setReloadUser: React.Dispatch<React.SetStateAction<boolean>>;
+  experiences: IExperience[];
+}
+
+const ExperienceSection: React.FC<ExperienceSectionProps> = ({
+  isOwner,
+  setReloadUser,
+  experiences,
+}) => {
   const [showExpForm, setShowExpForm] = useState(false);
   const [selectedExp, setSelectedExp] = useState<IExperience | null>(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const { backendUrl } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="profile-section">
@@ -149,6 +160,8 @@ export const ExperienceSection = () => {
                   className="delete-btn-popup"
                   onClick={async () => {
                     try {
+                      setIsLoading(true);
+                      await new Promise((resolve) => setTimeout(resolve, 1000));
                       const { data } = await axios.delete(
                         `${backendUrl}/api/exp/delete-experience/${selectedExp._id}`
                       );
@@ -168,6 +181,11 @@ export const ExperienceSection = () => {
                 </button>
               </div>
             </div>
+            {isLoading && (
+              <div className="loading-overlay">
+                <div className="spinner"></div>
+              </div>
+            )}
           </div>
         )}
       </div>
