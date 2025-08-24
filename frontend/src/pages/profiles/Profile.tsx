@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext.jsx";
 import "./Profile.css";
@@ -16,22 +16,16 @@ import ExperienceForm from "../../components/Experience/ExperienceForm.tsx";
 import EducationForm from "../../components/Education/EducationForm.tsx";
 import { ISkill } from "../../shared/interfaces/skill.interface.tsx";
 import SkillForm from "../../components/Skill/SkillForm.tsx";
+import ProfileCover from "../../components/Profile/ProfileCover.tsx";
+import ProfilePicture from "../../components/Profile/ProfilePicture.tsx";
 
 const SearchedProfilePage = () => {
   const { id } = useParams();
-  const defaultProfilePic =
-    "http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg";
-  const defaultCoverPic =
-    "https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png";
   const [user, setUser] = useState<IUser | null>(null);
   const [reloadUser, setReloadUser] = useState(false);
   const { backendUrl, userData, setUserData, getUserData } =
     useContext(AppContext);
   const [showForm, setShowForm] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [openProfileEdit, setOpenProfileEdit] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const [showContactForm, setShowContactForm] = useState(false);
   const [showSocialForm, setShowSocialForm] = useState(false);
 
@@ -52,198 +46,7 @@ const SearchedProfilePage = () => {
   const [showDeleteSkill, setShowDeleteSkill] = useState(false);
   const [showEditSkill, setShowEditSkill] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const isOwner = userData?._id === id;
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setSelectedFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  };
-
-  const handleUpdateClick = () => {
-    fileInputRef.current?.click();
-  };
-  const handleExit = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-  };
-  const openCamera = async () => {
-    try {
-      const s: MediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
-      });
-      setStream(s);
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = s;
-        videoRef.current.muted = true;
-        videoRef.current.playsInline = true;
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((err) => console.error("Video play error:", err));
-        }
-      }
-    } catch (err) {
-      console.error("Camera error:", err);
-    }
-  };
-
-  const capturePhoto = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0);
-
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
-
-      setPreviewUrl(URL.createObjectURL(file));
-      setSelectedFile(file);
-
-      // stop camera after capture
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-        setStream(null);
-      }
-    }, "image/jpeg");
-  };
-
-  const handleCancel = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-      setStream(null);
-    }
-    setPreviewUrl(null);
-    setSelectedFile(null);
-    setOpenProfileEdit(false);
-  };
-
-  const handleCoverUploadCancel = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-      setStream(null);
-    }
-    setPreviewUrl(null);
-    setSelectedFile(null);
-    setOpen(false);
-  };
-
-  const handleProfilePicSave = async () => {
-    if (!selectedFile) return;
-
-    try {
-      setIsUploading(true);
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-
-      const res = await axios.patch(
-        backendUrl + "/api/user/updateProfilePic",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      if (res.data.success) {
-        await getUserData();
-        setUserData((prev: any) => ({
-          ...prev,
-          profilePictureUrl: res.data.image,
-        }));
-        toast.success(res.data.message);
-        setReloadUser(true);
-        handleExit();
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error uploading profile picture");
-    } finally {
-      setIsUploading(false);
-    }
-  };
-  const handleCoverPicSave = async () => {
-    if (!selectedFile) return;
-
-    try {
-      setIsUploading(true);
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-
-      const res = await axios.patch(
-        backendUrl + "/api/user/updateCoverPic",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      if (res.data.success) {
-        toast.success(res.data.message);
-        setReloadUser(true);
-        handleExit();
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error uploading cover picture");
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleProfilePicDelete = async () => {
-    try {
-      setIsUploading(true);
-      const res = await axios.delete(backendUrl + "/api/user/deleteProfilePic");
-      if (res.data.success) {
-        toast.success(res.data.message);
-        setReloadUser(true);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error deleting profile picture");
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleCoverPicDelete = async () => {
-    try {
-      setIsUploading(true);
-      const res = await axios.delete(backendUrl + "/api/user/deleteCoverPic");
-      if (res.data.success) {
-        toast.success(res.data.message);
-        setReloadUser(true);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      toast.error("Error deleting cover picture");
-    } finally {
-      setIsUploading(false);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -279,18 +82,6 @@ const SearchedProfilePage = () => {
     fetchData();
   }, [id, backendUrl, reloadUser]);
 
-  useEffect(() => {
-    if (stream && videoRef.current) {
-      videoRef.current.srcObject = stream;
-      videoRef.current.muted = true;
-      videoRef.current.playsInline = true;
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => console.error("Video play error:", err));
-      }
-    }
-  }, [stream]);
-
   if (!user) return <p>No user found</p>;
 
   return (
@@ -298,262 +89,19 @@ const SearchedProfilePage = () => {
       <Header />
       <div className="profile-container">
         <div className="profile-header">
-          <div className="cover-container" ref={containerRef}>
-            <img
-              src={user.coverPictureUrl.url || defaultCoverPic}
-              alt="cover-photo"
-              className="cover-photo"
-            />
-            {isOwner && (
-              <button
-                className="edit-icon-btn"
-                onClick={() => setOpen((prev) => !prev)}
-              >
-                <img
-                  src={assets.pencil}
-                  alt="edit-icon"
-                  className="edit-icon"
-                />
-              </button>
-            )}
+          <ProfileCover
+            user={user}
+            isOwner={isOwner}
+            setReloadUser={setReloadUser}
+          />
 
-            {open && (
-              <>
-                <div
-                  className="overlay"
-                  onClick={handleCoverUploadCancel}
-                ></div>
-
-                <div className="edit-photo-overlay">
-                  <div className="edit-photo-top">
-                    <h2 className="edit-photo-title">Edit Cover Picture</h2>
-                    <img
-                      src={assets.cancel}
-                      alt="Cancel Icon"
-                      className="cancel-icon"
-                      onClick={handleCoverUploadCancel}
-                    />
-                  </div>
-                  <div className="edit-photo-rectangle">
-                    {stream ? (
-                      <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="camera-preview"
-                      />
-                    ) : (
-                      <img
-                        src={
-                          previewUrl ||
-                          user.coverPictureUrl.url ||
-                          defaultCoverPic
-                        }
-                        alt="Cover Photo"
-                      />
-                    )}
-                  </div>
-                  {!selectedFile ? (
-                    <div className="edit-photo-buttons">
-                      {stream ? (
-                        <button
-                          className="capture-button"
-                          onClick={capturePhoto}
-                        >
-                          Capture
-                        </button>
-                      ) : (
-                        <>
-                          <div className="main-two-buttons">
-                            <button
-                              className="photo-buttons"
-                              onClick={openCamera}
-                            >
-                              <img
-                                src={assets.camera}
-                                alt="camera icon"
-                                className="delete-picture"
-                              />
-                            </button>
-                            <button
-                              className="photo-buttons"
-                              onClick={handleUpdateClick}
-                            >
-                              Upload Image
-                              <input
-                                type="file"
-                                accept="image/*"
-                                ref={fileInputRef}
-                                style={{ display: "none" }}
-                                onChange={handleFileChange}
-                              />
-                            </button>
-                          </div>
-
-                          <button
-                            className="photo-buttons"
-                            onClick={handleCoverPicDelete}
-                          >
-                            <img
-                              src={assets.deleteicon}
-                              alt="edit-icon"
-                              className="edit-icon"
-                            />
-                          </button>
-                          {isUploading && (
-                            <div className="loading-overlay">
-                              <div className="spinner"></div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <>
-                      <div className="save-photo-buttons">
-                        <button
-                          className="save-buttons"
-                          onClick={handleCoverPicSave}
-                        >
-                          Save
-                        </button>
-                        <button className="save-buttons" onClick={handleExit}>
-                          Cancel
-                        </button>
-                      </div>
-                      {isUploading && (
-                        <div className="loading-overlay">
-                          <div className="spinner"></div>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-
-          {openProfileEdit && (
-            <>
-              <div className="overlay" onClick={handleCancel}></div>
-
-              <div className="edit-photo-overlay">
-                <div className="edit-photo-top">
-                  <h2 className="edit-photo-title">Edit Profile Picture</h2>
-                  <img
-                    src={assets.cancel}
-                    alt="Cancel Icon"
-                    className="cancel-icon"
-                    onClick={handleCancel}
-                  />
-                </div>
-                <div className="edit-photo-circle">
-                  {stream ? (
-                    <video
-                      ref={videoRef}
-                      autoPlay
-                      playsInline
-                      muted
-                      className="camera-preview"
-                    />
-                  ) : (
-                    <img
-                      src={
-                        previewUrl ||
-                        user.profilePictureUrl.url ||
-                        defaultProfilePic
-                      }
-                      alt="Profile Photo"
-                    />
-                  )}
-                </div>
-                {!selectedFile ? (
-                  <div className="edit-photo-buttons">
-                    {stream ? (
-                      <button
-                        className="capture-button"
-                        onClick={capturePhoto}
-                      ></button>
-                    ) : (
-                      <>
-                        <div className="main-two-buttons">
-                          <button
-                            className="photo-buttons"
-                            onClick={openCamera}
-                          >
-                            <img
-                              src={assets.camera}
-                              alt="camera icon"
-                              className="delete-picture"
-                            />
-                          </button>
-                          <button
-                            className="photo-buttons"
-                            onClick={handleUpdateClick}
-                          >
-                            Upload Image
-                            <input
-                              type="file"
-                              accept="image/*"
-                              ref={fileInputRef}
-                              style={{ display: "none" }}
-                              onChange={handleFileChange}
-                            />
-                          </button>
-                        </div>
-
-                        <button
-                          className="photo-buttons"
-                          onClick={handleProfilePicDelete}
-                        >
-                          <img
-                            src={assets.deleteicon}
-                            alt="edit-icon"
-                            className="edit-icon"
-                          />
-                        </button>
-                        {isUploading && (
-                          <div className="loading-overlay">
-                            <div className="spinner"></div>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <>
-                    <div className="save-photo-buttons">
-                      <button
-                        className="save-buttons"
-                        onClick={handleProfilePicSave}
-                      >
-                        Save
-                      </button>
-                      <button className="save-buttons" onClick={handleExit}>
-                        Cancel
-                      </button>
-                    </div>
-                    {isUploading && (
-                      <div className="loading-overlay">
-                        <div className="spinner"></div>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            </>
-          )}
-
-          <div className="profile-picture">
-            <img
-              src={user.profilePictureUrl.url || defaultProfilePic}
-              alt="profile-photo"
-              onClick={
-                isOwner ? () => setOpenProfileEdit((prev) => !prev) : undefined
-              }
-            />
-          </div>
+          <ProfilePicture
+            user={user}
+            isOwner={isOwner}
+            setReloadUser={setReloadUser}
+            getUserData={getUserData}
+            setUserData={setUserData}
+          />
 
           <div className="profile-section-first">
             <div className="profile-name">
