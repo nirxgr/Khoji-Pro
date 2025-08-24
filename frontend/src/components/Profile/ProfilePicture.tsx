@@ -109,8 +109,12 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
       } else {
         toast.error(res.data.message);
       }
-    } catch (error) {
-      toast.error("Error deleting profile picture");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Error deleting profile picture");
+      }
     } finally {
       setIsUploading(false);
     }

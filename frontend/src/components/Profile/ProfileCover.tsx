@@ -100,8 +100,12 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
       } else {
         toast.error(res.data.message);
       }
-    } catch (error) {
-      toast.error("Error deleting cover picture");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Error deleting cover picture");
+      }
     } finally {
       setIsUploading(false);
     }
