@@ -3,24 +3,20 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext.jsx";
 import "./Profile.css";
-import ProfileDetailsForm from "../../components/ProfileDetails/ProfileDetailsForm.tsx";
-import ContactDetailsForm from "../../components/ProfileDetails/ContactDetailsForm.tsx";
-import SoicalLinksForm from "../../components/SocialLinks/SocialLinksForm.tsx";
 import Header from "../../components/Header/Header.js";
-import { assets } from "../../assets/assets.js";
-import { toast } from "react-toastify";
 import { IUser } from "../../shared/interfaces/user.interface.tsx";
 import { IExperience } from "../../shared/interfaces/experience.interface.tsx";
 import { IEducation } from "../../shared/interfaces/education.interface.tsx";
-import EducationForm from "../../components/Education/EducationForm.tsx";
 import { ISkill } from "../../shared/interfaces/skill.interface.tsx";
-import SkillForm from "../../components/Skill/SkillForm.tsx";
+
 import ProfileCover from "../../components/Profile/ProfileCover.tsx";
 import ProfilePicture from "../../components/Profile/ProfilePicture.tsx";
 import ExperienceSection from "../../components/Experience/ExperienceSection.tsx";
 import EducationSection from "../../components/Education/EducationSection.tsx";
 import SkillSection from "../../components/Skill/SkillSection.tsx";
 import SocialLinksSection from "../../components/SocialLinks/SocialLinksSection.tsx";
+import ProfileDetailsSection from "../../components/ProfileDetails/ProfileDetailsSection.tsx";
+import ContactDetailsSection from "../../components/ContactDetails/ContactDetailsSection.tsx";
 
 const SearchedProfilePage = () => {
   const { id } = useParams();
@@ -28,23 +24,9 @@ const SearchedProfilePage = () => {
   const [reloadUser, setReloadUser] = useState(false);
   const { backendUrl, userData, setUserData, getUserData } =
     useContext(AppContext);
-  const [showForm, setShowForm] = useState(false);
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [showSocialForm, setShowSocialForm] = useState(false);
-
   const [experiences, setExperiences] = useState<IExperience[]>([]);
-
   const [educations, setEducations] = useState<IEducation[]>([]);
-  const [showEduForm, setShowEduForm] = useState(false);
-  const [selectedEdu, setSelectedEdu] = useState<IEducation | null>(null);
-  const [showDeleteEdu, setShowDeleteEdu] = useState(false);
-  const [showEditEdu, setShowEditEdu] = useState(false);
   const [skills, setSkills] = useState<ISkill[]>([]);
-  const [showSkillForm, setShowSkillForm] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState<ISkill | null>(null);
-  const [showDeleteSkill, setShowDeleteSkill] = useState(false);
-  const [showEditSkill, setShowEditSkill] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const isOwner = userData?._id === id;
 
   useEffect(() => {
@@ -102,89 +84,18 @@ const SearchedProfilePage = () => {
             setUserData={setUserData}
           />
 
-          <div className="profile-section-first">
-            <div className="profile-name">
-              <h1>
-                {user?.firstName || "---"} {user.lastName || "---"}
-              </h1>
-              {isOwner && (
-                <button
-                  className="edit-btn"
-                  onClick={() => {
-                    setShowForm(true);
-                  }}
-                >
-                  <img
-                    src={assets.pencil}
-                    alt="edit-icon"
-                    className="edit-icon"
-                  />
-                </button>
-              )}
-
-              {showForm && user && (
-                <ProfileDetailsForm
-                  user={user}
-                  backendUrl={backendUrl}
-                  setReloadUser={setReloadUser}
-                  setShowForm={setShowForm}
-                />
-              )}
-
-              <p className="profession">{user.profession || "---"}</p>
-              <p className="location">
-                <img
-                  src={assets.location}
-                  alt="location icon"
-                  className="location-icon"
-                />
-                {user.location || "---"}
-              </p>
-            </div>
-            <div className="profile-bio">{user.bio || "---"}</div>
-          </div>
-        </div>
-        <div className="profile-section">
-          <div className="exp-section">
-            <h3 className="profile-section-title">Contact Information</h3>
-            {isOwner && (
-              <button
-                className="add-btn"
-                onClick={() => {
-                  setShowContactForm(true);
-                }}
-              >
-                <img src={assets.pencil} alt="add-icon" className="add-icon" />
-              </button>
-            )}
-          </div>
-          <div className="contact-details">
-            <p className="location">
-              <img
-                src={assets.mail2}
-                alt="mail icon"
-                className="location-icon"
-              />
-              {user.email || "---"}
-            </p>
-            <p className="location">
-              <img
-                src={assets.phone2}
-                alt="mail icon"
-                className="location-icon"
-              />
-              {user.phoneNumber || "---"}
-            </p>
-          </div>
-        </div>
-        {showContactForm && user && (
-          <ContactDetailsForm
+          <ProfileDetailsSection
             user={user}
-            backendUrl={backendUrl}
+            isOwner={isOwner}
             setReloadUser={setReloadUser}
-            setShowContactForm={setShowContactForm}
           />
-        )}
+        </div>
+
+        <ContactDetailsSection
+          user={user}
+          isOwner={isOwner}
+          setReloadUser={setReloadUser}
+        />
 
         <ExperienceSection
           isOwner={isOwner}
