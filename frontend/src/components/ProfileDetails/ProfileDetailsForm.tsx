@@ -9,7 +9,7 @@ interface ProfileDetailsProps {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ProfileDetails: React.FC<ProfileDetailsProps> = ({
+const ProfileDetailsForm: React.FC<ProfileDetailsProps> = ({
   user,
   backendUrl,
   setReloadUser,
@@ -140,4 +140,4 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
   );
 };
 
-export default ProfileDetails;
+export default ProfileDetailsForm;

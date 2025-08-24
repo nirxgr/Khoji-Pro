@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { IUser } from "../../shared/interfaces/user.interface.ts";
+import { IUser } from "../../shared/interfaces/user.interface.tsx";
 import { submitUserProfile } from "../../shared/service/user.service.tsx";
 interface ContactDetailsProps {
   user: IUser;
@@ -8,7 +8,7 @@ interface ContactDetailsProps {
   setShowContactForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ContactDetails: React.FC<ContactDetailsProps> = ({
+const ContactDetailsForm: React.FC<ContactDetailsProps> = ({
   user,
   backendUrl,
   setReloadUser,
@@ -81,4 +81,4 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({
   );
 };
 
-export default ContactDetails;
+export default ContactDetailsForm;

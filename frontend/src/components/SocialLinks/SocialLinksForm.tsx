@@ -13,7 +13,7 @@ interface SocialLinksProps {
   setShowSocialForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SocialLinks: React.FC<SocialLinksProps> = ({
+const SocialLinksForm: React.FC<SocialLinksProps> = ({
   user,
   backendUrl,
   setReloadUser,
@@ -234,4 +234,4 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
   );
 };
 
-export default SocialLinks;
+export default SocialLinksForm;
