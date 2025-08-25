@@ -13,7 +13,7 @@ const CompleteProfileGuard = ({ children }: CompleteProfileGuardProps) => {
   if (!authReady) return null;
 
   if (!isLoggedin) {
-    return <Navigate to="/login" replace />; // Not logged in
+    return <Navigate to="/" replace />;
   }
 
   if (userData?.profileStatus === "Completed") {

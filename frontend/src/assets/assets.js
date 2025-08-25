@@ -23,6 +23,8 @@ import mail2 from './mail2.svg'
 import phone2 from './phone2.svg'
 import cancel from './cancel.svg'
 import camera from './camera.svg'
+import logout from './logout.svg'
+import profile from './profile.svg'
 
 export const assets = {
     arrow_icon,
@@ -49,5 +51,7 @@ export const assets = {
     mail2,
     phone2,
     cancel,
-    camera
+    camera,
+    logout,
+    profile
 }

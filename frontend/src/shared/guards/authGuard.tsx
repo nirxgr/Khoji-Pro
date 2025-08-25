@@ -14,7 +14,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
   if (!authReady) return null;
 
   if (!isLoggedin) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (
