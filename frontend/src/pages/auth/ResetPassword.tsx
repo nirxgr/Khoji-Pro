@@ -16,26 +16,6 @@ const ResetPassword = () => {
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
   const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
 
-  // const onSubmitNewPassword = async (data: NewPassFormData) => {
-  //   try {
-  //     await new Promise((resolve) => setTimeout(resolve, 2000));
-  //     const { newPassword } = data;
-
-  //     const response = await axios.post(
-  //       backendUrl + "/api/auth/reset-password",
-  //       { email: userEmail, newPassword }
-  //     );
-  //     if (response.data.success) {
-  //       toast.success(response.data.message);
-  //       navigate("/login");
-  //     } else {
-  //       toast.error(response.data.message);
-  //     }
-  //   } catch (error) {
-  //     toast.error(error.message);
-  //   }
-  // };
-
   return (
     <div className="main-container">
       <img
@@ -64,6 +44,8 @@ const ResetPassword = () => {
           <h2 className="form-title">Reset Password OTP</h2>
           <p className="form-subtitle">
             Enter the 6-digit code sent to your email id.
+            <br />
+            {userEmail}
           </p>
 
           <OtpForm

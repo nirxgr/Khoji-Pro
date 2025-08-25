@@ -35,6 +35,7 @@ const EmailForm: React.FC<EmailFormProps> = ({
         backendUrl + "/api/auth/send-reset-otp",
         { email }
       );
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       if (response.data.success) {
         toast.success(response.data.message);
         setUserEmail(email);

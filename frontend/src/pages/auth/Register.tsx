@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { assets } from "../../assets/assets.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AppContext } from "../../context/AppContext.jsx";
 import "./Auth.css";
 import RegistrationForm from "../../components/Register/RegistrationForm.tsx";
 import OtpForm from "../../components/Register/OtpForm.tsx";
@@ -47,7 +46,9 @@ const Register = () => {
         <div className="form-container">
           <h2 className="form-title">Email Verify OTP</h2>
           <p className="form-subtitle">
-            Enter the 6-digit code sent to your email id.
+            Enter the 6-digit code sent to your email id
+            <br />
+            {signupData.email}.
           </p>
           <OtpForm signupData={signupData} type="register" />
         </div>
