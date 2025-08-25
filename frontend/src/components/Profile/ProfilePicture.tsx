@@ -158,7 +158,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
                   src={
                     previewUrl ||
                     user.profilePictureUrl.url ||
-                    assets.profilepic
+                    assets.defaultprofilepic
                   }
                   alt="Profile Photo"
                 />
@@ -196,16 +196,18 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
                       </button>
                     </div>
 
-                    <button
-                      className="photo-buttons"
-                      onClick={handleProfilePicDelete}
-                    >
-                      <img
-                        src={assets.deleteicon}
-                        alt="edit-icon"
-                        className="edit-icon"
-                      />
-                    </button>
+                    {user.profilePictureUrl.url && (
+                      <button
+                        className="photo-buttons"
+                        onClick={handleProfilePicDelete}
+                      >
+                        <img
+                          src={assets.deleteicon}
+                          alt="edit-icon"
+                          className="edit-icon"
+                        />
+                      </button>
+                    )}
                     {isUploading && (
                       <div className="loading-overlay">
                         <div className="spinner"></div>

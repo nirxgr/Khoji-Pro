@@ -189,16 +189,19 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
                         </button>
                       </div>
 
-                      <button
-                        className="photo-buttons"
-                        onClick={handleCoverPicDelete}
-                      >
-                        <img
-                          src={assets.deleteicon}
-                          alt="edit-icon"
-                          className="edit-icon"
-                        />
-                      </button>
+                      {user.coverPictureUrl.url && (
+                        <button
+                          className="photo-buttons"
+                          onClick={handleCoverPicDelete}
+                        >
+                          <img
+                            src={assets.deleteicon}
+                            alt="edit-icon"
+                            className="edit-icon"
+                          />
+                        </button>
+                      )}
+
                       {isUploading && (
                         <div className="loading-overlay">
                           <div className="spinner"></div>
