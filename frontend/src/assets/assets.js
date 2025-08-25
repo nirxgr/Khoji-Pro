@@ -25,6 +25,8 @@ import cancel from './cancel.svg'
 import camera from './camera.svg'
 import logout from './logout.svg'
 import profile from './profile.svg'
+import defaultprofilepic from './defaultprofilepic.jpeg'
+import defaultcoverpic from './defaultcoverpic.png'
 
 export const assets = {
     arrow_icon,
@@ -53,5 +55,7 @@ export const assets = {
     cancel,
     camera,
     logout,
-    profile
+    profile,
+    defaultprofilepic,
+    defaultcoverpic
 }

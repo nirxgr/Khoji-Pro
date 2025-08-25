@@ -25,8 +25,6 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
       },
     });
   const [open, setOpen] = useState(false);
-  const defaultCoverPic =
-    "https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png";
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -115,7 +113,7 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
     <>
       <div className="cover-container" ref={containerRef}>
         <img
-          src={user.coverPictureUrl.url || defaultCoverPic}
+          src={user.coverPictureUrl.url || assets.defaultcoverpic}
           alt="cover-photo"
           className="cover-photo"
         />
@@ -154,7 +152,9 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
                 ) : (
                   <img
                     src={
-                      previewUrl || user.coverPictureUrl.url || defaultCoverPic
+                      previewUrl ||
+                      user.coverPictureUrl.url ||
+                      assets.defaultcoverpic
                     }
                     alt="Cover Photo"
                   />

@@ -28,8 +28,6 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
       },
     });
 
-  const defaultProfilePic =
-    "http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg";
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -124,7 +122,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
     <>
       <div className="profile-picture">
         <img
-          src={user.profilePictureUrl.url || defaultProfilePic}
+          src={user.profilePictureUrl.url || assets.defaultprofilepic}
           alt="profile-photo"
           onClick={
             isOwner ? () => setOpenProfileEdit((prev) => !prev) : undefined
@@ -160,7 +158,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
                   src={
                     previewUrl ||
                     user.profilePictureUrl.url ||
-                    defaultProfilePic
+                    assets.profilepic
                   }
                   alt="Profile Photo"
                 />

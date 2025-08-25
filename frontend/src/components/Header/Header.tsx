@@ -1,6 +1,6 @@
 import "./Header.css";
 import { assets } from "../../assets/assets.js";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext.jsx";
 import axios from "axios";
@@ -8,8 +8,6 @@ import { toast } from "react-toastify";
 
 const Header = () => {
   const navigate = useNavigate();
-  const defaultProfilePic =
-    "http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg";
   const { userData, backendUrl, setUserData, setIsLoggedin } =
     useContext(AppContext);
   const [open, setOpen] = useState(false);
@@ -32,11 +30,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (
-        !e.target.closest(".profile-circle") &&
-        !e.target.closest(".dropdown")
-      ) {
+    function handleClickOutside(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".profile-circle") && !target.closest(".dropdown")) {
         setOpen(false);
       }
     }
@@ -54,7 +50,7 @@ const Header = () => {
         <div className="profile-circle">
           <div className="profile-img-wrapper" onClick={() => setOpen(!open)}>
             <img
-              src={userData.profilePictureUrl.url || defaultProfilePic}
+              src={userData.profilePictureUrl.url || assets.defaultprofilepic}
               alt="profile-photo"
             />
           </div>
