@@ -4,7 +4,9 @@ import cloudinary from '../config/cloudinary.config.js';
 
 export async function uploadCoverPic(req,res) {
     try{
-        if(!req.file) throw new Error("No file uploaded");
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'No file uploaded' });
+        }
 
         const result = await uploadBufferToCloudinary(req.file.buffer, {
             folder: 'coverpic',
@@ -30,8 +32,14 @@ export async function uploadCoverPic(req,res) {
         res.json({ success: true, image: user.coverPictureUrl, message: 'Cover picture updated successfully!'});
 
 
-    } catch(e){
-        res.status(500).json({ success: false, message: e.message });
+    } catch (e) {
+        if (e.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ success: false, message: 'File too large (max 5MB)' });
+        }
+        if (e.message?.includes('Only JPG, JPEG, PNG')) {
+            return res.status(400).json({ success: false, message: e.message });
+        }
+        res.status(500).json({ success: false, message: e.message || 'Upload failed' });
     }
 }
 

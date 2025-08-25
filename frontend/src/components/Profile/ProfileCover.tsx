@@ -53,7 +53,11 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+    if (!["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+      toast.error("Only JPG, JPEG, or PNG images are allowed");
+      e.target.value = "";
+      return;
+    }
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
@@ -81,8 +85,12 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
       } else {
         toast.error(res.data.message);
       }
-    } catch (error) {
-      toast.error("Error uploading cover picture");
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Error uploading cover picture");
+      }
     } finally {
       setIsUploading(false);
     }

@@ -30,8 +30,14 @@ export async function uploadProfilePic(req,res) {
         res.json({ success: true, image: user.profilePictureUrl, message: 'Profile picture updated successfully!'});
 
 
-    } catch(e){
-        res.status(500).json({ success: false, message: e.message });
+    } catch (e) {
+        if (e.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ success: false, message: 'File too large (max 5MB)' });
+        }
+        if (e.message?.includes('Only JPG, JPEG, PNG')) {
+            return res.status(400).json({ success: false, message: e.message });
+        }
+        res.status(500).json({ success: false, message: e.message || 'Upload failed' });
     }
 }
 

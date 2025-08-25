@@ -7,8 +7,8 @@ export const upload = multer ({
     limits: { fileSize: 5 * 1024 * 1024}, //5mb limits
     fileFilter: (_req,file,next) => {
         const ok = ['image/jpeg', 'image/png'].includes(file.mimetype);
-            next(ok ? null : new Error('Only JPEG and PNG allowed'), ok);
-    },
+        next(ok ? null : new Error('Only JPG, JPEG or PNG images are allowed'), ok);
+            },
 });
 
 //upload buffer to Cloudinary
