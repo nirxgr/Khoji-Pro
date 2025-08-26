@@ -47,7 +47,6 @@ export const register = async (req,res) => {
             sameSite: process.env.NODE_ENV === 'production' ? "none" : 'strict',
             maxAge: 60 * 60 * 1000
         })
-        
 
         //Sending otp
         const info = await transporter.sendMail({
@@ -57,9 +56,6 @@ export const register = async (req,res) => {
         html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}",userotp).replace("{{email}}",email)
         });
         
-
-        console.log('Email sent:', info.messageId);
-
         res.json({success: true, message: 'Verification OTP Sent on Email'});
 
     } catch(error){
@@ -213,7 +209,6 @@ export const sendPasswordResetOtp = async (req,res) => {
         html:PASSWORD_RESET_TEMPLATE.replace("{{otp}}",otp).replace("{{email}}",user.email)
         })
 
-        console.log('Email sent:', info.messageId);
 
         res.json({success: true, message: 'Password Reset OTP Sent on Email'});
 
