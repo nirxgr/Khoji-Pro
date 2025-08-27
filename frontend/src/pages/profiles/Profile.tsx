@@ -52,7 +52,6 @@ const SearchedProfilePage = () => {
           `${backendUrl}/api/sk/get-skill/${id}`
         );
         setSkills(skillRes.data || []);
-        console.log(skillRes.data);
 
         setReloadUser(false);
       } catch (err) {

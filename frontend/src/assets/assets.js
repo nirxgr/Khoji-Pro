@@ -27,6 +27,8 @@ import logout from './logout.svg'
 import profile from './profile.svg'
 import defaultprofilepic from './defaultprofilepic.jpeg'
 import defaultcoverpic from './defaultcoverpic.png'
+import favorite from './favorite.svg'
+import unfavorite from './unfavorite.svg'
 
 export const assets = {
     arrow_icon,
@@ -57,5 +59,7 @@ export const assets = {
     logout,
     profile,
     defaultprofilepic,
-    defaultcoverpic
+    defaultcoverpic,
+    favorite,
+    unfavorite
 }
