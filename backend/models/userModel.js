@@ -64,9 +64,15 @@ const userSchema = new mongoose.Schema({
       ref: 'Education', 
     }
     ],
+    favorites: [
+    {
+      type: Types.ObjectId,
+      ref: "User"   
+    }
+  ]
 
 }, { timestamps: true });
 
 //IF USER MODEL EXISTS IT USES THIS OR CREATES NEW ONE
-const userModel = mongoose.models.user || mongoose.model('user', userSchema);
+const userModel = mongoose.models.user || mongoose.model('User', userSchema);
 export default userModel;

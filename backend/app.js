@@ -8,6 +8,7 @@ import updateRouter from './routes/updateRoutes.js'
 import experienceRouter from './routes/experienceRoutes.js';
 import educationRouter from './routes/educationRoutes.js';
 import skillRouter from './routes/skillRoutes.js';
+import favoritesRouter from './routes/favoritesRoutes.js';
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/api/update',updateRouter)
 app.use('/api/exp',experienceRouter)
 app.use('/api/edu',educationRouter)
 app.use('/api/sk',skillRouter)
+app.use('/api/fav',favoritesRouter)
 
 
 

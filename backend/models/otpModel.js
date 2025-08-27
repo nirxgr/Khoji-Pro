@@ -11,5 +11,5 @@ const otpSchema = new mongoose.Schema({
 });
 
 //IF OTP MODEL EXISTS IT USES THIS OR CREATES NEW ONE
-const otpModel = mongoose.models.otp || mongoose.model('otp', otpSchema);
+const otpModel = mongoose.models.otp || mongoose.model('Otp', otpSchema);
 export default otpModel;

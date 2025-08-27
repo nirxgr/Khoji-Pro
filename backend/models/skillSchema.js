@@ -4,7 +4,7 @@ const skillSchema = new Schema(
   {
     user: {
       type: Types.ObjectId,
-      ref: "user",   
+      ref: "User",   
       required: true,
     },
     name: {
