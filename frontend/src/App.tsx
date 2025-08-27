@@ -11,6 +11,7 @@ import NotFoundPage from "./pages/notfound/NotFoundPage.tsx";
 import ProfileCompletion from "./pages/auth/ProfileCompletion.tsx";
 import CompleteProfileGuard from "./shared/guards/completeProfileGuard.tsx";
 import LandingPage from "./pages/landing/LandingPage.tsx";
+import Favorites from "./pages/favorites/favorites.tsx";
 
 function App() {
   return (
@@ -76,6 +77,15 @@ function App() {
           element={
             <AuthGuard>
               <SearchedProfilePage />
+            </AuthGuard>
+          }
+        />
+
+        <Route
+          path="/favorites"
+          element={
+            <AuthGuard>
+              <Favorites />
             </AuthGuard>
           }
         />

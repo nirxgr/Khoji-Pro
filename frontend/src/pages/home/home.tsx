@@ -17,7 +17,6 @@ const Home = () => {
 
   const [filterBy, setFilterBy] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const filterOptions = ["All", "People", "Profession", "Location", "Skills"];
 

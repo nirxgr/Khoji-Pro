@@ -70,6 +70,19 @@ const Header = () => {
                     Edit Profile
                   </li>
                 )}
+                {userData?.profileStatus === "Completed" && (
+                  <li
+                    onClick={() => navigate("/favorites")}
+                    className="dropdown-item"
+                  >
+                    <img
+                      src={assets.favorite}
+                      alt="favorite Icon"
+                      className="icon"
+                    />
+                    Favorites
+                  </li>
+                )}
 
                 <li onClick={logout} className="dropdown-item">
                   <img src={assets.logout} alt="Logout Icon" className="icon" />
