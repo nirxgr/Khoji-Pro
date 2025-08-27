@@ -1,8 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IUser } from "../../shared/interfaces/user.interface";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
 import ProfileDetailsForm from "./ProfileDetailsForm";
+import axios from "axios";
+import { toggleFavorite } from "../../shared/service/favorite.service";
 
 interface ProfileSectionProps {
   user: IUser;
@@ -16,7 +18,18 @@ const ProfileDetailsSection: React.FC<ProfileSectionProps> = ({
   setReloadUser,
 }) => {
   const [showForm, setShowForm] = useState(false);
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, userData, getUserData } = useContext(AppContext);
+
+  const isUserFavorite = userData.favorites?.includes(user._id);
+
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    try {
+      await toggleFavorite(backendUrl, user._id.toString(), isUserFavorite);
+      await getUserData();
+    } catch (err) {
+      console.error("Error toggling favorite:", err);
+    }
+  };
 
   return (
     <div className="profile-section-first">
@@ -32,6 +45,15 @@ const ProfileDetailsSection: React.FC<ProfileSectionProps> = ({
             }}
           >
             <img src={assets.pencil} alt="edit-icon" className="edit-icon" />
+          </button>
+        )}
+        {!isOwner && (
+          <button className="edit-btn" onClick={handleToggleFavorite}>
+            <img
+              src={isUserFavorite ? assets.favorite : assets.unfavorite}
+              alt="edit-icon"
+              className="favorite-icon"
+            />
           </button>
         )}
 
