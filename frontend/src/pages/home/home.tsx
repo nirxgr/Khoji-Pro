@@ -131,93 +131,94 @@ const Home = () => {
           </div>
 
           <div className="search-results">
-            {userList.length > 0
-              ? userList.map((user: IUser) => {
-                  const isUserFavorite = userData.favorites?.includes(user._id);
-                  const handleToggleFavorite = async (
-                    e: React.MouseEvent,
-                    userId: string,
-                    isCurrentlyFavorite: boolean
-                  ) => {
-                    e.stopPropagation();
-                    try {
-                      await toggleFavorite(
-                        backendUrl,
-                        userId,
-                        isCurrentlyFavorite
-                      );
-                      await getUserData();
-                    } catch (err) {
-                      console.error("Error toggling favorite:", err);
-                    }
-                  };
-                  return (
-                    <div
-                      onClick={() => navigate(`/profile/${user._id}`)}
-                      key={user.email}
-                      className="result-card"
-                    >
-                      <div className="card-header">
-                        <div className="card-picture">
-                          <img
-                            src={user.profilePictureUrl.url}
-                            alt="profile-photo"
-                          />
-                        </div>
-                        <div className="card-details">
-                          <p>
-                            {user.firstName} {user.lastName}{" "}
-                            {userData._id === user._id && "(You)"}
-                          </p>
-                          <p>{user.email}</p>
-                          <p>{user.location}</p>
-                          <p>{user.profession}</p>
-                        </div>
-
-                        {userData._id !== user._id && (
-                          <div className="favorite-button-wrapper">
-                            <button
-                              className="favorite-button"
-                              onClick={(e) =>
-                                handleToggleFavorite(
-                                  e,
-                                  user._id.toString(),
-                                  isUserFavorite
-                                )
-                              }
-                            >
-                              <img
-                                src={
-                                  isUserFavorite
-                                    ? assets.favorite
-                                    : assets.unfavorite
-                                }
-                                alt="edit-icon"
-                                className="favorite-icon"
-                              />
-                            </button>
-                          </div>
-                        )}
+            {userList.length > 0 &&
+              userList.map((user: IUser) => {
+                const isUserFavorite = userData.favorites?.includes(user._id);
+                const handleToggleFavorite = async (
+                  e: React.MouseEvent,
+                  userId: string,
+                  isCurrentlyFavorite: boolean
+                ) => {
+                  e.stopPropagation();
+                  try {
+                    await toggleFavorite(
+                      backendUrl,
+                      userId,
+                      isCurrentlyFavorite
+                    );
+                    await getUserData();
+                  } catch (err) {
+                    console.error("Error toggling favorite:", err);
+                  }
+                };
+                return (
+                  <div
+                    onClick={() => navigate(`/profile/${user._id}`)}
+                    key={user.email}
+                    className="result-card"
+                  >
+                    <div className="card-header">
+                      <div className="card-picture">
+                        <img
+                          src={
+                            user.profilePictureUrl.url ||
+                            assets.defaultprofilepic
+                          }
+                          alt="profile-photo"
+                        />
                       </div>
-                      <div className="extra-details">
-                        <p className="bio-text">{user.bio}</p>
-                        <div className="languages-wrapper">
-                          {(user.skills ?? [])
-                            .slice(0, 4)
-                            .map((skillObj, index) => (
-                              <span
-                                key={skillObj._id || index}
-                                className="skill-tag"
-                              >
-                                {skillObj.name}
-                              </span>
-                            ))}
+                      <div className="card-details">
+                        <p className="title">
+                          {user.firstName} {user.lastName}{" "}
+                          {userData._id === user._id && "(You)"}
+                        </p>
+                        <p className="sub-title">{user.profession}</p>
+                        <p>{user.location}</p>
+                      </div>
+
+                      {userData._id !== user._id && (
+                        <div className="favorite-button-wrapper">
+                          <button
+                            className="favorite-button"
+                            onClick={(e) =>
+                              handleToggleFavorite(
+                                e,
+                                user._id.toString(),
+                                isUserFavorite
+                              )
+                            }
+                          >
+                            <img
+                              src={
+                                isUserFavorite
+                                  ? assets.favorite
+                                  : assets.unfavorite
+                              }
+                              alt="edit-icon"
+                              className="favorite-icon"
+                            />
+                          </button>
                         </div>
+                      )}
+                    </div>
+                    <div className="extra-details">
+                      <p className="bio-text">{user.bio}</p>
+                      <div className="languages-wrapper">
+                        {(user.skills ?? [])
+                          .slice(0, 4)
+                          .map((skillObj, index) => (
+                            <span
+                              key={skillObj._id || index}
+                              className="skill-tag"
+                            >
+                              {skillObj.name}
+                            </span>
+                          ))}
                       </div>
                     </div>
-                  );
-                })
-              : search && <p>No users found.</p>}
+                  </div>
+                );
+              })}
           </div>
         </>
       )}

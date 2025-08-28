@@ -64,17 +64,18 @@ const Favorites = () => {
                 <div className="card-header">
                   <div className="card-picture">
                     <img
-                      src={user.profilePictureUrl?.url}
+                      src={
+                        user.profilePictureUrl?.url || assets.defaultprofilepic
+                      }
                       alt="profile-photo"
                     />
                   </div>
                   <div className="card-details">
-                    <p>
+                    <p className="title">
                       {user.firstName} {user.lastName}
                     </p>
-                    <p>{user.email}</p>
+                    <p className="sub-title">{user.profession}</p>
                     <p>{user.location}</p>
-                    <p>{user.profession}</p>
                   </div>
 
                   {userData._id !== user._id && (
