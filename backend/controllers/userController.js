@@ -1,6 +1,6 @@
 import userModel from '../models/userModel.js'
 
-export const getUserData = async (req,res) => {
+export const getLoggedinUserData = async (req,res) => {
 
     try {
 
@@ -27,7 +27,7 @@ export const getUserData = async (req,res) => {
     }
 } 
 
-export async function searchUsers(req, res) {
+export const searchUsers = async (req, res) => {
     const { query, filterBy } = req.query;
 
     if (!query) {
@@ -75,7 +75,7 @@ export async function searchUsers(req, res) {
     }
 }
 
-export async function getProfile(req, res) {
+export const getProfile = async (req, res) => {
 
     try {
         const user = await userModel.findById(req.params.id);
@@ -86,7 +86,26 @@ export async function getProfile(req, res) {
         }
         
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: err.message });
+        res.status(500).json({ message: "Server error", error: error.message });
     }
     
 }
+
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const loggedInUserId = req.user.id; 
+
+    const users = await userModel.find({ _id: { $ne: loggedInUserId } }) 
+        .populate({ path: "skills", select: "name" })
+        .select("firstName lastName email _id bio profession location skills profilePictureUrl");
+    
+
+    return res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users", error });
+  }
+};
