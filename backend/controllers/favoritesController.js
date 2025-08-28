@@ -9,7 +9,16 @@ export const getFavorites = async (req, res) => {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    const user = await userModel.findById(id).populate("favorites", "firstName lastName email _id bio profession location skills profilePictureUrl");
+    const user = await userModel
+  .findById(id)
+  .populate({
+    path: "favorites",
+    select: "firstName lastName email _id bio profession location skills profilePictureUrl",
+    populate: {
+      path: "skills",      
+      select: "name -_id",  
+    },
+  });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

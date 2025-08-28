@@ -16,7 +16,7 @@ import Favorites from "./pages/favorites/favorites.tsx";
 function App() {
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer position="top-right" theme="dark" />
       <Routes>
         <Route
           path="/"
