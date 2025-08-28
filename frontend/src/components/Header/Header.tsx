@@ -72,6 +72,19 @@ const Header = () => {
                 )}
                 {userData?.profileStatus === "Completed" && (
                   <li
+                    onClick={() => navigate("/explore")}
+                    className="dropdown-item"
+                  >
+                    <img
+                      src={assets.explore}
+                      alt="Explore Icon"
+                      className="icon"
+                    />
+                    Explore
+                  </li>
+                )}
+                {userData?.profileStatus === "Completed" && (
+                  <li
                     onClick={() => navigate("/favorites")}
                     className="dropdown-item"
                   >
