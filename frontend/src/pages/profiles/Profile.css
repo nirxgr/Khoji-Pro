@@ -119,11 +119,12 @@
 
 
 .profile-header {
-  border: 1px solid white;
   border-radius: 15px;
   overflow: hidden;
   background-color: #1C1423;
   position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(73, 71, 71);
 }
 
 .profile-info {
@@ -216,8 +217,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 10px;
+  margin-top: 15px;
   padding-left: 10px;
+}
+
+.exp-name {
+  font-size: 22px;
+}
+.extra {
+  font-size: 15px;
 }
 
 
@@ -235,7 +243,8 @@
 }
 
 .profile-section {
-  border: 1px solid white;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(73, 71, 71);
   border-radius: 15px;
   padding: 25px 35px;
   margin: 15px 0;
@@ -507,6 +516,7 @@ input[type="date"].edit-input-field {
 .experience-list {
   max-width: auto;
   margin: 0 auto;
+  margin-top: 15px;
 }
 
 .experience-item {
@@ -526,6 +536,7 @@ input[type="date"].edit-input-field {
 .experience-details h3 {
   margin: 0;
   font-size: 25px;
+  margin-bottom: 3px;
 }
 
 

@@ -63,10 +63,12 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               <li key={exp._id} className="experience-item">
                 <div className="experience-details">
                   <h3>{exp.position}</h3>
-                  <p>
-                    {exp.company} - {exp.location} - {exp.employmentType}
+                  <p className="exp-name">{exp.company}</p>
+                  <p className="extra">
+                    {exp.location} - {exp.employmentType}
                   </p>
-                  <p>
+
+                  <p className="extra">
                     {new Date(exp.startDate).toLocaleDateString("en-US", {
                       month: "short",
                       year: "numeric",
@@ -79,7 +81,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                         })
                       : "Present"}
                   </p>
-                  {exp.description && <p>{exp.description}</p>}
+                  {exp.description && (
+                    <p className="extra">{exp.description}</p>
+                  )}
                 </div>
                 {isOwner && (
                   <div className="experience-actions">
