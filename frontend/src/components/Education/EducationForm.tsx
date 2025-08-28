@@ -43,7 +43,6 @@ const EducationForm: React.FC<EducationFormProps> = ({
     try {
       if (type === "add") {
         try {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
           const res = await axios.post(
             backendUrl + "/api/edu/add-education",
             data
@@ -63,7 +62,6 @@ const EducationForm: React.FC<EducationFormProps> = ({
         if (!initialValues?._id)
           throw new Error("Experience ID is required for edit");
         try {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
           const response = await axios.put(
             `${backendUrl}/api/edu/update-education/${initialValues._id}`,
             data

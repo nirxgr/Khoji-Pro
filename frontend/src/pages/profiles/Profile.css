@@ -123,7 +123,6 @@
   overflow: hidden;
   background-color: #1C1423;
   position: relative;
-  backdrop-filter: blur(10px);
   border: 1px solid rgb(73, 71, 71);
 }
 
@@ -243,7 +242,6 @@
 }
 
 .profile-section {
-  backdrop-filter: blur(10px);
   border: 1px solid rgb(73, 71, 71);
   border-radius: 15px;
   padding: 25px 35px;

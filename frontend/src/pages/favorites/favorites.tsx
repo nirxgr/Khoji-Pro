@@ -20,9 +20,7 @@ const Favorites = () => {
         const res = await axios.get(
           `${backendUrl}/api/fav/get-favorites/${userData._id}`
         );
-        console.log("Fetched favorites:", res.data);
         setFavoritesList(res.data.favorites);
-        console.log(favoritesList);
       } catch (err) {
         console.error("Failed to fetch favorites:", err);
         setFavoritesList([]);
@@ -77,29 +75,26 @@ const Favorites = () => {
                     <p className="sub-title">{user.profession}</p>
                     <p>{user.location}</p>
                   </div>
-
-                  {userData._id !== user._id && (
-                    <div className="favorite-button-wrapper">
-                      <button
-                        className="favorite-button"
-                        onClick={(e) =>
-                          handleToggleFavorite(
-                            e,
-                            user._id.toString(),
-                            isUserFavorite
-                          )
+                  <div className="favorite-button-wrapper">
+                    <button
+                      className="favorite-button"
+                      onClick={(e) =>
+                        handleToggleFavorite(
+                          e,
+                          user._id.toString(),
+                          isUserFavorite
+                        )
+                      }
+                    >
+                      <img
+                        src={
+                          isUserFavorite ? assets.favorite : assets.unfavorite
                         }
-                      >
-                        <img
-                          src={
-                            isUserFavorite ? assets.favorite : assets.unfavorite
-                          }
-                          alt="edit-icon"
-                          className="favorite-icon"
-                        />
-                      </button>
-                    </div>
-                  )}
+                        alt="edit-icon"
+                        className="favorite-icon"
+                      />
+                    </button>
+                  </div>
                 </div>
                 <div className="extra-details">
                   <p className="bio-text">{user.bio}</p>

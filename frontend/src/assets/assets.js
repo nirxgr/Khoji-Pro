@@ -29,6 +29,7 @@ import defaultprofilepic from './defaultprofilepic.jpeg'
 import defaultcoverpic from './defaultcoverpic.png'
 import favorite from './favorite.svg'
 import unfavorite from './unfavorite.svg'
+import explore from './explore.svg'
 
 export const assets = {
     arrow_icon,
@@ -61,5 +62,6 @@ export const assets = {
     defaultprofilepic,
     defaultcoverpic,
     favorite,
-    unfavorite
+    unfavorite,
+    explore
 }

@@ -12,6 +12,7 @@ import ProfileCompletion from "./pages/auth/ProfileCompletion.tsx";
 import CompleteProfileGuard from "./shared/guards/completeProfileGuard.tsx";
 import LandingPage from "./pages/landing/LandingPage.tsx";
 import Favorites from "./pages/favorites/favorites.tsx";
+import Explore from "./pages/explore/explore.tsx";
 
 function App() {
   return (
@@ -86,6 +87,15 @@ function App() {
           element={
             <AuthGuard>
               <Favorites />
+            </AuthGuard>
+          }
+        />
+
+        <Route
+          path="/explore"
+          element={
+            <AuthGuard>
+              <Explore />
             </AuthGuard>
           }
         />

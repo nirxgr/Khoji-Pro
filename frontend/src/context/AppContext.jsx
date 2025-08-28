@@ -44,7 +44,6 @@ export const AppContextProvider = (props) =>{
     }, [])
 
     useEffect(() => {
-      console.log("isLoggedin:", isLoggedin);
     }, [isLoggedin]);
 
     
