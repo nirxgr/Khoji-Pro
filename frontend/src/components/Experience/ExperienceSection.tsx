@@ -165,7 +165,6 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   onClick={async () => {
                     try {
                       setIsLoading(true);
-                      await new Promise((resolve) => setTimeout(resolve, 1000));
                       const { data } = await axios.delete(
                         `${backendUrl}/api/exp/delete-experience/${selectedExp._id}`
                       );

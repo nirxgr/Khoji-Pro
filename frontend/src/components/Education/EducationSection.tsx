@@ -162,7 +162,6 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                   onClick={async () => {
                     try {
                       setIsLoading(true);
-                      await new Promise((resolve) => setTimeout(resolve, 1000));
                       const { data } = await axios.delete(
                         `${backendUrl}/api/edu/delete-education/${selectedEdu._id}`
                       );

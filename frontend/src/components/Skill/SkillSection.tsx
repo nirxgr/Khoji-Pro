@@ -146,7 +146,6 @@ const SkillSection: React.FC<SkillSectionProps> = ({
                   onClick={async () => {
                     setIsLoading(true);
                     try {
-                      await new Promise((resolve) => setTimeout(resolve, 1000));
                       const { data } = await axios.delete(
                         `${backendUrl}/api/sk/delete-skill/${selectedSkill?._id}`
                       );

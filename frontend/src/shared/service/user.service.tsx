@@ -10,7 +10,6 @@ export const submitUserProfile = async (
   setShowContactForm?: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     const res = await axios.post(
       backendUrl + "/api/update/updateProfileDetails",
       data

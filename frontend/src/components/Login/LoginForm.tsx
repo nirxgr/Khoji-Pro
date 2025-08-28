@@ -20,7 +20,6 @@ const LoginForm: React.FC = () => {
   const onSubmitHandler = async (data: LoginFormData) => {
     try {
       axios.defaults.withCredentials = true;
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const { email, password } = data;
 
       const response = await axios.post(backendUrl + "/api/auth/login", {

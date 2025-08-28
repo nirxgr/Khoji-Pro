@@ -44,7 +44,6 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
     try {
       if (type === "add") {
         try {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
           const res = await axios.post(
             backendUrl + "/api/exp/add-experience",
             data
@@ -65,7 +64,6 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
           throw new Error("Experience ID is required for edit");
 
         try {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
           const response = await axios.put(
             `${backendUrl}/api/exp/update-experience/${initialValues._id}`,
             data

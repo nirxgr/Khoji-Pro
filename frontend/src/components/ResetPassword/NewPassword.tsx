@@ -26,7 +26,6 @@ const NewPasswordForm: React.FC<NewPassFormProps> = ({ userEmail }) => {
 
   const onSubmitNewPassword = async (data: NewPassFormData) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const { newPassword } = data;
 
       const response = await axios.post(

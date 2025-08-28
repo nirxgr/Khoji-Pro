@@ -37,7 +37,6 @@ const ProfileCompletionForm: React.FC<ProfileCompletionFormProps> = ({
 
   const onSubmitHandler = async (formData: ProfileFormValues) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${backendUrl}/api/update/completeProfile`,

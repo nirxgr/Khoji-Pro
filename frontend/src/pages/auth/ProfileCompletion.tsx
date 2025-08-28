@@ -16,13 +16,6 @@ const ProfileCompletion = () => {
     <>
       <Header />
       <div className="main-container">
-        {/* <img
-        onClick={() => navigate("/")}
-        src={assets.logo1}
-        alt="Logo"
-        className="logo"
-      /> */}
-
         <div className="form-container">
           <h2 className="form-title">Complete Your Profile</h2>
           <p className="form-subtitle">

@@ -59,7 +59,6 @@ const SkillForm: React.FC<SkillFormProps> = ({
     try {
       if (type === "add") {
         try {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
           const res = await axios.post(backendUrl + "/api/sk/add-skill", data);
           if (res.data.success) {
             setReloadUser(true);
@@ -85,7 +84,6 @@ const SkillForm: React.FC<SkillFormProps> = ({
           throw new Error("Skill ID is required for edit");
 
         try {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
           const response = await axios.put(
             `${backendUrl}/api/sk/update-skill/${initialValues._id}`,
             {

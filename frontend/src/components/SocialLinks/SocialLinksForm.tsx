@@ -97,9 +97,6 @@ const SocialLinksForm: React.FC<SocialLinksProps> = ({
                       onClick={async () => {
                         try {
                           setIsDeleting(true);
-                          await new Promise((resolve) =>
-                            setTimeout(resolve, 2000)
-                          );
                           const { data } = await axios.delete(
                             `${backendUrl}/api/user/deleteGithubId`
                           );
@@ -173,9 +170,6 @@ const SocialLinksForm: React.FC<SocialLinksProps> = ({
                       onClick={async () => {
                         try {
                           setIsDeleting(true);
-                          await new Promise((resolve) =>
-                            setTimeout(resolve, 2000)
-                          );
                           const { data } = await axios.delete(
                             `${backendUrl}/api/user/deleteLinkedinId`
                           );
