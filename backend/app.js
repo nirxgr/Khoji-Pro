@@ -9,6 +9,7 @@ import experienceRouter from './routes/experienceRoutes.js';
 import educationRouter from './routes/educationRoutes.js';
 import skillRouter from './routes/skillRoutes.js';
 import favoritesRouter from './routes/favoritesRoutes.js';
+import professionRouter from './routes/professionRoutes.js';
 
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use('/api/exp',experienceRouter)
 app.use('/api/edu',educationRouter)
 app.use('/api/sk',skillRouter)
 app.use('/api/fav',favoritesRouter)
+app.use('/api/prof',professionRouter)
 
 
 
