@@ -2,7 +2,7 @@ import "./HeroSection.css";
 
 const Hero = () => {
   return (
-    <div className="hero">
+    <div className="hero-home">
       <h1>
         Find verified <span className="highlight">professionals</span> easily.
       </h1>

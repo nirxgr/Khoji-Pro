@@ -3,11 +3,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem;
+  padding: 1.5rem 3rem;
   position: sticky;
   top: 0;
   z-index: 100;
   background: transparent;
+  margin-bottom: 20px;
 }
 
 .nav-logo {
@@ -34,7 +35,6 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 17px;
-  margin-top: 15px;
 }
 
 .btn-login {
@@ -67,11 +67,8 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    margin-top: 90px;
     width: 70%;
     text-align: center; 
-    
-
 }
 
  .hero h1 {
@@ -99,9 +96,8 @@
 }
 
 .features {
-  padding: 5rem 5%;
-  background-color: rgba(0, 0, 0, 0.2);
-
+  padding: 0 5%;
+  background-color: rgba(0, 0, 0, 0.2)
 }
 
 .features-title {
@@ -158,6 +154,9 @@
   color: #e0aaff;
 }
 
+.features-section {
+  padding: 5rem 0;
+}
 .feature-description {
   color: #ffffff;
   line-height: 1.6;

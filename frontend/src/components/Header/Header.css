@@ -1,13 +1,14 @@
-nav {
+  nav {
       display: flex;
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
-      padding: 35px 20px;
+      padding: 45px 20px;
       position: fixed;
       width: 100%;
       z-index: 100;
       top: 0;
+      margin-bottom: 20px;
       
     }
     .logo {

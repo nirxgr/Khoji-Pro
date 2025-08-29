@@ -32,13 +32,11 @@ const LandingPage: React.FC = () => {
       </nav>
       <div className="hero">
         <h1>
-          Find the perfect <span className="highlight">professionals</span> for
-          your needs.
+          Find verified <span className="highlight">professionals</span> easily.
         </h1>
-
         <p>
-          Khoji Pro connects you with experts across various fields. Search by
-          name, profession, or skills.
+          Connect with trusted professionals across various fields. Our platform{" "}
+          <br /> ensures quality and reliability in every search.
         </p>
       </div>
       <div className="search-bar">

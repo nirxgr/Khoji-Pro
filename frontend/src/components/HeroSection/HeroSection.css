@@ -1,19 +1,17 @@
 
-.hero {
+.hero-home {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    margin-top: 90px;
+    padding-top: 35px;
     width: 70%;
     text-align: center; 
-    
-
 }
 
- .hero h1 {
-     z-index: 1; 
+ .hero-home h1 {
+    z-index: 1; 
     color: white; 
     text-align: center;
     font-size: 70px;
@@ -29,7 +27,7 @@
     font-weight: 300;
     font-optical-sizing: auto;
 }
-.hero p {
+.hero-home p {
     z-index: 1; 
     color: #78718D;
     font-size: 23px;
