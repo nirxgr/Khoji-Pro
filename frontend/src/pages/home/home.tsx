@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Header from "../../components/Header/Header.tsx";
 import { useNavigate } from "react-router-dom";
 import Hero from "../../components/HeroSection/HeroSection.tsx";
@@ -17,6 +17,7 @@ const Home = () => {
 
   const [filterBy, setFilterBy] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const filterOptions = ["All", "People", "Profession", "Location", "Skills"];
 
@@ -53,6 +54,19 @@ const Home = () => {
 
     return () => clearTimeout(delayDebounce);
   }, [search, filterBy, backendUrl]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="main">
@@ -107,25 +121,27 @@ const Home = () => {
               <p>{userList.length} users found.</p>
             </div>
 
-            <div className="filter-dropdown">
+            <div className="filter-dropdown" ref={dropdownRef}>
               <button className="filter-button" onClick={toggleDropdown}>
                 <img src={assets.filter} className="filter-icon" />
                 <span>{filterBy || "Filters"}</span>
               </button>
 
               {isOpen && (
-                <ul className="dropdown-menu">
-                  {filterOptions.map((option) => (
-                    <li key={option}>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => handleSelect(option)}
-                      >
-                        {option}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <div className="dropdown-menu">
+                  <ul>
+                    {filterOptions.map((option) => (
+                      <li key={option}>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => handleSelect(option)}
+                        >
+                          {option}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
           </div>
