@@ -18,6 +18,9 @@ const Home = () => {
   const [filterBy, setFilterBy] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [professionCounts, setProfessionCounts] = useState<
+    Record<string, number>
+  >({});
 
   const filterOptions = ["All", "People", "Profession", "Location", "Skills"];
 
@@ -68,6 +71,28 @@ const Home = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const res = await fetch(`${backendUrl}/api/prof/getProfessionalCount`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+
+        const mapped: Record<string, number> = {};
+        data.forEach((item: { _id: string; total: number }) => {
+          mapped[item._id] = item.total;
+        });
+
+        setProfessionCounts(mapped);
+      } catch (err) {
+        console.error("Error fetching profession counts:", err);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
   return (
     <div className="main">
       <Header />
@@ -101,7 +126,7 @@ const Home = () => {
             >
               <h2>Designers</h2>
               <p>Experts in user experience and interface design</p>
-              <h4>850+ Professionals</h4>
+              <h4>{professionCounts["Designers"] || 0} Professionals</h4>
             </div>
             <div
               className="content-card"
@@ -112,7 +137,7 @@ const Home = () => {
             >
               <h2>Developers</h2>
               <p>Code builders for web, mobile, and software</p>
-              <h4>3000+ Professionals</h4>
+              <h4>{professionCounts["Developers"] || 0} Professionals</h4>
             </div>
             <div
               className="content-card"
@@ -123,7 +148,7 @@ const Home = () => {
             >
               <h2>Analysts</h2>
               <p>Insight extractors from complex data sets, businesses, etc.</p>
-              <h4>700+ Professionals</h4>
+              <h4>{professionCounts["Analysts"] || 0} Professionals</h4>
             </div>
             <div
               className="content-card"
@@ -136,7 +161,7 @@ const Home = () => {
               <p>
                 Testers and developers ensuring software quality and reliability
               </p>
-              <h4>600+ Professionals</h4>
+              <h4>{professionCounts["Engineers"] || 0} Professionals</h4>
             </div>
           </div>
         </>
