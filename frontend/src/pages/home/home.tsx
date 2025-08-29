@@ -92,24 +92,50 @@ const Home = () => {
           </div>
 
           <div className="content-group">
-            <div className="content-card">
-              <h2>UI/UX Designers</h2>
+            <div
+              className="content-card"
+              onClick={() => {
+                setSearch("Designer");
+                setFilterBy("Profession");
+              }}
+            >
+              <h2>Designers</h2>
               <p>Experts in user experience and interface design</p>
               <h4>850+ Professionals</h4>
             </div>
-            <div className="content-card">
+            <div
+              className="content-card"
+              onClick={() => {
+                setSearch("Developer");
+                setFilterBy("Profession");
+              }}
+            >
               <h2>Developers</h2>
               <p>Code builders for web, mobile, and software</p>
               <h4>3000+ Professionals</h4>
             </div>
-            <div className="content-card">
-              <h2>Data Analysts</h2>
-              <p>Insight extractors from complex data sets</p>
+            <div
+              className="content-card"
+              onClick={() => {
+                setSearch("Analyst");
+                setFilterBy("Profession");
+              }}
+            >
+              <h2>Analysts</h2>
+              <p>Insight extractors from complex data sets, businesses, etc.</p>
               <h4>700+ Professionals</h4>
             </div>
-            <div className="content-card">
-              <h2>QA Engineers</h2>
-              <p>Testers ensuring software quality and reliability</p>
+            <div
+              className="content-card"
+              onClick={() => {
+                setSearch("Engineer");
+                setFilterBy("Profession");
+              }}
+            >
+              <h2>Engineers</h2>
+              <p>
+                Testers and developers ensuring software quality and reliability
+              </p>
               <h4>600+ Professionals</h4>
             </div>
           </div>
