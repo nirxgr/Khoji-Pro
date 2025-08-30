@@ -1,7 +1,7 @@
   nav {
       display: flex;
       flex-wrap: nowrap;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       padding: 45px 20px;
       position: fixed;
@@ -9,6 +9,7 @@
       z-index: 100;
       top: 0;
       margin-bottom: 20px;
+      min-height: 60px;
       
     }
     .logo {
@@ -104,6 +105,55 @@
         background-color: #A598D1; 
       }
 
+
+@media (max-width: 600px) {
+  nav {
+    padding: 25px 10px;
+  }
+
+  .logo {
+    padding-bottom: 30px;
+  }
+
+  .logo img {
+    height: 30px;
+  }
+
+  .profile-circle {
+    width: 30px;
+    height: 35px;
+  }
+
+  .dropdown {
+    width: 140px;
+    top: 35px;
+  }
+
+  .dropdown li {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  nav {
+    padding: 35px 15px;
+  }
+
+  .logo {
+    padding-bottom: 20px;
+  }
+
+  .logo img {
+    height: 35px;
+  }
+
+  .profile-circle {
+    width: 38px;
+    height: 38px;
+  }
+}
       
 
      
