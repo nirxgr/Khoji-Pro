@@ -41,6 +41,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       if (response.data.success) {
         setSignupData(data);
         setState("Otp");
+        toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
       }
