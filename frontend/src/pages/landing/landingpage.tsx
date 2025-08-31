@@ -45,6 +45,11 @@ const LandingPage: React.FC = () => {
           type="text"
           placeholder="Search for professionals"
           className="search-input"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate("/login");
+            }
+          }}
         />
         <button className="search-button" onClick={() => navigate("/login")}>
           Search
