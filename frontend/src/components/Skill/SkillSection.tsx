@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ISkill } from "../../shared/interfaces/skill.interface";
 import { assets } from "../../assets/assets";
 import SkillForm from "./SkillForm";
@@ -26,6 +26,18 @@ const SkillSection: React.FC<SkillSectionProps> = ({
   const [showDeleteSkill, setShowDeleteSkill] = useState(false);
   const { backendUrl } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (showSkillForm || showEditSkill || showDeleteSkill) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showSkillForm, showEditSkill, showDeleteSkill]);
+
   return (
     <div className="profile-section">
       <div className="exp-section">

@@ -231,22 +231,22 @@ const Home = () => {
                     className="result-card"
                   >
                     <div className="card-header">
-                      <div className="card-picture">
-                        <img
-                          src={
-                            user.profilePictureUrl.url ||
-                            assets.defaultprofilepic
-                          }
-                          alt="profile-photo"
-                        />
-                      </div>
-                      <div className="card-details">
-                        <p className="title">
-                          {user.firstName} {user.lastName}{" "}
-                          {userData._id === user._id && "(You)"}
-                        </p>
-                        <p className="sub-title">{user.profession}</p>
-                        <p>{user.location}</p>
+                      <div className="card-wrapper">
+                        <div className="card-picture">
+                          <img
+                            src={
+                              user.profilePictureUrl.url ||
+                              assets.defaultprofilepic
+                            }
+                            alt="profile-photo"
+                          />
+                        </div>
+                        <div className="card-details">
+                          <p className="title">
+                            {user.firstName} {user.lastName}
+                          </p>
+                          <p className="sub-title">{user.profession}</p>
+                        </div>
                       </div>
 
                       {userData._id !== user._id && (
@@ -274,20 +274,28 @@ const Home = () => {
                         </div>
                       )}
                     </div>
+                    <div className="location-wrapper">
+                      <img src={assets.location} />
+                      <p>
+                        {user.location}
+                        {userData._id === user._id && " • You"}
+                      </p>
+                    </div>
+
                     <div className="extra-details">
                       <p className="bio-text">{user.bio}</p>
-                      <div className="languages-wrapper">
-                        {(user.skills ?? [])
-                          .slice(0, 4)
-                          .map((skillObj, index) => (
-                            <span
-                              key={skillObj._id || index}
-                              className="skill-tag"
-                            >
-                              {skillObj.name}
-                            </span>
-                          ))}
-                      </div>
+                    </div>
+                    <div className="languages-wrapper">
+                      {(user.skills ?? [])
+                        .slice(0, 6)
+                        .map((skillObj, index) => (
+                          <span
+                            key={skillObj._id || index}
+                            className="skill-tag"
+                          >
+                            {skillObj.name}
+                          </span>
+                        ))}
                     </div>
                   </div>
                 );

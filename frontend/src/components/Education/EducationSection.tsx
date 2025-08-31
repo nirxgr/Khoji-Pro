@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IEducation } from "../../shared/interfaces/education.interface";
 import { assets } from "../../assets/assets";
 import EducationForm from "./EducationForm";
@@ -23,6 +23,16 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   const [showDeleteEdu, setShowDeleteEdu] = useState(false);
   const { backendUrl } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (showEduForm || showEditEdu || showDeleteEdu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showEduForm, showEditEdu, showDeleteEdu]);
   return (
     <div className="profile-section">
       <div className="exp-section">

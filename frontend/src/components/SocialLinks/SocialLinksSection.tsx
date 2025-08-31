@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SocialLinksForm from "./SocialLinksForm";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
@@ -17,6 +17,16 @@ const SocialLinksSection: React.FC<SocialSectionProps> = ({
 }) => {
   const [showSocialForm, setShowSocialForm] = useState(false);
   const { backendUrl } = useContext(AppContext);
+  useEffect(() => {
+    if (showSocialForm) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showSocialForm]);
 
   return (
     <div className="profile-section">

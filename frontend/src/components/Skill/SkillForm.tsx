@@ -118,7 +118,6 @@ const SkillForm: React.FC<SkillFormProps> = ({
   return (
     <form className="form-group" onSubmit={handleSubmit(onSubmit)}>
       <div className="input">
-        <p className="indicator">* Indicates required</p>
         <label htmlFor="name">Skill*</label>
         <input
           type="text"

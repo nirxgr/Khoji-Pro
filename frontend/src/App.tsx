@@ -10,7 +10,7 @@ import SearchedProfilePage from "./pages/profiles/Profile.tsx";
 import NotFoundPage from "./pages/notfound/NotFoundPage.tsx";
 import ProfileCompletion from "./pages/auth/ProfileCompletion.tsx";
 import CompleteProfileGuard from "./shared/guards/completeProfileGuard.tsx";
-import LandingPage from "./pages/landing/LandingPage.tsx";
+import LandingPage from "./pages/landing/landingpage.tsx";
 import Favorites from "./pages/favorites/favorites.tsx";
 import Explore from "./pages/explore/explore.tsx";
 

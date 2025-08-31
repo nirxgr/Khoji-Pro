@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
 import ExperienceForm from "../../components/Experience/ExperienceForm.tsx";
 import { IExperience } from "../../shared/interfaces/experience.interface.tsx";
@@ -23,6 +23,16 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   const [showEditPopup, setShowEditPopup] = useState(false);
   const { backendUrl } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (showExpForm || showEditPopup || showDeletePopup) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showExpForm, showEditPopup, showDeletePopup]);
 
   return (
     <div className="profile-section">

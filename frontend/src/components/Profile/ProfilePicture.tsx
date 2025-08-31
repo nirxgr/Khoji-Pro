@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -34,6 +34,16 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
   const { backendUrl } = useContext(AppContext);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  useEffect(() => {
+    if (openProfileEdit) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openProfileEdit]);
 
   const handleCancel = () => {
     if (stream) {

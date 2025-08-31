@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -31,6 +31,16 @@ const ProfileCover: React.FC<ProfileCoverProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const { backendUrl } = useContext(AppContext);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   const handleCoverUploadCancel = () => {
     if (stream) {

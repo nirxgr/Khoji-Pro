@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IUser } from "../../shared/interfaces/user.interface";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
@@ -17,6 +17,16 @@ const ContactDetailsSection: React.FC<ContactSectionProps> = ({
 }) => {
   const [showContactForm, setShowContactForm] = useState(false);
   const { backendUrl } = useContext(AppContext);
+  useEffect(() => {
+    if (showContactForm) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showContactForm]);
   return (
     <div className="profile-section">
       <div className="exp-section">

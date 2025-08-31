@@ -7,6 +7,7 @@ import { AppContext } from "../../context/AppContext";
 import { toggleFavorite } from "../../shared/service/favorite.service";
 import { assets } from "../../assets/assets";
 import "./favorites.css";
+import "../home/home.css";
 
 const Favorites = () => {
   const { backendUrl, userData, getUserData } = useContext(AppContext);
@@ -35,7 +36,7 @@ const Favorites = () => {
       <div className="favorites-header">
         <h1>Your Favorites</h1>
       </div>
-      <div className="fav-results">
+      <div className="search-results">
         {favoritesList.length > 0 ? (
           favoritesList.map((user: IUser) => {
             const isUserFavorite = userData.favorites?.includes(user._id);
@@ -57,54 +58,63 @@ const Favorites = () => {
               <div
                 onClick={() => navigate(`/profile/${user._id}`)}
                 key={user.email}
-                className="fav-card"
+                className="result-card"
               >
                 <div className="card-header">
-                  <div className="card-picture">
-                    <img
-                      src={
-                        user.profilePictureUrl?.url || assets.defaultprofilepic
-                      }
-                      alt="profile-photo"
-                    />
-                  </div>
-                  <div className="card-details">
-                    <p className="title">
-                      {user.firstName} {user.lastName}
-                    </p>
-                    <p className="sub-title">{user.profession}</p>
-                    <p>{user.location}</p>
-                  </div>
-                  <div className="favorite-button-wrapper">
-                    <button
-                      className="favorite-button"
-                      onClick={(e) =>
-                        handleToggleFavorite(
-                          e,
-                          user._id.toString(),
-                          isUserFavorite
-                        )
-                      }
-                    >
+                  <div className="card-wrapper">
+                    <div className="card-picture">
                       <img
                         src={
-                          isUserFavorite ? assets.favorite : assets.unfavorite
+                          user.profilePictureUrl.url || assets.defaultprofilepic
                         }
-                        alt="edit-icon"
-                        className="favorite-icon"
+                        alt="profile-photo"
                       />
-                    </button>
+                    </div>
+                    <div className="card-details">
+                      <p className="title">
+                        {user.firstName} {user.lastName}
+                      </p>
+                      <p className="sub-title">{user.profession}</p>
+                    </div>
                   </div>
+
+                  {userData._id !== user._id && (
+                    <div className="favorite-button-wrapper">
+                      <button
+                        className="favorite-button"
+                        onClick={(e) =>
+                          handleToggleFavorite(
+                            e,
+                            user._id.toString(),
+                            isUserFavorite
+                          )
+                        }
+                      >
+                        <img
+                          src={
+                            isUserFavorite ? assets.favorite : assets.unfavorite
+                          }
+                          alt="edit-icon"
+                          className="favorite-icon"
+                        />
+                      </button>
+                    </div>
+                  )}
                 </div>
+                <div className="location-wrapper">
+                  <img src={assets.location} />
+                  <p>{user.location}</p>
+                </div>
+
                 <div className="extra-details">
                   <p className="bio-text">{user.bio}</p>
-                  <div className="languages-wrapper">
-                    {(user.skills ?? []).slice(0, 4).map((skillObj, index) => (
-                      <span key={skillObj._id || index} className="skill-tag">
-                        {skillObj.name}
-                      </span>
-                    ))}
-                  </div>
+                </div>
+                <div className="languages-wrapper">
+                  {(user.skills ?? []).slice(0, 6).map((skillObj, index) => (
+                    <span key={skillObj._id || index} className="skill-tag">
+                      {skillObj.name}
+                    </span>
+                  ))}
                 </div>
               </div>
             );
