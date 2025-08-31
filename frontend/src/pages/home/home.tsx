@@ -287,7 +287,7 @@ const Home = () => {
                     </div>
                     <div className="languages-wrapper">
                       {(user.skills ?? [])
-                        .slice(0, 6)
+                        .slice(0, 4)
                         .map((skillObj, index) => (
                           <span
                             key={skillObj._id || index}

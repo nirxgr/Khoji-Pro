@@ -79,10 +79,10 @@ const ProfileDetailsSection: React.FC<ProfileSectionProps> = ({
 
         <p className="profession">{user.profession || "---"}</p>
 
-        <p className="location">
+        <div className="location-details">
           <img src={assets.location} />
-          {user.location || "---"}
-        </p>
+          <p>{user.location || "---"}</p>
+        </div>
       </div>
       <div className="profile-bio">{user.bio || "---"}</div>
     </div>
