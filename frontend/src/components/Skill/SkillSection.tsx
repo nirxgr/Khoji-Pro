@@ -78,7 +78,9 @@ const SkillSection: React.FC<SkillSectionProps> = ({
               <li key={sk._id} className="experience-item">
                 <div className="experience-details">
                   <h3>{sk.name}</h3>
-                  {sk.company && <p>Learned at: {sk.company.company}</p>}
+                  {sk.company && (
+                    <p className="extra">Learned at: {sk.company.company}</p>
+                  )}
                 </div>
                 {isOwner && (
                   <div className="skill-actions">

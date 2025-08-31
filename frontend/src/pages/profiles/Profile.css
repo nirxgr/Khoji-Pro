@@ -203,7 +203,7 @@
 }
 
 .location p{
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   align-items: center;
   text-align: center;
 }
@@ -248,7 +248,7 @@
   font-size: 1.35rem;
 }
 .extra {
-  font-size: 1rem;
+  font-size: 1.20rem;
 }
 
 
@@ -599,7 +599,7 @@ input[type="date"].edit-input-field {
 
 .experience-details h3 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 400;
   margin-bottom: 3px;
 }
