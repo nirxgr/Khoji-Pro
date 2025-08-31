@@ -72,10 +72,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               <li key={edu._id} className="experience-item">
                 <div className="experience-details">
                   <h3>{edu.school}</h3>
-                  <p>
+                  <p className="exp-name">
                     {edu.degree} - {edu.fieldOfStudy}
                   </p>
-                  <p>
+                  <p className="extra">
                     {new Date(edu.startDate).toLocaleDateString("en-US", {
                       month: "short",
                       year: "numeric",
@@ -88,8 +88,8 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                         })
                       : "Present"}
                   </p>
-                  {edu.grade && <p>Grade: {edu.grade}</p>}
-                  {edu.activities && <p>{edu.activities}</p>}
+                  {edu.grade && <p className="extra">Grade: {edu.grade}</p>}
+                  {edu.activities && <p className="extra">{edu.activities}</p>}
                 </div>
                 {isOwner && (
                   <div className="experience-actions">

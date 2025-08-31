@@ -103,7 +103,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
 
         if (response.data.success) {
           toast.success(response.data.message);
-          navigate("/complete-profile");
+          navigate("/login");
         } else {
           toast.error(response.data.message);
         }

@@ -43,14 +43,22 @@ const ContactDetailsSection: React.FC<ContactSectionProps> = ({
         )}
       </div>
       <div className="contact-details">
-        <p className="location">
-          <img src={assets.mail2} alt="mail icon" className="location-icon" />
-          {user.email || "---"}
-        </p>
-        <p className="location">
-          <img src={assets.phone2} alt="mail icon" className="location-icon" />
-          {user.phoneNumber || "---"}
-        </p>
+        <div className="location">
+          <div className="contact-img">
+            <img src={assets.mail2} alt="mail icon" className="location-icon" />
+          </div>
+          <p>{user.email}</p>
+        </div>
+        <div className="location">
+          <div className="contact-img">
+            <img
+              src={assets.phone2}
+              alt="mail icon"
+              className="location-icon"
+            />
+          </div>
+          <p>{user.phoneNumber}</p>
+        </div>
       </div>
       {showContactForm && user && (
         <ContactDetailsForm

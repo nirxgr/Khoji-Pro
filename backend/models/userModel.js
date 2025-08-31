@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     profilePictureUrl: {
       url: {
         type:String,
-        default:'http://res.cloudinary.com/dfuxutqkg/image/upload/v1754820563/wa3j0r4ica4c9jjtyotd.jpg'
+        
       },
       public_id: {
         type: String,
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
      coverPictureUrl: {
       url: {
         type:String,
-        default:'https://res.cloudinary.com/dfuxutqkg/image/upload/v1755276027/mouum6xu3ftmrcsgo7vp.png'
+       
       },
       public_id: {
         type: String,
