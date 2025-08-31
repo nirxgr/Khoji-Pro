@@ -485,6 +485,7 @@ font-weight: 300;
   -webkit-appearance: none;
   -moz-appearance: none;
   transition: background 0.3s ease;
+  font-weight: 200;
 }
 
 .edit-input-field:focus {
