@@ -14,6 +14,9 @@
       /* font-family: "Poppins", sans-serif;    */
       /* font-family: "Poltawski Nowy", serif; */
       font-family: "Outfit", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 200;
+      font-style: normal;
       /* font-family: "Comfortaa", sans-serif; */
   }
 

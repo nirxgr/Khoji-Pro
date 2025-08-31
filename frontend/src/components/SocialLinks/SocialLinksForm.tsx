@@ -56,7 +56,7 @@ const SocialLinksForm: React.FC<SocialLinksProps> = ({
 
         <form className="form-group" onSubmit={handleSocial(onSubmit)}>
           <div className="input">
-            <label htmlFor="company">GitHub ID Link</label>
+            <label htmlFor="company">GitHub Profile Link</label>
             <div className="link-delete">
               <input
                 type="text"
@@ -128,7 +128,7 @@ const SocialLinksForm: React.FC<SocialLinksProps> = ({
             )}
           </div>
           <div className="input">
-            <label htmlFor="position">Linkedin ID Link</label>
+            <label htmlFor="position">Linkedin Profile Link</label>
             <div className="link-delete">
               <input
                 type="text"

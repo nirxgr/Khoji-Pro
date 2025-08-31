@@ -34,7 +34,7 @@ const ProfileDetailsSection: React.FC<ProfileSectionProps> = ({
   return (
     <div className="profile-section-first">
       <div className="profile-name">
-        <h1>
+        <h1 className="profile-section-title">
           {user?.firstName || "---"} {user.lastName || "---"}
         </h1>
         {isOwner && (
@@ -67,14 +67,7 @@ const ProfileDetailsSection: React.FC<ProfileSectionProps> = ({
         )}
 
         <p className="profession">{user.profession || "---"}</p>
-        <p className="location">
-          <img
-            src={assets.location}
-            alt="location icon"
-            className="location-icon"
-          />
-          {user.location || "---"}
-        </p>
+        <p className="location">{user.location || "---"}</p>
       </div>
       <div className="profile-bio">{user.bio || "---"}</div>
     </div>

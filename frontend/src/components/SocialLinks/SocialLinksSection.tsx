@@ -59,9 +59,26 @@ const SocialLinksSection: React.FC<SocialSectionProps> = ({
         ) : (
           <>
             {user.githubId && (
-              <a href={user.githubId} target="_blank" rel="noopener noreferrer">
-                {" "}
-                GitHub Profile
+              <a
+                href={user.githubId}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+              >
+                <div className="social">
+                  <div className="social-img">
+                    {" "}
+                    <img src={assets.github} />
+                  </div>
+                  <div className="social-content">
+                    <div className="social-title">
+                      <h2>Github</h2>
+                    </div>
+                    <div className="social-text">
+                      Check out my open source projects and contributions
+                    </div>
+                  </div>
+                </div>
               </a>
             )}
             {user.linkedinId && (
@@ -70,7 +87,20 @@ const SocialLinksSection: React.FC<SocialSectionProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                LinkedIn Profile
+                <div className="social">
+                  <div className="social-img">
+                    {" "}
+                    <img src={assets.linkedin} />
+                  </div>
+                  <div className="social-content">
+                    <div className="social-title">
+                      <h2>Linkedin</h2>
+                    </div>
+                    <div className="social-text">
+                      Connect with me professionaly
+                    </div>
+                  </div>
+                </div>
               </a>
             )}
           </>

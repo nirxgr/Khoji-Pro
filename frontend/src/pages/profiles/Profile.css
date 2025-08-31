@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
   isolation: isolate;
-  margin-top: 75px;
+  margin-top: 90px;
 }
 
 .profile-container {
@@ -182,12 +182,12 @@
 
 
 .profile-name h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   margin-bottom: 0.6rem;
-  font-weight: 500;
+  font-weight: 300;
 }
 .profession {
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin-bottom: 0.6rem;
 
 }
@@ -251,7 +251,7 @@
 }
 
 .profile-section-title {
-  font-weight: bold;
+  font-weight: 300;
   font-size: 2rem;
 }
 
@@ -346,27 +346,49 @@
 
 .social-links {
   margin-top: 1rem;
+  display: flex;
+  gap: 20px;
+
 }
 
 .social-links a {
-  display: inline-block;
-  margin-right: 1rem;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #0077b5; 
   text-decoration: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  flex: 0 0 50%;
+  max-width: 50%;
 }
 
-.social-links a:first-child {
-  background-color: #333; 
+
+
+.social{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 25px;
+  background-color: #222023;
+  border-radius: 15px;
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.social:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+}
+.social-img {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #100F15;
+  border-radius: 10px;
+}
+.social-img img {
+  width: 25px;
+  height: 25px;
+}
+.social-title h2 {
+font-weight: 300;
 }
 
-.social-links a:hover {
-  opacity: 0.8;
-}
 
 .profile-form-overlay {
   position: fixed;

@@ -169,7 +169,13 @@ const Home = () => {
         <>
           <div className="result-filter">
             <div className="record-count">
-              <p>{userList.length} users found.</p>
+              {userList?.length === 0 ? (
+                <p>No users found.</p>
+              ) : userList?.length === 1 ? (
+                <p>{userList.length} user found.</p>
+              ) : (
+                <p>{userList.length} users found.</p>
+              )}
             </div>
 
             <div className="filter-dropdown" ref={dropdownRef}>

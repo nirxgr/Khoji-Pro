@@ -140,3 +140,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.result-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+   width: 95%;
+  position: relative;   
+  z-index: 10;        
+  flex-wrap: wrap; 
+  margin-bottom: 0.6rem;
+}
+
+.record-count p {
+  color: #DBD2F9;      
+  font-size: 20px;
+  font-weight: 600;
+}
