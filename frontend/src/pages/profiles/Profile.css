@@ -226,6 +226,8 @@
   background-color: #292737;
   padding: 10px 10px;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
 }
 
 
