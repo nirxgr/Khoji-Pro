@@ -42,8 +42,8 @@ const SkillSection: React.FC<SkillSectionProps> = ({
     <div className="profile-section">
       <div className="exp-section">
         <div className="profile-title-wrapper">
-          <div className="skill-wrapper">
-            <img src={assets.skills} className="icon-wrapper-img" />
+          <div className="icon-wrapper">
+            <img src={assets.skills} />
           </div>
           <h3 className="profile-section-title">Skills</h3>
         </div>
@@ -75,13 +75,13 @@ const SkillSection: React.FC<SkillSectionProps> = ({
         </div>
       )}
 
-      <div className="experience-list">
+      <div className="skills-list">
         {skills.length === 0 ? (
           <p>No skills added yet.</p>
         ) : (
           <ul>
             {skills.map((sk) => (
-              <li key={sk._id} className="experience-item">
+              <li key={sk._id} className="skills-item">
                 <div className="experience-details">
                   <h3>{sk.name}</h3>
                   {sk.company && (

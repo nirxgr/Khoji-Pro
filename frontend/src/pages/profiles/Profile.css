@@ -182,7 +182,7 @@
 
 
 .profile-name h1 {
-  font-size: 2rem;
+  font-size: 2.1rem;
   margin-bottom: 0.6rem;
   font-weight: 600;
 }
@@ -215,7 +215,7 @@
   gap: 6px;
 }
 .location-details p{
- font-size: 1.25rem;
+ font-size: 1.15rem;
 }
 
 .location-details img {
@@ -241,25 +241,28 @@
 .contact-details{
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 15px;
-  padding-left: 10px;
+  gap: 25px;
+  margin-top: 25px;
+  padding-left: 18px;
 }
 
 .exp-name {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
+  font-weight: 300;
 }
 .extra {
   font-size: 1.20rem;
+  font-weight: 100;
 }
 
 
 .profile-bio {
   padding-top: 10px;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   text-align: justify;
-  line-height: 1.8;
+  line-height: 2.1;
   font-weight: 200;
+  word-spacing: 0.2rem;
   
 }
 
@@ -281,7 +284,8 @@
 
 .profile-section-title {
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 2.1rem;
+  
   
 
 }
@@ -306,21 +310,10 @@
 }
 
 .icon-wrapper img{
-height: 26px;
-width: 27px;
-}
-.skill-wrapper{
-  background-color: #292737;
-  padding: 8px 8.5px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
+height: 23px;
+width: 25px;
 }
 
-.icon-wrapper-img{
-height: 26px;
-width: 27px;
-}
 
 .add-btn {
   cursor: pointer;
@@ -613,7 +606,6 @@ input[type="date"].edit-input-field {
 .experience-list {
   max-width: auto;
   margin: 0 auto;
-  margin-top: 8px;
 }
 
 .experience-item {
@@ -624,6 +616,24 @@ input[type="date"].edit-input-field {
   border-bottom: 1px solid #ddd;
   text-align: justify;
   line-height: 1.8rem;
+  padding: 30px 0;
+  padding-left: 15px;
+}
+
+.skills-list {
+  max-width: auto;
+  margin: 0 auto;
+  margin-top: 15px;
+}
+.skills-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: justify;
+  line-height: 1.8rem;
+  padding-left: 15px;
 }
 
 .experience-item:last-child {
@@ -632,9 +642,10 @@ input[type="date"].edit-input-field {
 
 .experience-details h3 {
   margin: 0;
-  font-size: 1.7rem;
-  font-weight: 400;
+  font-size: 1.8rem;
+  font-weight: 500;
   margin-bottom: 3px;
+
 }
 
 
