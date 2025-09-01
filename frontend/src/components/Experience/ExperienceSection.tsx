@@ -51,7 +51,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               setShowExpForm(true);
             }}
           >
-            <img src={assets.exp} alt="add-icon" className="add-icon" />
+            <img src={assets.add} alt="add-icon" className="add-icon" />
           </button>
         )}
       </div>
