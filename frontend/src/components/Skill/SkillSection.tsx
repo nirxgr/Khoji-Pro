@@ -41,7 +41,13 @@ const SkillSection: React.FC<SkillSectionProps> = ({
   return (
     <div className="profile-section">
       <div className="exp-section">
-        <h3 className="profile-section-title">Skills</h3>
+        <div className="profile-title-wrapper">
+          <div className="skill-wrapper">
+            <img src={assets.skills} className="icon-wrapper-img" />
+          </div>
+          <h3 className="profile-section-title">Skills</h3>
+        </div>
+
         {isOwner && (
           <button
             className="add-btn"

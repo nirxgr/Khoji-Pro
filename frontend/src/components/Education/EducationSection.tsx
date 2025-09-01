@@ -36,7 +36,13 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   return (
     <div className="profile-section">
       <div className="exp-section">
-        <h3 className="profile-section-title">Education</h3>
+        <div className="profile-title-wrapper">
+          <div className="icon-wrapper">
+            <img src={assets.edu} />
+          </div>
+          <h3 className="profile-section-title">Education</h3>
+        </div>
+
         {isOwner && (
           <button
             className="add-btn"

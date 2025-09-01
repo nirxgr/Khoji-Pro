@@ -32,6 +32,12 @@ import unfavorite from './unfavorite.svg'
 import explore from './explore.svg'
 import github from './github.svg'
 import linkedin from './linkedin.svg'
+import contact from './contact.svg'
+import edu from './edu.svg'
+import exp from './exp.svg'
+import skills from './skills.svg'
+import social from './social.svg'
+
 
 export const assets = {
     arrow_icon,
@@ -67,5 +73,10 @@ export const assets = {
     unfavorite,
     explore,
     github,
-    linkedin
+    linkedin,
+    contact,
+    edu,
+    exp,
+    skills,
+    social
 }

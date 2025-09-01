@@ -37,7 +37,13 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   return (
     <div className="profile-section">
       <div className="exp-section">
-        <h3 className="profile-section-title">Experience</h3>
+        <div className="profile-title-wrapper">
+          <div className="icon-wrapper">
+            <img src={assets.exp} />
+          </div>
+          <h3 className="profile-section-title">Experience</h3>
+        </div>
+
         {isOwner && (
           <button
             className="add-btn"
@@ -45,7 +51,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               setShowExpForm(true);
             }}
           >
-            <img src={assets.add} alt="add-icon" className="add-icon" />
+            <img src={assets.exp} alt="add-icon" className="add-icon" />
           </button>
         )}
       </div>

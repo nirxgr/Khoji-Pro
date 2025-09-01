@@ -31,7 +31,13 @@ const SocialLinksSection: React.FC<SocialSectionProps> = ({
   return (
     <div className="profile-section">
       <div className="exp-section">
-        <h3 className="profile-section-title">Social Links</h3>
+        <div className="profile-title-wrapper">
+          <div className="icon-wrapper">
+            <img src={assets.social} />
+          </div>
+          <h3 className="profile-section-title">Social Links</h3>
+        </div>
+
         {isOwner && (
           <>
             {user.linkedinId !== "" && user.githubId !== "" ? (
