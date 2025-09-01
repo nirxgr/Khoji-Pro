@@ -77,7 +77,7 @@ const SkillSection: React.FC<SkillSectionProps> = ({
 
       <div className="skills-list">
         {skills.length === 0 ? (
-          <p>No skills added yet.</p>
+          <p className="no-exp">No skills added yet.</p>
         ) : (
           <ul>
             {skills.map((sk) => (

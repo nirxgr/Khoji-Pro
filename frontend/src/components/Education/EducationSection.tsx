@@ -71,7 +71,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       )}
       <div className="experience-list">
         {educations.length === 0 ? (
-          <p>No education added yet.</p>
+          <p className="no-exp">No education added yet.</p>
         ) : (
           <ul>
             {educations.map((edu) => (

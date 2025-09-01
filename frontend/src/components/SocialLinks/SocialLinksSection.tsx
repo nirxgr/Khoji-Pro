@@ -71,7 +71,7 @@ const SocialLinksSection: React.FC<SocialSectionProps> = ({
 
       <div className="social-links">
         {user.githubId === "" && user.linkedinId === "" ? (
-          <p>No social links added yet.</p>
+          <p className="no-social">No social links added yet.</p>
         ) : (
           <>
             {user.githubId && (

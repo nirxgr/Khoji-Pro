@@ -398,6 +398,11 @@ width: 25px;
   gap: 20px;
 
 }
+.no-social {
+  padding-left: 15px;
+  font-size: 1.20rem;
+  font-weight: 100;
+}
 
 .social-links a {
   text-decoration: none;
@@ -607,6 +612,12 @@ input[type="date"].edit-input-field {
   max-width: auto;
   margin: 0 auto;
 }
+.no-exp {
+  margin-top: 15px;
+  padding-left: 15px;
+  font-size: 1.20rem;
+  font-weight: 100;
+}
 
 .experience-item {
   display: flex;
@@ -616,8 +627,8 @@ input[type="date"].edit-input-field {
   border-bottom: 1px solid #ddd;
   text-align: justify;
   line-height: 1.8rem;
-  padding: 30px 0;
-  padding-left: 15px;
+  padding: 30px 0 30px 15px;
+
 }
 
 .skills-list {
@@ -634,6 +645,9 @@ input[type="date"].edit-input-field {
   text-align: justify;
   line-height: 1.8rem;
   padding-left: 15px;
+}
+.skills-item:last-child {
+  border-bottom: none;
 }
 
 .experience-item:last-child {

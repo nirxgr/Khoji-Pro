@@ -72,7 +72,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
       )}
       <div className="experience-list">
         {experiences.length === 0 ? (
-          <p>No experiences added yet.</p>
+          <p className="no-exp">No experiences added yet.</p>
         ) : (
           <ul>
             {experiences.map((exp) => (
