@@ -1,8 +1,8 @@
 .footer {
-  padding: 3rem 1rem; 
+  padding: 3rem 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: #ccc;
-  background-color: #000; 
+  background-color: #000;
 }
 
 .footer-container {
@@ -21,6 +21,5 @@
 }
 
 .logo-img {
-    width: 350px;
+  width: 350px;
 }
-

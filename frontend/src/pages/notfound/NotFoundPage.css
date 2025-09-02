@@ -1,4 +1,3 @@
-
 .notfound-container {
   display: flex;
   flex-direction: column;
@@ -15,7 +14,7 @@
 .notfound-title {
   font-size: 6rem;
   margin: 0;
-  color: #A598D1;
+  color: #a598d1;
 }
 
 .notfound-subtitle {
@@ -33,7 +32,7 @@
 .notfound-button {
   display: inline-block;
   text-decoration: none;
-  background-color: #A598D1;
+  background-color: #a598d1;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;

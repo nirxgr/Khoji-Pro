@@ -9,28 +9,36 @@ export const professionalCount = async (req, res) => {
             $switch: {
               branches: [
                 {
-                  case: { $regexMatch: { input: "$profession", regex: /developer/i } },
-                  then: "Developers"
+                  case: {
+                    $regexMatch: { input: "$profession", regex: /developer/i },
+                  },
+                  then: "Developers",
                 },
                 {
-                  case: { $regexMatch: { input: "$profession", regex: /designer/i } },
-                  then: "Designers"
+                  case: {
+                    $regexMatch: { input: "$profession", regex: /designer/i },
+                  },
+                  then: "Designers",
                 },
                 {
-                  case: { $regexMatch: { input: "$profession", regex: /analyst/i } },
-                  then: "Analysts"
+                  case: {
+                    $regexMatch: { input: "$profession", regex: /analyst/i },
+                  },
+                  then: "Analysts",
                 },
                 {
-                  case: { $regexMatch: { input: "$profession", regex: /engineer/i } },
-                  then: "Engineers"
-                }
+                  case: {
+                    $regexMatch: { input: "$profession", regex: /engineer/i },
+                  },
+                  then: "Engineers",
+                },
               ],
-              default: "Others"
-            }
+              default: "Others",
+            },
           },
-          total: { $sum: 1 }
-        }
-      }
+          total: { $sum: 1 },
+        },
+      },
     ]);
     res.json(counts);
   } catch (err) {

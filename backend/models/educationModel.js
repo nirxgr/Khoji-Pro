@@ -1,10 +1,10 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Types } from "mongoose";
 
 const educationSchema = new Schema(
-   {
+  {
     user: {
       type: Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     school: {
@@ -27,7 +27,7 @@ const educationSchema = new Schema(
     },
     endDate: {
       type: Date,
-      default: null, 
+      default: null,
     },
     grade: {
       type: String,
@@ -36,7 +36,7 @@ const educationSchema = new Schema(
     activities: {
       type: String,
       trim: true,
-      maxlength: 2000, 
+      maxlength: 2000,
     },
   },
   {
@@ -44,6 +44,6 @@ const educationSchema = new Schema(
   }
 );
 
-const educationModel = model('Education', educationSchema);
+const educationModel = model("Education", educationSchema);
 
 export default educationModel;

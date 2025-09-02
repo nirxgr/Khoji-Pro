@@ -1,27 +1,21 @@
 .favorites-page {
-  padding-top: 100px;  
+  padding-top: 100px;
   min-height: 100vh;
 }
 .favorites-header {
-  position: relative;   
-  z-index: 10;        
+  position: relative;
+  z-index: 10;
   text-align: center;
   margin-bottom: 35px;
 }
 
 .favorites-header h1 {
-  color: #ffffff;      
+  color: #ffffff;
   font-size: 50px;
   font-weight: 400;
 }
 
-
-.nofav-msg{
-    color: #DBD2F9; 
-    font-size: 24px;
+.nofav-msg {
+  color: #dbd2f9;
+  font-size: 24px;
 }
-
-
-
-
-

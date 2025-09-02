@@ -4,7 +4,7 @@ const skillSchema = new Schema(
   {
     user: {
       type: Types.ObjectId,
-      ref: "User",   
+      ref: "User",
       required: true,
     },
     name: {
@@ -14,7 +14,7 @@ const skillSchema = new Schema(
     },
     company: {
       type: Types.ObjectId,
-      ref: "Experience", 
+      ref: "Experience",
       default: null,
     },
   },

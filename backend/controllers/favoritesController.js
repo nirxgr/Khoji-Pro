@@ -1,24 +1,22 @@
 import userModel from "../models/userModel.js";
 
-
 export const getFavorites = async (req, res) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    const user = await userModel
-  .findById(id)
-  .populate({
-    path: "favorites",
-    select: "firstName lastName email _id bio profession location skills profilePictureUrl",
-    populate: {
-      path: "skills",      
-      select: "name -_id",  
-    },
-  });
+    const user = await userModel.findById(id).populate({
+      path: "favorites",
+      select:
+        "firstName lastName email _id bio profession location skills profilePictureUrl",
+      populate: {
+        path: "skills",
+        select: "name -_id",
+      },
+    });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -33,11 +31,10 @@ export const getFavorites = async (req, res) => {
   }
 };
 
-
 export const addFavorites = async (req, res) => {
   try {
-    const userId = req.user.id; 
-    const { favoriteUserId } = req.body; 
+    const userId = req.user.id;
+    const { favoriteUserId } = req.body;
 
     if (!favoriteUserId) {
       return res.status(400).json({ message: "Favorite User ID is required" });
@@ -68,11 +65,10 @@ export const addFavorites = async (req, res) => {
   }
 };
 
-
 export const removeFavorites = async (req, res) => {
   try {
-    const userId = req.user.id; 
-    const { favoriteUserId } = req.body; 
+    const userId = req.user.id;
+    const { favoriteUserId } = req.body;
 
     if (!favoriteUserId) {
       return res.status(400).json({ message: "Favorite User ID is required" });

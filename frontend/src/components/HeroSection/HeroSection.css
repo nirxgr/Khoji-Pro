@@ -1,37 +1,35 @@
-
 .hero-home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    padding-top: 35px;
-    width: 70%;
-    text-align: center; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding-top: 35px;
+  width: 70%;
+  text-align: center;
 }
 
- .hero-home h1 {
-    z-index: 1; 
-    color: white; 
-    text-align: center;
-    font-size: clamp(2rem, 6vw, 70px);
-    font-weight: 300;
-    font-optical-sizing: auto;
-    font-style: normal;
-    padding-bottom: 33px;
+.hero-home h1 {
+  z-index: 1;
+  color: white;
+  text-align: center;
+  font-size: clamp(2rem, 6vw, 70px);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  font-style: normal;
+  padding-bottom: 33px;
 }
 
 .highlight {
-    color: #A598D1;
-    font-weight: 300;
-    font-size: clamp(2rem, 6vw, 70px);
-    font-optical-sizing: auto;
+  color: #a598d1;
+  font-weight: 300;
+  font-size: clamp(2rem, 6vw, 70px);
+  font-optical-sizing: auto;
 }
 .hero-home p {
-    z-index: 1; 
-    color: #78718D;
-    font-size: clamp(1rem, 2.5vw, 23px);
-
+  z-index: 1;
+  color: #78718d;
+  font-size: clamp(1rem, 2.5vw, 23px);
 }
 
 @media (max-width: 1024px) {
@@ -44,7 +42,6 @@
     padding-bottom: 15px;
   }
 }
-
 
 @media (max-width: 600px) {
   .hero-home {
@@ -60,4 +57,3 @@
     font-size: 1rem;
   }
 }
-
