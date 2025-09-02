@@ -53,7 +53,16 @@ const ContactDetailsSection: React.FC<ContactSectionProps> = ({
           <div className="contact-img">
             <img src={assets.mail2} alt="mail icon" className="location-icon" />
           </div>
-          <p>{user.email}</p>
+          <p>
+            <a
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${user.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="email-click"
+            >
+              {user.email}
+            </a>
+          </p>
         </div>
         <div className="location">
           <div className="contact-img">

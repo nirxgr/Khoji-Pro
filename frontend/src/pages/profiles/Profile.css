@@ -207,6 +207,16 @@
   align-items: center;
   text-align: center;
 }
+.email-click {
+  text-decoration: none;
+  color: #DBD2F9;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+.email-click:hover {
+  text-decoration: underline;
+  color: #fff;
+}
 
 .location-details {
   display: flex;
