@@ -6,6 +6,7 @@ import { assets } from "../../assets/assets.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
+import "../../pages/auth/Auth.css";
 
 const LoginForm: React.FC = () => {
   const {

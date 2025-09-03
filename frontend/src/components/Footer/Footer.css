@@ -23,3 +23,21 @@
 .logo-img {
   width: 350px;
 }
+
+@media (max-width: 768px) {
+  .logo-img {
+    width: 300px;
+  }
+  .footer {
+    padding: 1.8rem 0.8rem;
+  }
+}
+@media (max-width: 480px) {
+  .logo-img {
+    width: 250px;
+  }
+
+  .footer {
+    padding: 1.5rem 0.5rem;
+  }
+}

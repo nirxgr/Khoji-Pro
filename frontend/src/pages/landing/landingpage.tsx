@@ -9,7 +9,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="landing-container">
-      <nav className="navbar">
+      <div className="navbar">
         <div className="nav-logo">
           <img
             src={assets.logo1}
@@ -29,7 +29,7 @@ const LandingPage: React.FC = () => {
             Sign Up
           </button>
         </div>
-      </nav>
+      </div>
       <div className="hero">
         <h1>
           Find verified <span className="highlight">professionals</span> easily.

@@ -806,9 +806,11 @@ input[type="date"].edit-input-field {
   display: block;
   transform: scaleX(-1);
 }
+
 .edit-photo-rectangle {
-  width: 45rem;
-  height: 19rem;
+  width: 100%;
+  max-width: 45rem;
+  aspect-ratio: 45 / 19;
   overflow: hidden;
 }
 
@@ -951,4 +953,386 @@ input[type="date"].edit-input-field {
 .indicator {
   font-size: 1rem;
   margin-bottom: 25px;
+}
+
+@media (max-width: 1245px) {
+  .profile-container {
+    margin: 0px 50px;
+  }
+
+  .profile-section-first,
+  .profile-section {
+    padding: 30px 45px;
+  }
+
+  .profile-picture {
+    left: 30px;
+    transform: none;
+  }
+  .profile-form,
+  .popup {
+    width: 80%;
+    max-width: 700px;
+  }
+  .edit-photo-overlay {
+    width: 80%;
+    max-width: 650px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    margin: 0px 35px;
+  }
+
+  .profile-picture {
+    width: 115px;
+    height: 115px;
+    top: 200px;
+    left: 25px;
+    transform: none;
+  }
+  .experience-item {
+    padding: 15px 0 15px 15px;
+  }
+
+  .contact-details {
+    padding-left: 15px;
+  }
+  .profile-section-first {
+    padding: 30px 35px;
+  }
+  .profile-section {
+    padding: 25px 35px;
+  }
+  .profile-name h1 {
+    font-size: 1.5rem;
+    text-align: left;
+  }
+  .location-details p {
+    font-size: 1.1rem;
+  }
+
+  .location-details img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .profession {
+    font-size: 1.3rem;
+    text-align: left;
+  }
+
+  .profile-bio {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .contact-details {
+    gap: 15px;
+  }
+
+  .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .social {
+    padding: 12px 15px;
+  }
+
+  .profile-section-title {
+    font-size: 1.5rem;
+  }
+
+  .social-img {
+    padding: 10px;
+  }
+
+  .email-click {
+    font-size: 1rem;
+  }
+  .location p {
+    font-size: 1rem;
+  }
+  .experience-details h3 {
+    font-size: 1.3rem;
+  }
+  .exp-name {
+    font-size: 1.2rem;
+  }
+  .extra {
+    font-size: 1rem;
+  }
+  .edit-icon {
+    width: 17px;
+    height: 17px;
+  }
+  .pencil-btn {
+    width: 33px;
+    height: 33px;
+  }
+
+  .delete-icon {
+    width: 17px;
+    height: 17px;
+  }
+  .delete-btn {
+    width: 33px;
+    height: 33px;
+  }
+
+  .add-icon {
+    width: 17px;
+    height: 17px;
+  }
+  .add-btn {
+    width: 33px;
+    height: 33px;
+  }
+
+  .icon-wrapper img {
+    height: 18px;
+    width: 20px;
+  }
+
+  .icon-wrapper {
+    padding: 10px 10px;
+  }
+  .location-icon {
+    width: 16px;
+    height: 18px;
+  }
+  .contact-img {
+    padding: 8px 8px;
+  }
+  .skills-list {
+    margin-top: 0px;
+  }
+  .social-title h2 {
+    font-size: 1.1rem;
+  }
+  .social-text {
+    font-size: 0.9rem;
+  }
+  .social-img img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .social-links a {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .profile-form,
+  .popup {
+    width: 90%;
+    max-width: 600px;
+    padding: 45px;
+  }
+
+  .edit-photo-overlay {
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .profile-form h2,
+  .popup h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 0.95rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .edit-photo-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    margin: 0px 20px;
+  }
+
+  .profile-picture {
+    width: 90px;
+    height: 90px;
+    top: 200px;
+    left: 18px;
+    transform: none;
+  }
+
+  .profile-section-first,
+  .profile-section {
+    padding: 15px 25px;
+  }
+  .profile-name h1 {
+    font-size: 1.3rem;
+    text-align: left;
+  }
+  .location-details p {
+    font-size: 0.9rem;
+  }
+
+  .location-details img {
+    height: 18px;
+    width: 18px;
+  }
+
+  .profession {
+    font-size: 1.1rem;
+    text-align: left;
+  }
+
+  .profile-bio {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .contact-details {
+    gap: 15px;
+  }
+
+  .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .social {
+    padding: 12px 15px;
+    height: 100%;
+  }
+
+  .profile-section-title {
+    font-size: 1.3rem;
+  }
+
+  .social-img {
+    padding: 10px;
+  }
+
+  .email-click {
+    font-size: 1.1rem;
+  }
+  .location p {
+    font-size: 1.1rem;
+  }
+  .experience-details h3 {
+    font-size: 1.2rem;
+  }
+  .exp-name {
+    font-size: 1.1rem;
+  }
+  .extra {
+    font-size: 0.9rem;
+  }
+  .edit-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .pencil-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .delete-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .delete-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .add-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .add-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .icon-wrapper img {
+    height: 16px;
+    width: 18px;
+  }
+
+  .icon-wrapper {
+    padding: 8px 8px;
+  }
+  .location-icon {
+    width: 14px;
+    height: 16px;
+  }
+  .contact-img {
+    padding: 8px 8px;
+  }
+  .skills-list {
+    margin-top: 0px;
+  }
+  .social-title h2 {
+    font-size: 1rem;
+  }
+  .social-text {
+    font-size: 0.8rem;
+  }
+  .social-img img {
+    width: 15px;
+    height: 15px;
+  }
+
+  .profile-form,
+  .popup {
+    width: 85%;
+    max-width: 400px;
+    padding: 35px;
+  }
+
+  .edit-photo-overlay {
+    width: 95%;
+    max-width: 350px;
+    height: auto;
+    max-height: 400px;
+  }
+  .delete-picture {
+    height: 20px;
+    width: 20px;
+  }
+  .photo-buttons {
+    padding: 8px;
+  }
+  .cancel-icon {
+    width: 18px;
+    height: 18px;
+  }
+  .edit-photo-circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .profile-form h2,
+  .popup h2 {
+    font-size: 1.1rem;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
 }

@@ -253,7 +253,7 @@ body::before {
   color: red;
   font-size: 17px;
   position: absolute;
-  top: 13.8rem;
+  top: 14.8rem;
   left: 8.5rem;
 }
 
@@ -280,5 +280,56 @@ body::before {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    max-width: 400px;
+    width: 100%;
+    margin-top: 8rem;
+    padding: 2.5rem 2rem;
+  }
+  .auth-toggle {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+  }
+  .input-group {
+    padding: 0.65rem 0.9rem;
+  }
+  .input-group img {
+    width: 13px;
+  }
+  .input-field {
+    font-size: 0.9rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.9rem;
+  }
+  .form-title {
+    font-size: 1.8rem;
+  }
+  .input-components {
+    gap: 20px;
+  }
+  .submit-button {
+    margin-top: 1.5rem;
+  }
+
+  .otp-input {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.15rem;
+    line-height: 2rem;
+  }
+  .otp-container {
+    margin-bottom: 0.5rem;
+  }
+  .otp-error {
+    font-size: 15px;
+    position: absolute;
+    top: 12.4rem;
+    left: 7.2rem;
   }
 }

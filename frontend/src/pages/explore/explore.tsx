@@ -51,7 +51,7 @@ const Explore = () => {
           console.error("Search failed:", err);
           setUserList([]);
         });
-    }, 100);
+    }, 200);
 
     return () => clearTimeout(delayDebounce);
   }, [search, filterBy, backendUrl]);
